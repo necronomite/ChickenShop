@@ -70,33 +70,30 @@ function populateTables($servername, $username, $password, $dbname){
 
 
 	// Values for Transactions
-		$filler .= "INSERT INTO transactions (id, customer_id, amount_paid, transaction_date) VALUES 
-												('', 1, 14555.5,'2017-04-26' ),
-												('', 2, 5025.00,'2017-04-26' ),
-												('', 3, 2578.00,'2017-04-26' ),
-												('', 1, 100.00,'2017-04-30' );";
+		$filler .= "INSERT INTO transactions (id, invoice_id, customer_id, amount_paid, transaction_date) VALUES 
+												('','20177000', 1, 14555.5,'2017-04-26' ),
+												('','20177001', 2, 5025.00,'2017-04-26' ),
+												('','20177002', 3, 2578.00,'2017-04-26' ),
+												('','20177003', 1, 100.00,'2017-04-30' );";
 		
 	
 
 
 	// Values for Purchases
-			$filler .= "INSERT INTO purchases (transaction_id, item_id, quantity, unit_type) VALUES 
-												( 1, 1, 100.00, 'kg'),	
-												( 1, 1, 105.40, 'kg'), 	
-												( 1, 2, 5.00, 'kg'), 
-												( 1, 3, 2.90, 'kg'),  
-												( 1, 4, 1.90, 'kg'),  
-												( 1, 9, 3.00, 'pcs'),  	
-												( 1, 9, 3.00, 'kg'),  	
-												( 1, 11, 32.00, 'kg'), 
-												( 2, 1, 39.00, 'kg'),
-												( 2, 1, 40.20, 'kg'), 
-												( 3, 1, 20.00, 'kg'),
-												( 3, 1, 17.70, 'kg'),
-												( 3, 2, 2.00, 'kg'),
-												( 3, 3, 1.00, 'kg'),
-												( 4, 4, 1.90, 'kg'),  
-												( 4, 9, 3.00, 'pcs');";
+			$filler .= "INSERT INTO purchases (transaction_id, item_id, quantity, rate, chicken_head) VALUES 
+												( 1, 1, 1.00, 125.00, 1),	
+												( 1, 1, 1.00, 125.00, 1), 	
+												( 1, 2, 1.00, 130.00, 0), 
+												( 1, 3, 1.00, 115.00, 0),  
+												( 1, 4, 1.00, 65.00, 0),
+												( 2, 1, 1.00, 125.00, 1),
+												( 2, 1, 1.00, 125.00, 1), 
+												( 3, 1, 1.00, 125.00, 1),
+												( 3, 1, 1.00, 125.00, 1),
+												( 3, 2, 1.00, 130.00, 0),
+												( 3, 3, 1.00, 115.00, 0),
+												( 4, 4, 1.00, 65.00, 0),  
+												( 4, 9, 3.00, 65.00, 0);";
 	// Values for Supplies Logs
 		$filler .= "INSERT INTO supplies_logs (log_date, supplier_id, item_id, quantity, unit_type) VALUES 
 												( '2017-04-26', 1, 2, 5.00, 'kg'),
@@ -154,6 +151,7 @@ function createTables($servername, $username, $password, $dbname){
 				);
 				CREATE TABLE transactions (
 					id 					INT(100) UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
+					invoice_id          VARCHAR(50),
 					customer_id 		INT(100) NOT NULL,
 					amount_paid 		DECIMAL(10,2) NOT NULL,
 					transaction_date 	DATE
@@ -162,7 +160,8 @@ function createTables($servername, $username, $password, $dbname){
 					transaction_id INT(100),
 					item_id INT(100),					
 					quantity DECIMAL(10, 2),
-					unit_type VARCHAR(10)
+					rate DECIMAL(10, 2),
+					chicken_head INT(50)
 				);
 				CREATE TABLE supplies_logs (
 					log_date DATE,
