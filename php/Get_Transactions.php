@@ -23,7 +23,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 	
 	$transaction_id = $row['id'];
 	
-	$sql_get_items  = "SELECT p.transaction_id as tid, i.name, p.quantity, 'x' AS ops, p.rate as price, (p.quantity*p.rate) as cost, p.chicken_head FROM purchases p, items i, transactions t WHERE p.item_id = i.id AND t.id = p.transaction_id AND t.id = '$transaction_id'";
+	$sql_get_items  = "SELECT p.transaction_id as tid, i.name, p.quantity, 'x' AS ops, p.rate as price, round((p.quantity*p.rate), 2) as cost, p.chicken_head FROM purchases p, items i, transactions t WHERE p.item_id = i.id AND t.id = p.transaction_id AND t.id = '$transaction_id'";
 	
 	$items = array();
 	$items_sql_result = mysqli_query($conn,$sql_get_items);
