@@ -1,0 +1,340 @@
+<head> 
+	<title>Chicken Business</title>
+	<meta charset="UTF-8">
+	<meta name="author" content="Joseph Job Z. Pancho">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
+	<link rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
+	<link rel="stylesheet" href="css/normalize.css"/>
+	<link rel="stylesheet" href="css/icons.css"/>
+	<link rel="stylesheet" href="css/fonts.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
+	<link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
+</head>
+<body>
+	<div class="navbar">
+	  <nav class="unselectable">
+	 		<div class="nav-wrapper">
+				<a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
+					<i class="material-icons c-hov">menu</i></a>
+					<ul id="nav-mobile" class="center tabs hide-on-med-and-down fm">
+			      <li class="tab col s3"><a active href="#tab1">Daily Inventory</a></li>
+			      <li class="tab col s3"><a href="#tab2">Inventory Records</a></li>
+			      <li class="tab col s3"><a href="#tab3">Financial Statement</a></li>
+			      <li class="tab col s3"><a href="#tab4">Balances</a></li>
+			      <li class="tab col s3"><a href="#tab5">History</a></li>
+	      	</ul>
+	    </div>
+	  </nav>
+	</div>
+
+  <div class="row">
+    <div class="col s12">
+    	<!-- START OF ALL TABS -->
+     
+	
+
+
+
+
+	<!------------------------ TRANSACTIONS TAB ------------------------------->
+	<!----------------- TRANSACTIONS CARD ---------------------->
+    <div id="tab1" class="col s12">
+    	<div id="transactions-space" class=" tabcontent">
+
+
+
+  			<div id="transactions-form" class="card col s12 offset-m2 m8 offset-l3 l6">
+					<div id="card-header" class="fac">
+						<input type="text" id="inv-dp" class="datepicker gbtn inv-dp">
+	  				<div class="card-tabs">
+				      <ul class="tabs tabs-fixed-width">
+				        <li class="tab"><a href="#cust-tab">Customers</a></li>
+				        <li class="tab"><a href="#prod-tab">Products</a></li>
+				      </ul>
+				    </div>
+			    	<a class="waves-effect activator btn waves-light theme-gradient">Add Transaction</a>
+			    </div>
+					<!-- CUSTOMER TAB -->
+					<div id="cust-tab">
+						<div id="transactions-title" class="row transactions-title blk">
+							<div class="col s8">Customer</div>
+							<div class="col s2 fc">Total Price </div>
+							<div class="col s2 fc">Paid</div>
+						</div>
+				    <ul class="collapsible transaction-items" id="transaction-items">
+					    
+					  </ul>
+					</div>
+					<!-- END OF CUSTOMER TAB -->
+					<!-- PRODUCT TAB -->
+					<div id="prod-tab">
+						<div id="transactions-title" class="row transactions-title blk">
+							<div class="col s8">Product</div>
+							<div class="col s2 fc">Units Sold </div>
+							<div class="col s2 fc">Total Price</div>
+						</div>
+				    <ul class="collapsible transaction-items" id="transaction-items">
+					    <li>
+					      <div class="collapsible-header row tr-item-title">
+					      	<span class="col s8 tr-name">Chicken</span>
+					      	<span class="col s2 tr-weight fc">100</span>
+					      	<span class="col s2 tr-amount fc">100</span>
+					    	</div>
+					      <div class="collapsible-body">
+					      	<div class="row blk">
+					      		<span class="p-name col s4">Customer</span>
+					      		<span class="p-quantity col s3">Quantity Bought</span>
+					      		<span class="p-cost col s5 fe">Price</span>
+					      	</div>
+					      	<div class="buyers">
+						      	<div class="buyer row">
+						      		<span class="p-name col s4">Chicken</span>
+						      		<span class="p-quantity col s3">10</span>
+						      		<span class="p-cost col s5 fe">1000</span>
+						      	</div>
+						      </div>
+					      </div>
+					    </li>
+
+					  </ul>
+					</div>
+					<!-- END OF PRODUCT TAB -->
+					
+				  <div id="transactions-bottomline" class="fe">
+				  	<div><span class="blk">Customers:  </span>
+							<span id="tr-cust" class="gry">0</span>
+						</div>
+						<div><span class="blk">Sales:  </span>
+							<span id="tr-total" class="gry">0.00</span>
+						</div>
+						<div ><span class="blk">Cash Received: </span>  
+							<span id="tr-cash" class="gry">0.00</span>
+						</div>
+						<div ><span class="blk">Expenses: </span>  
+							<span id="tr-exps" class="gry">0.00</span>
+						</div>
+					</div>
+        
+					<!-- CARD REVEAL -->
+			    <div class="card-reveal" style="display: block; transform: translateY(-100%);">
+			    	<div class="new-transaction">
+							<div class="content">
+				    		<span class="grey-text text-darken-4 card-title">
+				    			<span>New Transaction for
+				    				<input type="text" id="newt-dp" class="datepicker gbtn inv-dp"> 
+				    			</span>
+				    			<i class="material-icons right ">close</i>
+				    		</span>
+
+
+
+				    
+			    			<div class="customer-info row fac">
+					        <div class="input-field col s4">
+					          <input type="text" id="customer-name" class="autocomplete">
+					          <label for="customer-name">Customer</label>
+					        </div>
+					        <div class="input-field col s3">
+					          <input type="number" id="customer-payment" min="0" max="1000" class="autocomplete">
+					          <label for="customer-payment">Amount Paid</label>
+					        </div>
+					        <div class="input-field col s3">
+					          <input type="text" id="new-invoice" class="autocomplete">
+					          <label for="customer-debt">Invoice</label>
+					        </div>
+					      </div>
+								<div class="products-bought row">
+									<div class="product-field col fs s12">
+					        	<div class="prod-name input-field col">
+						          <select class="">
+						          	<option value="" disabled selected>Choose Product</option>
+										  </select>
+						        </div>
+						        <div class="prod-qty w70">
+						          <input type="number" min="0" max="1000" id="qty-0" value="1" class="autocomplete ">
+						          <label for="qty-0"></label>
+						        </div>
+										<div class="prod-unit input-field w90">
+											<select class="">
+										    <option value="kg" selected>kg</option>
+										    <option value="pcs" >pcs</option>
+										  </select>
+						        </div>
+					        	<i class="material-icons right item-close c-hov grow fm" style="display: none;">close</i>
+				        	</div>
+									<div class="product-field col another-product fs s12">
+					        	<select class="">
+						          	<option class="disabled" value="" disabled selected>Another Product</option>
+										  </select>
+				        	</div>
+
+
+
+								</div>
+					    </div>
+					    <div class="buttons">
+					    	<div class="submit-btn disabled bottom waves-effect">
+				          <a href="#" class="black-text">Submit New Transaction</a>
+			        	</div>
+					    </div>
+			    	</div>
+				   
+
+
+		
+
+
+
+			    	<div class="edit-transaction" style="display:none;">
+			      	<span class="card-title grey-text text-darken-4">Edit Transaction
+			    			<i class="material-icons right">close</i>
+			    		</span>
+			    	</div>
+
+
+			    	
+			    </div>
+			    <!-- END OF CARD REVEAL -->
+
+
+
+			  </div>
+			
+			<!------------------- END OF TRANSACTIONS CARD -------------------->
+			
+			<div class="fixed-action-btn">
+			  <a class="btn-floating waves-effect waves-light btn-large grow indigo darken-3">
+			    <i class="large material-icons">add</i>
+			  </a>
+			  <ul>
+			  	<li>
+			    	<a data-position="left" data-tooltip="Add Business Expenses" href="#expenses_modal"
+			    	class="modal-trigger tooltipped btn-floating waves-effect waves-light green">
+			    	<i class="material-icons">business_center</i></a></li>
+			    <li>
+			    	<a data-position="left" data-tooltip="Add New Product" href="#product_modal"
+			    	class="modal-trigger tooltipped btn-floating waves-effect waves-light red">
+			    	<i class="material-icons">grade</i></a></li>
+			    <li>
+			    	<a data-position="left" data-tooltip="Add New User" href="#user_modal"
+			    	class="modal-trigger tooltipped btn-floating waves-effect waves-light amber darken-1">
+			    	<i class="material-icons">person_add</i></a></li>
+			  </ul>
+			</div>
+
+			</div>
+    </div>
+		<!---------------------------------- END OF TAB 1 ----------------------------------->
+
+
+
+    <div id="tab2" class="col s12"><div class="tabcontent">Inventory Records</div></div>
+    <div id="tab3" class="col s12"><div class="tabcontent">Financial Statement</div></div>
+    <div id="tab4" class="col s12"><div class="tabcontent">Balances</div></div>
+    <div id="tab5" class="col s12"><div class="tabcontent">History</div></div>
+  </div>
+
+
+
+<!-------------------------------------- MODALS ---------------------------------->
+
+<div id="product_modal" class="modal">
+  <div class="modal-content">
+    <h4>Modal Header</h4>
+    <p>A bunch of text</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+</div>
+<div id="user_modal" class="modal">
+  <div class="modal-content">
+    <h4>Modal Header</h4>
+    <p>A bunch of text</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+</div>
+
+
+<div id="expenses_modal" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <h4>Expenses for <input type="text" id="exp-dp" class="datepicker gbtn inv-dp"></h4>
+    <div class="row p20 expenses">
+    	<div class="expense unclicked col s12	">
+        <div class="input-field col s4">
+          <input type="text" id="expense-name" class="autocomplete exp-name">
+          <label for="expense-name">Expense</label>
+        </div>
+        <div class="input-field col s3">
+          <input type="number" id="expense-payment" min="0" max="1000" class="autocomplete exp-pay">
+          <label for="expense-payment">Amount</label>
+        </div>
+      </div>
+  	</div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat done-btn">Done</a>
+  </div>
+</div>
+
+
+
+
+	<!--------------------------------------SIDEBAR ---------------------------------->
+   <ul id="slide-out" class="sidenav unselectable">
+    <li>
+    	<div class="user-view">
+      <div class="background">
+        <img src="img/bg.jpg">
+      </div>
+      <a href="#user"><img class="circle" src="img/braga.svg"></a>
+      <a href="#name"><span class="white-text name">Edelia Tentativa Braga</span></a>
+      <a href="#email"><span class="white-text email">bragaethel3@gmail.com</span></a>
+	    </div>
+	  </li>
+		<li><a for="#tab1">Daily Inventory</a></li>
+		<li><a for="#tab2">Inventory Records</a></li>
+		<li><a for="#tab3">Financial Statement</a></li>
+		<li><a for="#tab4">Balances</a></li>
+		<li><a for="#tab5">History</a></li>
+  </ul>
+
+
+<!-- DROPDOWNS -->
+  
+  
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/materialize.js"></script>
+	<script src="js/initializations.js"></script>
+	<script src="js/Chart.min.js"></script>
+	<script src="js/custom.js"></script>
+</body>

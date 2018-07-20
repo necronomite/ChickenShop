@@ -1,0 +1,429 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="author" content="Joseph Job Z. Pancho">
+	<title>Merkury</title>
+	<link rel="stylesheet" href="css/m2.css"/>
+	<link rel="stylesheet" href="css/icons.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
+	<link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
+</head>
+<body>
+	<input type="checkbox" id="secret-checkbox" />
+	<div class="nav-menu">
+		<div id="company-logo">
+			<div class="circle initial">
+				<img class="contact-pic" src="img/logo.png">
+			</div>
+			Merkury
+		</div>
+		<button class="nav-item">
+			<i class="material-icons">home</i>
+			<span>Home</span>
+		</button>
+		<button class="nav-item">
+				<i class="material-icons">short_text</i>
+		 	<span>Workflow</span>
+		</button>
+		<button class="nav-item">
+				<i class="material-icons">show_chart</i>
+		 	<span>Statistics</span>
+		</button>
+		<button class="nav-item">
+				<i class="material-icons">date_range</i>
+		 	<span>Calendar</span>
+		</button>
+		<button class="nav-item">
+				<i class="material-icons">account_circle</i>
+		 	<span>Users</span>
+		</button>
+		<button class="nav-item">
+				<i class="material-icons">settings</i>
+		 	<span>Settings</span>
+		</button>
+	</div>
+
+
+
+	<!-- <ul id="dropdown1" class="dropdown-content">
+	  <li><a href="#!">one</a></li>
+	  <li><a href="#!">two</a></li>
+	  <li class="divider"></li>
+	  <li><a href="#!">three</a></li>
+	</ul> -->
+
+	<div class="content">
+		<div class="toolbar-div">
+			<nav>
+			  <div id="navbar" class="nav-wrapper">
+			  	<div id="navbar-left">
+			  		<ul>
+			  			<li>
+		  					<label for="secret-checkbox" class="secret-label">
+		  						<i class="material-icons toggle-icon">
+		  							<span id="hamburger-back">◄</span>menu
+		  						</i>
+		  					</label>	
+			  			</li>
+			  			<li>
+			          <div class="input-field">
+			          	<i class="material-icons">search</i>
+			            <input id="search" placeholder="">
+			            <div class="search-results"></div>
+			          </div>
+			        </li>
+						<!-- <li><a href="#!"><i class="material-icons">search</i></a></li> -->
+			  		</ul>
+			  		<!-- <a href="#!" class="brand-logo">Logo</a> -->
+			  	</div>
+			  	<div id="navbar-right">
+			  		<ul  class="hide-on-small-only">
+				  		<li>
+				  			<a id="add-project" href="#" >
+				  			<i class="material-icons ">add</i>
+				  			Add project</a>
+				  		</li>
+						<li><a href="#!"><i class="material-icons">email</i></a></li>
+						<li>
+							<a href="#!"><i class="material-icons">notifications</i>
+								<span id="ticker">3</span>
+							</a>
+						</li>
+						<!-- Dropdown Trigger -->
+						<li>
+							<a class="dropdown-trigger" href="#!" data-target="dropdown1">
+								<img id="admin-prof-pic" src="img/leo.png" alt="Avatar">
+								<i class="material-icons right">arrow_drop_down</i>
+							</a>
+							<ul id='dropdown1' class='dropdown-content'>
+						    <li><a href="#!">Logout</a></li>
+						 
+						  </ul>
+						</li>
+			    	</ul>
+			  	</div>
+			  </div>
+			</nav>
+		</div>
+
+
+	
+		<div id="content-space" >
+			<p id="user-greeting">
+				Hello John!
+			</p>
+
+			<div id="stats" class="section row">
+				<div class="col s12">
+					<div class="card" id="sales">
+						<div class="title">
+							<span>Your Sales</span>
+							<div class="selector">
+								<div >
+									<span class="flex">Period:<span class="period-selection"> Last Week</span><i class="material-icons right">keyboard_arrow_down</i></span>
+									<ul class="">
+								     	<li >Last Week</li>
+				                	<li>Last Month</li>
+				                	<li>Last Year</li>
+							  		</ul>
+								</div>
+							</div>
+						</div>
+						<div class="body">
+							<canvas id="doughnut"></canvas>
+							<div id="doughnut-chart-label">
+								<div>1,560</div>
+								<div>Sales</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col s12">
+					<div class="card" id="report">
+						<div class="title">
+							<span>Report</span>
+							<div class="selector">
+								<div >
+									<span class="flex">Period:<span class="period-selection"> Last Week</span><i class="material-icons right">keyboard_arrow_down</i></span>
+									<ul class="">
+								     	<li >Last Week</li>
+				                	<li>Last Month</li>
+				                	<li>Last Year</li>
+							  		</ul>
+								</div>
+							</div>
+						</div>
+						<div class="body">
+
+						<canvas id="line"></canvas>
+				
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			
+
+			<div id="feed" class="section row">
+				<div class="col s12">
+					<div class="card" id="tasks">
+						<div class="title">
+							<span>Tasks</span>
+							<div>
+								<div class="blu circle">
+									5
+								</div>
+								<div class="pnk circle">
+									2
+								</div>
+							</div>
+						</div>
+						<div class="body ">
+							<div class="feed-item">
+								<div>
+									<div class="blu circle initial">N</div>
+									<div class="item">
+										<div class="task-title">New website for Symu.co</div>
+										<div class="task-note pink-text"><i class="material-icons">access_time</i> 5 days delays</div>
+
+									</div>
+								</div>
+								<i class="material-icons">more_vert</i>
+							</div>
+							<div class="feed-item">
+								<div>
+									<div class="blu circle initial">F</div>
+									<div class="item">
+										<div class="task-title">Free business PSD Template</div>
+										<div class="task-note pink-text"><i class="material-icons">access_time</i> 5 days delays</div>
+
+									</div>
+								</div>
+								<i class="material-icons">more_vert</i>
+							</div>
+							<div class="feed-item">
+								<div>
+									<div class="blu circle initial">N</div>
+									<div class="item">
+										<div class="task-title">New logo for JCD.pl</div>
+										<div class="task-note grey-text"><i class="material-icons">access_time</i> 5 days left</div>
+
+									</div>
+								</div>
+								<i class="material-icons">more_vert</i>
+							</div>
+							<div class="feed-item">
+								<div>
+									<div class="blu circle initial">F</div>
+									<div class="item">
+										<div class="task-title">Free Icons Set vol. 3</div>
+										<div class="task-note grey-text"><i class="material-icons">access_time</i> 10 days left</div>
+
+									</div>
+								</div>
+								<i class="material-icons">more_vert</i>
+							</div>
+							
+
+
+						</div>
+					</div>
+				</div>
+				<div class="col s12">
+					<div class="card" id="messages">
+						<div class="title">
+							<span>Messages</span>
+							<div>
+								<div class="blu circle">
+									2
+								</div>
+							</div>
+						</div>
+						<div class="body">
+							<div class="feed-item">
+								<div>
+									<div class="pnk circle initial">
+										<img class="contact-pic" src="img/leo.png">
+									</div>
+									<div class="item">
+										<div><span class="contact-title">Nina Jones</span><span class="time-ago">5 minutes ago</span></div>
+										<div class="msg-text">This is a horribly long message from one of the customers. They have decided to send an essay.</div>
+										<div class="msg-actions">
+											<i class="material-icons">reply</i>
+											<i class="material-icons">settings</i>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feed-item">
+								<div>
+									<div class="pnk circle initial">
+										<img class="contact-pic" src="img/leo.png">
+									</div>
+									<div class="item">
+										<div><span class="contact-title">Nina Jones</span><span class="time-ago">5 minutes ago</span></div>
+										<div class="msg-text">This is a horribly long message from one of the customers. They have decided to send an essay.</div>
+										<div class="msg-actions">
+											<i class="material-icons">reply</i>
+											<i class="material-icons">settings</i>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feed-item">
+								<div>
+									<div class="pnk circle initial">
+										<img class="contact-pic" src="img/leo.png">
+									</div>
+									<div class="item">
+										<div><span class="contact-title">Nina Jones</span><span class="time-ago">5 minutes ago</span></div>
+										<div class="msg-text">This is a horribly long message from one of the customers. They have decided to send an essay.</div>
+										<div class="msg-actions">
+											<i class="material-icons">reply</i>
+											<i class="material-icons">settings</i>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feed-item">
+								<div>
+									<div class="pnk circle initial">
+										<img class="contact-pic" src="img/leo.png">
+									</div>
+									<div class="item">
+										<div><span class="contact-title">Nina Jones</span><span class="time-ago">5 minutes ago</span></div>
+										<div class="msg-text">This is a horribly long message from one of the customers. They have decided to send an essay.</div>
+										<div class="msg-actions">
+											<i class="material-icons">reply</i>
+											<i class="material-icons">settings</i>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feed-item">
+								<div>
+									<div class="pnk circle initial">
+										<img class="contact-pic" src="img/leo.png">
+									</div>
+									<div class="item">
+										<div><span class="contact-title">Nina Jones</span><span class="time-ago">5 minutes ago</span></div>
+										<div class="msg-text">This is a horribly long message from one of the customers. They have decided to send an essay.</div>
+										<div class="msg-actions">
+											<i class="material-icons">reply</i>
+											<i class="material-icons">settings</i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col s12">
+					<div class="card" id="activity">
+						<div class="title">
+							<span>Activity</span>
+							<div>
+								<div class="blu circle">
+									10
+								</div>
+							</div>
+						</div>
+						<div class="body">
+							<div class="feed-item">
+								<div>
+									<div class="pnk circle initial">
+										<img class="contact-pic" src="img/leo.png">
+									</div>
+									<div class="item">
+										<div>
+											<span class="contact-title">Nina Jones</span>
+											<span class="contact-action">&nbsp;added a new</span>
+											<span class="contact-predicate">&nbsp;FREE UI KIT</span>
+										</div>
+										<div class="task-note gray-text">
+											<i class="material-icons">access_time</i> 40 minutes ago
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<div class="vertline"></div>
+							<div class="feed-item">
+								<div>
+									<div class="pnk circle initial">
+										<img class="contact-pic" src="img/leo.png">
+									</div>
+									<div class="item">
+										<div>
+											<span class="contact-title">Nina Jones</span>
+											<span class="contact-action">&nbsp;added a new</span>
+											<span class="contact-predicate">&nbsp;FREE UI KIT</span>
+										</div>
+										<div class="task-note gray-text">
+											<i class="material-icons">access_time</i> 40 minutes ago
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<div class="vertline"></div>
+							<div class="feed-item">
+								<div>
+									<div class="pnk circle initial">
+										<img class="contact-pic" src="img/leo.png">
+									</div>
+									<div class="item">
+										<div>
+											<span class="contact-title">Nina Jones</span>
+											<span class="contact-action">&nbsp;added a new</span>
+											<span class="contact-predicate">&nbsp;FREE UI KIT</span>
+										</div>
+										<div class="task-note gray-text">
+											<i class="material-icons">access_time</i> 40 minutes ago
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<div class="vertline"></div>
+							<div class="feed-item">
+								<div>
+									<div class="pnk circle initial">
+										<img class="contact-pic" src="img/leo.png">
+									</div>
+									<div class="item">
+										<div>
+											<span class="contact-title">Nina Jones</span>
+											<span class="contact-action">&nbsp;added a new</span>
+											<span class="contact-predicate">&nbsp;FREE UI KIT</span>
+										</div>
+										<div class="task-note gray-text">
+											<i class="material-icons">access_time</i> 40 minutes ago
+										</div>
+										
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<div></div>
+
+
+	</div>
+	<script src="js/Chart.bundle.min.js"></script>
+	<script src="js/utils.js"></script>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/materialize.min.js"></script>
+	<script src="js/Chart.min.js"></script>
+	<script src="js/custom.js"></script>
+
+
+</body>
+</html>

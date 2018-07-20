@@ -1,0 +1,40 @@
+@font-face { 
+  font-family: Maison-Bold;
+  src: url(../fonts/MaisonNeueWEB-Bold.woff);
+}
+@font-face { 
+  font-family: Raleway-Regular;
+  src: url(../fonts/Raleway-Regular.ttf);
+}
+@font-face {
+  font-family: Raleway-Bold;
+  src: url(../fonts/Raleway-Bold.ttf);
+}
+@font-face {
+  font-family: OpenSans-Light;
+  src: url(../fonts/OpenSans-Light.ttf);
+}
+@font-face {
+  font-family: "FiraSans-Regular";
+  src: local("Fira Sans Regular"), url(../fonts/FiraSans-Regular.woff)
+}
+@font-face {
+  font-family: "FiraSans-Light";
+  src: local("Fira Sans Light"), url(../fonts/FiraSans-Light.woff)
+}
+@font-face {
+  font-family: "FiraSans-Bold";
+  src: local("Fira Sans Bold"), url(../fonts/FiraSans-Bold.woff)
+}
+@font-face { 
+  font-family: Roboto-Regular;
+  src: url(../fonts/Roboto-Regular.ttf);
+}
+@font-face {
+  font-family: Roboto-Bold;
+  src: url(../fonts/Roboto-Bold.ttf);
+}
+@font-face {
+  font-family: Roboto-Light;
+  src: url(../fonts/Roboto-Light.ttf);
+}
