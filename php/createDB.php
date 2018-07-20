@@ -71,8 +71,8 @@ function populateTables($servername, $username, $password, $dbname){
 
 	// Values for Transactions
 		$filler .= "INSERT INTO transactions (id, invoice_id, customer_id, amount_paid, transaction_date) VALUES 
-												('','20177000', 1, 100.00,'2018-07-20' ),
-												('','20177001', 2, 100.00,'2018-07-20' ),
+												('','20177001', 1, 100.00,'2018-07-20' ),
+												('','20177000', 1, 100.00,'2018-07-18' ),
 												('','20177002', 3, 100.00,'2018-07-20' ),
 												('','20177003', 4, 100.00,'2018-07-20' );";
 		
@@ -103,9 +103,13 @@ function populateTables($servername, $username, $password, $dbname){
 	// Values for Debts
 			$filler .= "INSERT INTO debts (record_date, customer_id, amount) VALUES 
 												('2017-04-26', 1, 5000.00),
-												('2017-04-29', 1, 1000.00),
+												('2018-07-19', 1, 1000.00),
 												('2017-04-28', 2, 00.00),
 												('2017-04-29', 2, 7000.00);";
+	// Values for Payments
+			$filler .= "INSERT INTO payments (record_date, customer_id, amount) VALUES 
+												('2018-04-26', 2, 5000.00),
+												('2018-07-19', 1, 1000.00);";
 
 	// Values for Expenses
 			$filler .= "INSERT INTO expenses (record_date, source, amount) VALUES 
@@ -168,6 +172,11 @@ function createTables($servername, $username, $password, $dbname){
 					unit_type VARCHAR(10)
 				);
 				CREATE TABLE debts (
+					record_date DATE,
+					customer_id INT(100),					
+					amount DECIMAL(10, 2)
+				);
+				CREATE TABLE payments (
 					record_date DATE,
 					customer_id INT(100),					
 					amount DECIMAL(10, 2)
