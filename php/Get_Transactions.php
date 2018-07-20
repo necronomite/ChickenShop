@@ -34,10 +34,10 @@ while ($row = mysqli_fetch_assoc($result)) {
 	
 	$data[] = $row;
 }
-echo "<pre>";
-print_r($data);
+// echo "<pre>";
+// print_r($data);
 
 
-// header('Content-Type: application/json');
-// echo json_encode($data);
+header('Content-Type: application/json');
+echo json_encode($data);
 ?>
