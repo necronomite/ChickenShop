@@ -71,10 +71,10 @@ function populateTables($servername, $username, $password, $dbname){
 
 	// Values for Transactions
 		$filler .= "INSERT INTO transactions (id, invoice_id, customer_id, amount_paid, transaction_date) VALUES 
-												('','20177000', 1, 14555.5,'2018-07-20' ),
-												('','20177001', 2, 5025.00,'2018-07-20' ),
-												('','20177002', 3, 2578.00,'2018-07-20' ),
-												('','20177003', 1, 100.00,'2018-07-20' );";
+												('','20177000', 1, 100.00,'2018-07-20' ),
+												('','20177001', 2, 100.00,'2018-07-20' ),
+												('','20177002', 3, 100.00,'2018-07-20' ),
+												('','20177003', 4, 100.00,'2018-07-20' );";
 		
 	
 
@@ -82,13 +82,10 @@ function populateTables($servername, $username, $password, $dbname){
 	// Values for Purchases
 			$filler .= "INSERT INTO purchases (transaction_id, item_id, quantity, rate, chicken_head) VALUES 
 												( 1, 1, 1.00, 125.00, 1),	
-												( 1, 1, 1.00, 125.00, 1), 	
 												( 1, 2, 1.00, 130.00, 0), 
 												( 1, 3, 1.00, 115.00, 0),  
 												( 1, 4, 1.00, 65.00, 0),
 												( 2, 1, 1.00, 125.00, 1),
-												( 2, 1, 1.00, 125.00, 1), 
-												( 3, 1, 1.00, 125.00, 1),
 												( 3, 1, 1.00, 125.00, 1),
 												( 3, 2, 1.00, 130.00, 0),
 												( 3, 3, 1.00, 115.00, 0),
