@@ -2,8 +2,8 @@
 include 'DB_connector.php';
 
 
-$date = $_POST['date'];
-// $date = '2018-07-20';
+// $date = $_POST['date'];
+$date = '2018-07-20';
 
 $sql_get_product_sales_summary = "
 	SELECT i.id, i.name, sum(s.quantity) as quantity, sum(s.chicken_head) as head, sum(cost) as cost
@@ -31,14 +31,14 @@ while ($row = mysqli_fetch_assoc($result)) {
 	while ($item = mysqli_fetch_assoc($items_sql_result)) {
 			$items[] = $item;
 	}
-	$row['items'] = $items;
+	$row['items'] = $items; 
 	
 	$data[] = $row;
 }
-// echo "<pre>";
-// print_r($data);
+echo "<pre>";
+print_r($data);
 
 
-header('Content-Type: application/json');
-echo json_encode($data);
+// header('Content-Type: application/json');
+// echo json_encode($data);
 ?>
