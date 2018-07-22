@@ -1,14 +1,6 @@
-$(document).ready(function(){
-	queryInit()
-})
-
-// $('.prod-name select').on('change', function() {
-//     $(this).formSelect();;
-//  });
-
 var host_php_url = "php/";
 var data1
-var sels=""
+var psels=""
 
 function lg(item){
 	console.log(item)
@@ -29,20 +21,27 @@ $(document).on('click', "a[href^='#tab']", function () {
 	activateSideItem(value);
 });
 
+$(document).on('change', "#tab1 .products-bought .select-wrapper select", function () {
+	var product = $(this).find("option:selected").text();
+	var product = $(this).find("option:selected").text();
+	$("")
+	if(product=="Chicken"){
+		lg("we")
+	}
+});
+
+
+
 function activateSideItem(for_value){
 	$(".sidenav").find("a[for^='#tab']").removeClass("active");
 	$(".sidenav").find("a[for="+for_value+"]").addClass("active");
 }
 
 function toggleExes(){
-
-	var count = $(".card-reveal .product-field").not(".another-product").length;
-	lg(count)
-	if(count>1){
-		$(".card-reveal .product-field .item-close").show();
-		lg("showing")
+	if($(".card-reveal .product-field").not(".another-product").length>1){
+		$(".card-reveal .products-bought").addClass("multiple-products");
 	}else{
-		$(".card-reveal .product-field .item-close").hide();
+		$(".card-reveal .products-bought").removeClass("multiple-products");
 	}
 }
 
@@ -51,64 +50,48 @@ $(document).on('click', ".card-reveal .product-field .item-close", function () {
 	toggleExes();
 })
 
-var latest_product_index = 0;
+function clearNewTransactionsForm(){
+	$("#tab1 .card-reveal .products-bought i.item-close").click();
+	$("#tab1 .card-reveal .products-bought .another-product").click();
+}
+
+
 $(document).on('click', ".card-reveal .products-bought .product-field.another-product", function () {
-	latest_product_index+=1
-	
-	//copy this to below
 	var copy = ""
-	+"<div class='product-field col another-product fs s12'>"
-	+"<div class='prod-name input-field col'>"
-    +"	<select>"
-    +"     <option disabled selected>Another Product</option>"
-	+"	</select>"
-	+"</div>"
-	+"</div>"
-	$( ".card-reveal .products-bought" ).append(copy);
-	
-	//modify this
+	+		"<div class='product-field another-product fs'>"
+	+			"<div class='prod-name input-field col'>"
+	+		    	"<select>"
+	+		      		"<option disabled selected>Another Product</option>"
+	+			  	"</select>"
+	+			"</div>"
+	+		"</div>"
+
+
+	$(".card-reveal .products-bought").append(copy);
 	$(this).removeClass("another-product");
-
-
-	var name_id = "prod-"+latest_product_index
-	var qty_id = "qty-"+latest_product_index
-
-	var label = $(this).find("label")
-	var input = $(this).find("input")
-	label.text("Product")
-	label.attr("for",name_id)
-	label.attr("id",name_id)
-
-
-	id="prod-0"
 	$(this).find("option:first").text("Choose Product")
-	$(this).find("select").append(sels)
-	// M.updateTextFields();
+	$(this).find("select").append(psels)
 	$('select').formSelect();
 
-	var a = 
-	"<div class='prod-qty w70'>"+
-      "<input type='number' min='0' max='1000' id='"+qty_id+"' value='1' class='autocomplete '>"+
-      "<label for='"+qty_id+"'></label>"+
-    "</div>"+
-			"<div class='prod-unit input-field w90'>"+
-				"<select class=''>"+
-			    "<option value='kg' selected>kg</option>"+
-			    "<option value='pcs' >pcs</option>"+
-			  "</select>"+
-    "</div>"+
-    "<i class='material-icons right item-close c-hov grow fm' style='display: none;'>close</i>"
-    $(this).append(a)
-    $('select').formSelect();
+
+	var a = "" 
+	+"		<div class='prod-qty w80 fs'>"
+    +"			<input type='number' min='0' max='1000' value='1'>"
+    +"		</div>"
+    +"		<div class='prod-rate w80 fs'>"
+    +"			<input type='number' min='0' max='1000' value='1'>"
+    +"		</div>"
+    +"		<div class='chk-heads fs'>"
+    +"			<input type='number' min='0' max='1000' value='1'>"
+    +"		</div>"
+    +"		<i class='material-icons right item-close c-hov grow fm'>close</i>"
 
 
-
-	// $(".prod-name input").val()
-	// $(".prod-qty input").val()
-	// $(".prod-unit select").val()
-
- toggleExes()
+    $(this).append(a);
+	toggleExes()
 });
+
+
 function a(s){
 	return ((s<10) ? "0"+s : ""+s);
 }
@@ -116,14 +99,14 @@ function queryTransactions(){
 	// M.Datepicker.getInstance(g("inv-dp"))
 	var d = new Date(M.Datepicker.getInstance(g("inv-dp")).date)
 	var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
-	lg(date)
+	console.log("Date used for query:" +date)
 	$.ajax({
 		url: host_php_url+"Get_Transactions.php",
 		type: "post",
 		data: {date:date},
 		dataType: 'json',
 		success: function(data){
-			console.log("yey");
+			console.log("queryTransactions");
 			console.log(data);	
 			buildTransactions(data)
 			
@@ -152,8 +135,10 @@ function buildTransactions(data){
 	$("#transaction-items").html("")
 	var sales = 0
 	var cash_received = 0
-	console.log("trans")
+	console.log("transactions")
+	data1 = data
 	console.log(data)
+	$("#transactions-form").removeClass("no-transactions")
 	for(i1 in data){
 		var dom = ""
 		var amount_paid = data[i1]['amount_paid']
@@ -214,6 +199,7 @@ function buildTransactions(data){
 	$("#tr-cash").text(parseFloat(cash_received).toFixed(2))
 }
 
+$(document).on('click', ".card-reveal .new-transaction .submit-btn", submitTransaction)
 function submitTransaction(){
 	var d = new Date(M.Datepicker.getInstance(g("newt-dp")).date)
 	var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
@@ -228,17 +214,20 @@ function submitTransaction(){
 		var container = []
 		var prod = $(this).find(".select-wrapper select").val() //modified by sanz, dynamically added selects does not have an outer DIV element with a class "prod-name"
 		var qty = $(this).find(".prod-qty input").val()
-		var unit = $(this).find(".prod-unit select").val()
+		var rate = $(this).find(".prod-rate input").val()
+		var chicken_head = 0
 
 		console.log("form-items : "+prod+'..'+qty+'...'+unit)
 
 		container.push(prod)
 		container.push(qty)
 		container.push(unit)
+		container.push(chicken_head)
 		items.push(container)
 	})
 	console.log(items)
-		
+
+
 	saveNewTransaction(date,name,paid,invoice,items)
 }
 
@@ -259,8 +248,10 @@ function saveNewTransaction(date,name,paid,invoice,items){
 		cache: false,
 		success: function(data){
 			console.log("data received --- "+data)
-			// console.log("saving was a success")
+			console.log("saving was a success")
 			queryTransactions()
+			$(".new-transaction .card-title").click()
+			clearNewTransactionsForm();
 
 		},
 		error: function(error){
@@ -278,25 +269,38 @@ function queryInit(){
 		data: {},
 		dataType: 'json',
 		success: function(data){
-			console.log("yey");
+			console.log("Successfully Retrieved Customer and Products List");
 			console.log(data);	
 
 			var sel=""
-			data1 = data
 			if(data["items"]){
 				for(p in data["items"]){
-					var id = data1["items"][p]["id"]
-					var name = data1["items"][p]["name"]
+					var id = data["items"][p]["id"]
+					var name = data["items"][p]["name"]
 					o = "<option value='"+id+"' >"+name+"</option>"
 					sel+=o
 				}
-				sels = sel
-				$(".prod-name select").each(function(){
-					
+				psels = sel
+				$(".product-field").not(".another-product").find(".prod-name select").each(function(){
+					$(this).empty();
+					$(this).append("<option disabled selected>Choose Product</option>")
 					$(this).append(sel)
-					lg($(this))
 				})
+				lg("The products list has been appended to all selects")
 			}
+
+			customer_names = []
+			for(customer in data['customers']){
+				key = data['customers'][customer]['name']
+				value = null
+				customer_names[key]=value
+			}
+
+
+			$('.customer-info #customer-name.autocomplete').autocomplete({
+		      data: customer_names,
+		      limit : 3
+		    });
 			
 
 
@@ -343,7 +347,7 @@ $(document).on('click', "#expenses_modal .modal-content .expenses .expense.uncli
 	M.updateTextFields();
 	
 })
-$(document).on('click', ".card-reveal .new-transaction .submit-btn", submitTransaction)
+
 $(document).on('click', "#expenses_modal .done-btn", function(){
 	var d = new Date(M.Datepicker.getInstance(g("exp-dp")).date)
 	var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
@@ -398,16 +402,15 @@ function queryDebts(){
 		dataType: 'json',
 		success: function(data){
 			console.log("Received debts data");
-			data1 = data
 			console.log(data);	
 
 
-			for (i in data1){
-				for(ii in data1[i]){
-					console.log (data1[i][ii])
-				}
-				console.log (data1[i])
-			}
+			// for (i in data1){
+			// 	for(ii in data1[i]){
+			// 		console.log (data1[i][ii])
+			// 	}
+			// 	console.log (data1[i])
+			// }
 
 
 				
