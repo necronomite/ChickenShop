@@ -8,24 +8,25 @@
   $('.modal').modal();
   $('select').formSelect();
   M.updateTextFields();
+  queryInit()
+  setDatePicker()
 });
 
 
- var today = new Date();
- $(document).ready(function(){
-    $('.datepicker').datepicker();
-    console.log(today)
-    var options = 
-    {
-      // "format":"yyyy-mm-dd",
-      "onSelect": queryTransactions,
-      "setDefaultDate": true,
-      "defaultDate" : today,
-      "maxDate":today
-    }
-    var elems = document.querySelectorAll('.datepicker');
-    var instances = M.Datepicker.init(elems, options);
-  });
+ function setDatePicker(){
+  $('.datepicker').datepicker();
+  var today = new Date();
+  var options = 
+  {
+    "onClose": queryTransactions,
+    "setDefaultDate": true,
+    "defaultDate" : today,
+    "maxDate":today
+  }
+  var elems = document.querySelectorAll('.datepicker');
+  var instances = M.Datepicker.init(elems, options);
+  // queryTransactions()
+}
 
 
 

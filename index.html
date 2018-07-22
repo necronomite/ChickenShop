@@ -43,7 +43,7 @@
 
 
 
-  			<div id="transactions-form" class="card col s12 offset-m2 m8 offset-l3 l6">
+  			<div id="transactions-form" class="card col s12 offset-m2 m8 offset-l3 l6 no-transactions">
 					<div id="card-header" class="fac">
 						<input type="text" id="inv-dp" class="datepicker gbtn inv-dp">
 	  				<div class="card-tabs">
@@ -54,6 +54,9 @@
 				    </div>
 			    	<a class="waves-effect activator btn waves-light theme-gradient">Add Transaction</a>
 			    </div>
+
+
+			    <div class="fm gry no-items">There are no transactions for this day.</div>
 					<!-- CUSTOMER TAB -->
 					<div id="cust-tab">
 						<div id="transactions-title" class="row transactions-title blk">
@@ -61,8 +64,9 @@
 							<div class="col s2 fc">Total Price </div>
 							<div class="col s2 fc">Paid</div>
 						</div>
+						
 				    <ul class="collapsible transaction-items" id="transaction-items">
-					    
+			
 					  </ul>
 					</div>
 					<!-- END OF CUSTOMER TAB -->
@@ -140,41 +144,48 @@
 					        </div>
 					        <div class="input-field col s3">
 					          <input type="text" id="new-invoice" class="autocomplete">
-					          <label for="customer-debt">Invoice</label>
+					          <label for="new-invoice">Invoice</label>
 					        </div>
 					      </div>
-								<div class="products-bought row">
-									<div class="product-field col fs s12">
+					      <div class="products-bought-label fac">
+					      	<div class="pblprod">Product</div>
+					      	<div class="w80">Weight(kg)</div>
+					      	<div class="w80">Php/kg</div>
+					      	<div class="w80">Heads</div>
+					      </div>
+								<div class="products-bought">
+									<div class="product-field fs">
 					        	<div class="prod-name input-field col">
 						          <select class="">
 						          	<option value="" disabled selected>Choose Product</option>
 										  </select>
 						        </div>
-						        <div class="prod-qty w70">
-						          <input type="number" min="0" max="1000" id="qty-0" value="1" class="autocomplete ">
-						          <label for="qty-0"></label>
+						        <div class="prod-qty w80 fs">
+						          <input type="number" min="0" max="1000" value="1">
 						        </div>
-										<div class="prod-unit input-field w90">
-											<select class="">
-										    <option value="kg" selected>kg</option>
-										    <option value="pcs" >pcs</option>
-										  </select>
+						        <div class="prod-rate w80 fs">
+						          <input type="number" min="0" max="1000" value="1">
 						        </div>
-					        	<i class="material-icons right item-close c-hov grow fm" style="display: none;">close</i>
+						         <div class="chk-heads fs">
+						          <input type="number" min="0" max="1000" value="1">
+						        </div>
+					        	<i class="material-icons right item-close c-hov grow fm">close</i>
 				        	</div>
-									<div class="product-field col another-product fs s12">
-					        	<select class="">
-						          	<option class="disabled" value="" disabled selected>Another Product</option>
+									<div class="product-field another-product fs">
+										<div class="prod-name input-field col">
+						        	<select class="">
+						          	<option value="" disabled selected>Another Product</option>
 										  </select>
+										</div>
 				        	</div>
 
 
 
 								</div>
 					    </div>
-					    <div class="buttons">
+					    <div class="buttons fe fac">
 					    	<div class="submit-btn disabled bottom waves-effect">
-				          <a href="#" class="black-text">Submit New Transaction</a>
+				          <a href="#" class="black-text">SAVE TRANSACTION</a>
 			        	</div>
 					    </div>
 			    	</div>
