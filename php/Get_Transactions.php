@@ -62,7 +62,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 	while ($item = mysqli_fetch_assoc($items_sql_result)) {
 			$items[] = $item;
 	}
-	$row['items'] = $items; 
+	$row['buyers'] = $items; 
 	
 	$productsdata[] = $row;
 }
@@ -74,5 +74,5 @@ $alldata['products'] = $productsdata;
 
 
 header('Content-Type: application/json');
-echo json_encode($data);
+echo json_encode($alldata);
 ?>

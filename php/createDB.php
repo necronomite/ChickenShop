@@ -10,21 +10,21 @@ function populateTables($servername, $username, $password, $dbname){
 
 
 	// Values for Items
-			$filler = "INSERT INTO items (id, name, quantity, kg_price, pcs_price) VALUES 
-										('', 'Chicken', 200.00, 125.00, 00.00 ),
-										('', 'Liver', 200.00, 130.00, 00.00 ),
-										('', 'Gizzard', 200.00, 115.00 , 00.00),
-										('', 'Intestine', 200.00, 65.00, 00.00 ),
-										('', 'Large', 200.00, 65.00, 00.00 ),
-										('', 'Provent', 200.00, 65.00, 00.00 ),
-										('', 'Spleen', 200.00, 65.00, 00.00 ),
-										('', 'Head', 200.00, 30.00, 00.00 ),
-										('', 'Feet', 200.00, 65.00, 5.00 ),
-										('', 'Crops', 200.00, 45.00, 00.00 ),
-										('', 'Blood', 200.00, 5.00, 00.00 ),
-										('', 'Fats', 200.00, 35.00, 00.00 ),
-										('', 'Breast', 200.00, 138.00, 00.00 ),
-										('', 'Neck', 200.00, 70.00, 00.00 )
+			$filler = "INSERT INTO items (id, name, quantity) VALUES 
+										('', 'Chicken', 200.00),
+										('', 'Liver', 200.00),
+										('', 'Gizzard', 200.00),
+										('', 'Intestine', 200.00),
+										('', 'Large', 200.00),
+										('', 'Provent', 200.00),
+										('', 'Spleen', 200.00),
+										('', 'Head', 200.00),
+										('', 'Feet', 200.00),
+										('', 'Crops', 200.00),
+										('', 'Blood', 200.00),
+										('', 'Fats', 200.00),
+										('', 'Breast', 200.00),
+										('', 'Neck', 200.00)
 										;";
 	
 
@@ -142,9 +142,7 @@ function createTables($servername, $username, $password, $dbname){
 				CREATE TABLE items (   -- this table holds the selling prices
 					id 	 INT(100) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 					name VARCHAR(100) NOT NULL,
-					quantity DECIMAL(10, 2),
-					kg_price DECIMAL(10, 2), 
-					pcs_price DECIMAL(10,2)
+					quantity DECIMAL(10, 2)
 				);
 				CREATE TABLE suppliers (
 					id 	 INT(100) UNSIGNED AUTO_INCREMENT PRIMARY KEY,

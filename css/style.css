@@ -1,14 +1,14 @@
 ::-webkit-scrollbar {
-    height: 4px;
+    height: 0px;
     width: 4px;
     background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   width: 4px;
-  background: rgba(0,0,0,.4);
-  -webkit-border-radius: 1ex;
-  -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+  background: rgba(0,0,0,.3);
+  /*-webkit-border-radius: 1ex;*/
+  /*-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);*/
 }
 
 ::-webkit-scrollbar-corner {
@@ -36,6 +36,11 @@ body{
   text-transform: none;
   font-family: Roboto-Bold;
 }*/
+h4, .h4{
+  font-family: Google-Sans;
+  /*font-size: */
+  margin: 0px!important;
+}
 .tabs{
   background-color: transparent;
 }
@@ -103,9 +108,6 @@ body{
   font-size: 15px;
   font-family: Roboto-Bold;
 }
-.pblprod{
-  width: 177px;
-}
 #tab1 .card-reveal div .buttons{
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -115,7 +117,7 @@ body{
   padding: 4px 6px;
 }
 
-.card-reveal .datepicker-date-display{
+.card-reveal .datepicker-date-display, .modal .modal .modal-content .datepicker-date-display{
   display: none;
 }
 
@@ -183,10 +185,23 @@ ul.dropdown-content.select-dropdown li{
   display: inline-block!important;
 }
 
+.modal-content p{
+  margin: 7px 0px 25px 0px;
+}
+
 
 
 /*--------------FIXES END---------------*/
 /*--------------UNIVERSALS---------------*/
+.op0{
+  opacity: 0;
+}
+.op0 input{
+  cursor: default;
+}
+
+
+
 .submit-btn.disabled{
   color: #b3b2b2 !important;
   cursor: default;
@@ -198,14 +213,29 @@ ul.dropdown-content.select-dropdown li{
 .w100{
   width: 100px;
 }
+.w160{
+  width: 160px;
+}
 .w120{
   width: 120px;
+}
+.w400{
+  width: 400px;
+}
+.w500{
+  width: 500px;
+}
+.w600{
+  width: 600px;
 }
 .p20{
   padding: 20px;
 }
 .w100 input[type="number"], .w80 input[type="number"]{
   width: 62px;
+}
+.w160 .select-wrapper, .w160 input.supp-prod{
+  width: 142px;;
 }
 .chk-heads input[type="number"]{
   width: 42px;
@@ -276,21 +306,21 @@ input[type="text"].gbtn:hover{
   display: flex;
   justify-content: flex-end;
 }
-.fc{
+.fc, .fjc{
   display: flex;
   justify-content: center;
+}
+.fcol{
+  display: flex;
+  flex-direction: column;
 }
 .fsa{
   display: flex;
   justify-content: space-around;
 }
-.fsb{
+.fsb, .card .card-reveal .fsb.card-title{
   display: flex;
   justify-content: space-between;
-}
-.fjc{
-  display: flex;
-  justify-content: center;
 }
 .fac{
   display: flex;
@@ -438,16 +468,16 @@ div[id^="tab"].active .tabcontent{
   top: 0px;
 }
 
-#transaction-items{
+.transaction-items{
   max-height: 330px;
   overflow: auto;
 }
 
-#transaction-items::-webkit-scrollbar{
-  width: 6px;
+.transaction-items::-webkit-scrollbar{
+  width: 0px;
   background-color: transparent;
 }
-#transaction-items::-webkit-scrollbar-thumb{
+.transaction-items::-webkit-scrollbar-thumb{
   width: 6px;
   background-color: #bbb;
   opacity: .84;
@@ -493,7 +523,7 @@ input.datepicker.inv-dp{
   max-width: 100px;
   text-align: center;
   border-bottom: none;
-  margin: 6px;
+  margin: 0px;
   margin-left: 20px;
   padding: 0 1rem;
   text-transform: uppercase;
@@ -526,7 +556,7 @@ i.item-close{
 
 
 
-#expenses_modal .modal-content .expenses .expense .input-field{
+#expenses-modal .modal-content .expenses .expense .input-field{
   margin-left: 20px;
 }
 
@@ -552,10 +582,12 @@ i.item-close{
   justify-content: center;
   text-align: center;
   align-items: center;
+
 }
 #transactions-form.no-transactions #cust-tab,
 #transactions-form.no-transactions #prod-tab,
 #transactions-form.no-transactions #transactions-bottomline{
+  opacity: 0;
   display: none;
 }
 #transactions-bottomline{
@@ -567,7 +599,22 @@ i.item-close{
 
 
 
-
+/*#tab1 .card-reveal div .content .products-bought{
+  height: calc(100% - 187.25px);
+  width: 560px;
+  margin: 0 calc(50% - 280px);
+  overflow: auto;
+}
+*/
+#product-modal .suppliers-name .input-field{
+  margin: 0px;
+}
+.modal .modal-content .modal.datepicker-modal, .card-reveal .modal.datepicker-modal{
+  width: 355px;
+}
+.modal .modal-content .datepicker-modal .modal-content{
+  position: relative;
+}
 
 /*-----------------ANIMATIONS--------------------*/
 @keyframes fadeIn {

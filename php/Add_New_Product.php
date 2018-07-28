@@ -16,13 +16,13 @@ $date = date("Y-m-d");
 
 
 //Checks if customer exists in DB, retrieves customer's id
-$c_match = mysqli_num_rows(mysqli_query($conn, "SELECT *  FROM customers c WHERE c.name = '$cname'"));
-if (!$c_match) { //If customer doesn't exists, add it to DB
-	mysqli_query($conn, "INSERT INTO customers (id, name) VALUES ('', '$cname')");
+$p_match = mysqli_num_rows(mysqli_query($conn, "SELECT *  FROM items p WHERE p.name = '$pname'"));
+if (!$p_match) { //If customer doesn't exists, add it to DB
+	mysqli_query($conn, "INSERT INTO items (id, name) VALUES ('', '$pname')");
 }
 
-$c_match = mysqli_fetch_array(mysqli_query($conn, "SELECT c.id  FROM customers c WHERE c.name = '$cname'"));
-$c_id = $c_match['id'];
+$p_match = mysqli_fetch_array(mysqli_query($conn, "SELECT p.id  FROM items p WHERE p.name = '$pname'"));
+$p_id = $p_match['id'];
 
 
 // Insert balance into Debts Table if greater then 0.00

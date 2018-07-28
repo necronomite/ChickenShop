@@ -1,13 +1,3 @@
-var host_php_url = "php/";
-var data1
-var psels=""
-
-function lg(item){
-	console.log(item)
-}
-function g(item){
-	return document.getElementById(item)
-}
 $(document).on('click', "a[for^='#tab']", function () {
 	value = $(this).attr("for")
 	activateSideItem(value);
@@ -24,11 +14,50 @@ $(document).on('click', "a[href^='#tab']", function () {
 $(document).on('change', "#tab1 .products-bought .select-wrapper select", function () {
 	var product = $(this).find("option:selected").text();
 	var product = $(this).find("option:selected").text();
-	$("")
+	var granparent = $(this).parent().parent()
+	var heads_field = granparent.parent().find(".chk-heads")
+
 	if(product=="Chicken"){
-		lg("we")
+		granparent.addClass("chk-prod")
+		heads_field.removeClass("op0")
+		lg("Chicken Detected")
+	}else{
+		granparent.removeClass("chk-prod")
+		heads_field.addClass("op0")
 	}
+
+	toggleChickenLabel()
 });
+
+
+$(document).on('click', "#save-new-customer", function () {
+	var name = $("#user-modal #new-cust")
+	var debt = $("#user-modal #new-cust-debt")
+	n = name.val()
+	d = debt.val()
+	console.log(n+"  "+d)
+	
+	$.ajax({
+		url: host_php_url+"Add_New_Customer.php",
+		type: "post",
+		data: {name:n, amount: d},
+		dataType: 'json',
+		success: function(data){
+			console.log("saved new customer "+n+"  "+d);
+			name.val("")
+			debt.val("")
+			M.updateTextFields();
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+})
+
+$(document).on('click', ".cancel", function () {
+	$(this).parent().parent().find(".modal-content input").val("")
+	M.updateTextFields();
+})
 
 
 
@@ -44,9 +73,18 @@ function toggleExes(){
 		$(".card-reveal .products-bought").removeClass("multiple-products");
 	}
 }
+function toggleChickenLabel(){
+	var label = $(".products-bought-label .chk-label")
+	if($(".products-bought .prod-name.chk-prod").length){
+		label.show()
+	}else{
+		label.hide()
+	}
+}
 
 $(document).on('click', ".card-reveal .product-field .item-close", function () {
 	$(this).parent().remove();
+	toggleChickenLabel();
 	toggleExes();
 })
 
@@ -59,7 +97,7 @@ function clearNewTransactionsForm(){
 $(document).on('click', ".card-reveal .products-bought .product-field.another-product", function () {
 	var copy = ""
 	+		"<div class='product-field another-product fs'>"
-	+			"<div class='prod-name input-field col'>"
+	+			"<div class='prod-name input-field col w160'>"
 	+		    	"<select>"
 	+		      		"<option disabled selected>Another Product</option>"
 	+			  	"</select>"
@@ -81,7 +119,7 @@ $(document).on('click', ".card-reveal .products-bought .product-field.another-pr
     +"		<div class='prod-rate w80 fs'>"
     +"			<input type='number' min='0' max='1000' value='1'>"
     +"		</div>"
-    +"		<div class='chk-heads fs'>"
+    +"		<div class='chk-heads fs op0'>"
     +"			<input type='number' min='0' max='1000' value='1'>"
     +"		</div>"
     +"		<i class='material-icons right item-close c-hov grow fm'>close</i>"
@@ -92,14 +130,12 @@ $(document).on('click', ".card-reveal .products-bought .product-field.another-pr
 });
 
 
-function a(s){
-	return ((s<10) ? "0"+s : ""+s);
-}
+
 function queryTransactions(){
 	// M.Datepicker.getInstance(g("inv-dp"))
 	var d = new Date(M.Datepicker.getInstance(g("inv-dp")).date)
 	var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
-	console.log("Date used for query:" +date)
+	console.log("Date used for query:" +date) 
 	$.ajax({
 		url: host_php_url+"Get_Transactions.php",
 		type: "post",
@@ -132,22 +168,31 @@ function queryTransactions(){
 }
 
 function buildTransactions(data){
-	$("#transaction-items").html("")
+	$("#daily-transactions-customers").html("")
+	$("#daily-transactions-products").html("")
 	var sales = 0
 	var cash_received = 0
+	var sales2 = 0
+	var cash_received2 = 0
 	console.log("transactions")
-	data1 = data
+	if(data.customers.length){
+		$("#transactions-form").removeClass("no-transactions")
+	}else{
+		$("#transactions-form").addClass("no-transactions")
+	}
+	
 	console.log(data)
-	$("#transactions-form").removeClass("no-transactions")
-	for(i1 in data){
+	
+	cdata = data.customers
+	for(i1 in cdata){
 		var dom = ""
-		var amount_paid = data[i1]['amount_paid']
-		var balance = data[i1]['balance']
-		var id = data[i1]['id']
-		var name = data[i1]['name']
-		var transaction_date = data[i1]['transaction_date']
-		var total = data[i1]['total']
-		var items = data[i1]['items']
+		var amount_paid = cdata[i1]['amount_paid']
+		var balance = cdata[i1]['balance']
+		var id = cdata[i1]['id']
+		var name = cdata[i1]['name']
+		var transaction_date = cdata[i1]['transaction_date']
+		var total = cdata[i1]['total']
+		var items = cdata[i1]['items']
 
 		sales+=parseFloat(total)
 		cash_received+=parseFloat(amount_paid)
@@ -161,29 +206,32 @@ function buildTransactions(data){
 		+"    	</div>"
 		+"      <div class='collapsible-body'>"
 		+"      	<div class='row blk'>"
-		+"      		<span class='p-name col s4'>Product Name</span>"
-		+"      		<span class='p-quantity col s2'>Quantity</span>"
-		+"      		<span class='p-unit col s2'>Unit</span>"
-		+"      		<span class='p-cost col s4 fe'>Cost</span>"
+		+"      		<span class='col s3'>Product Name</span>"
+		+"      		<span class='col s2'>Weight</span>"
+		+"      		<span class='col s3 fm'>Php/kg</span>"
+		+"      		<span class='col s2'>Chk. Heads</span>"
+		+"      		<span class='col s2 fe'>Price</span>"
 		+"      	</div>"
 		+"      	<div class='sold-items'>"
 
 
 	    for(i2 in items){
+	    	var chicken_head = items[i2]['chicken_head']
 	       	var cost = items[i2]['cost']
 			var name = items[i2]['name']
 			var ops = items[i2]['ops']
 			var price = items[i2]['price']
 			var quantity = items[i2]['quantity']
 			var tid = items[i2]['tid']
-			var unit = items[i2]['unit']
+			var chk = (chicken_head=="0")? "": chicken_head
 
 			dom+=""
 			+"	      	  <div class='sold-item row'>"
-			+"	      		<span class='p-name col s4'>"+name+"</span>"
-			+"	      		<span class='p-quantity col s2'>"+quantity+"</span>"
-			+"	      		<span class='p-unit col s2'>"+unit+"</span>"
-			+"	      		<span class='p-cost col s4 fe'>"+cost+"</span>"
+			+"	      		<span class='col s3'>"+name+"</span>"
+			+"	      		<span class='col s2'>"+quantity+" kg</span>"
+			+"	      		<span class='col s3 fm'>"+cost+"</span>"
+			+"	      		<span class='col s2'>"+chk+"</span>"
+			+"	      		<span class='col s2 fe'>"+price+"</span>"
 			+"	      	  </div>"
 		}
 
@@ -192,11 +240,76 @@ function buildTransactions(data){
 		+"      </div>"
 		+"    </li>"
 
-		$("#transaction-items").append(dom);
+		$("#daily-transactions-customers").append(dom);
 	}
-	$("#tr-cust").text(data.length)
+	$("#tr-cust").text(cdata.length)
 	$("#tr-total").text(parseFloat(sales).toFixed(2))
 	$("#tr-cash").text(parseFloat(cash_received).toFixed(2))
+
+
+
+
+	pdata = data.products
+	for(i1 in pdata){
+		var dom = ""
+		var weight = pdata[i1]['quantity']
+		var name = pdata[i1]['name']
+		var id = pdata[i1]['id']
+		var head = pdata[i1]['head']		
+		var total_price = pdata[i1]['cost']
+		var buyers = pdata[i1]['buyers']
+
+		var ischicken = (name=="Chicken")
+		var insert1 = (ischicken ? "Heads" : "");
+
+		sales2+=parseFloat(total_price)
+
+		
+
+		dom+=""
+		+"	 <li>"
+		+"      <div class='collapsible-header row tr-item-title'>"
+		+"      	<span class='col s8'>"+name+"</span>"
+		+"      	<span class='col s2 fc'>"+weight+" kg</span>"
+		+"      	<span class='col s2 fc'>"+total_price+"</span>"
+		+"    	</div>"
+		+"      <div class='collapsible-body'>"
+		+"      	<div class='row blk'>"
+		+"	      		<span class='p-name col s3'>Customer</span>"
+		+"	      		<span class='p-name col s2 fe'>Bought</span>"
+		+"	      		<span class='p-name col s3 fm'>Rate</span>"
+		+"	      		<span class='p-name col s2 fm'>"+insert1+"</span>"
+		+"	      		<span class='p-name col s2 fe'>Price</span>"
+		+"      	</div>"
+		+"      	<div class='buyers'>"
+
+
+	    for(i2 in buyers){
+	       	var chicken_head = buyers[i2]['chicken_head']
+			var cost = buyers[i2]['cost']
+			var name = buyers[i2]['name']
+			var quantity = buyers[i2]['quantity']
+			var rate = buyers[i2]['rate']
+			var insert2 = (ischicken ? chicken_head : "");
+
+
+			dom+=""
+			+"	      	  <div class='buyer row'>"
+			+"	      		<span class='p-name col s3'>"+name+"</span>"
+			+"	      		<span class='p-name col s2 fe'>"+quantity+" kg</span>"
+			+"	      		<span class='p-name col s3 fm'>"+rate+"</span>"
+			+"	      		<span class='p-name col s2 fm'>"+insert2+"</span>"
+			+"	      		<span class='p-name col s2 fe'>"+cost+"</span>"
+			+"	      	  </div>"
+		}
+
+		dom+=""
+		+"	        </div>"
+		+"      </div>"
+		+"    </li>"
+
+		$("#daily-transactions-products").append(dom);
+	}
 }
 
 $(document).on('click', ".card-reveal .new-transaction .submit-btn", submitTransaction)
@@ -207,27 +320,39 @@ function submitTransaction(){
 	var name = $(".card-reveal .new-transaction #customer-name").val()
 	var paid = $(".card-reveal .new-transaction #customer-payment").val()
 	var invoice = $(".card-reveal .new-transaction #new-invoice").val()
-	// NOTE Balance actually is optional, it can be used to add old debt
 
 	var items = []
+	var prods = []
 	$(".card-reveal .new-transaction .product-field").not(".another-product").each(function(){
 		var container = []
 		var prod = $(this).find(".select-wrapper select").val() //modified by sanz, dynamically added selects does not have an outer DIV element with a class "prod-name"
 		var qty = $(this).find(".prod-qty input").val()
 		var rate = $(this).find(".prod-rate input").val()
-		var chicken_head = 0
+		var chicken_head = $(this).find(".chk-heads input").val()
+		var ischicken = $(this).find(".prod-name").hasClass("chk-prod")
+		chicken_head = (ischicken)? chicken_head: "0"
 
-		console.log("form-items : "+prod+'..'+qty+'...'+unit)
-
+		
 		container.push(prod)
-		container.push(qty)
-		container.push(unit)
+		container.push(qty) //weight in kg
+		container.push(rate)
 		container.push(chicken_head)
-		items.push(container)
+		if(prod==null){
+			console.log("failed : "+prod+'   '+qty+'   '+rate+"   "+chicken_head)
+			toast("Please fill in all fields")
+			return false
+		}else if(prods.indexOf(prod)!=-1){
+			console.log("product"+prod+" previously detected")
+			toast("Please remove duplicate entries")
+			return false
+		}else{
+			console.log("pushed : "+prod+'   '+qty+'   '+rate+"   "+chicken_head)
+			prods.push(prod)
+			items.push(container)
+		}
+		
 	})
 	console.log(items)
-
-
 	saveNewTransaction(date,name,paid,invoice,items)
 }
 
@@ -235,7 +360,7 @@ function submitTransaction(){
 
 function saveNewTransaction(date,name,paid,invoice,items){
 	// M.Datepicker.getInstance(g("inv-dp"))
-	var d = new Date(M.Datepicker.getInstance(g("inv-dp")).date)
+	var d = new Date(M.Datepicker.getInstance(g("newt-dp")).date)
 	var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
 
 	console.log(items)// next set of items has UNDEFINED value for item_id :(, this leads to insertion problems for items
@@ -304,21 +429,7 @@ function queryInit(){
 			
 
 
-			$('select').formSelect();
-			// buildTransactions(data)
-			
-				// for(var trans in data){
-				// 	var name = trans['name'];
-				// 	for(var item in trans['items']){
-				// 			console.log(item['name']);
-				// 	}
-				// }
-			
-			// $.each(data, function (key, value){
-			// 	value['username']
-			// 	value['name']
-			// });
-				
+			$('select').formSelect();				
 		},
 		error: function(error){
 			console.log(error);
@@ -330,9 +441,9 @@ function queryInit(){
 
 
 expenses_counter = 0
-$(document).on('click', "#expenses_modal .modal-content .expenses .expense.unclicked", function(){
+$(document).on('click', "#expenses-modal .modal-content .expenses .expense.unclicked", function(){
 	lg("hello")
-	$(this).clone().appendTo("#expenses_modal .modal-content .expenses")
+	$(this).clone().appendTo("#expenses-modal .modal-content .expenses")
 	$(this).removeClass("unclicked")
 
 	var expname = "expense-name-"+expenses_counter
@@ -348,12 +459,12 @@ $(document).on('click', "#expenses_modal .modal-content .expenses .expense.uncli
 	
 })
 
-$(document).on('click', "#expenses_modal .done-btn", function(){
+$(document).on('click', "#expenses-modal .done-btn", function(){
 	var d = new Date(M.Datepicker.getInstance(g("exp-dp")).date)
 	var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
 
 	var expenses = []
-	$('#expenses_modal .modal-content .expenses .expense').not(".unclicked").each(function(){
+	$('#expenses-modal .modal-content .expenses .expense').not(".unclicked").each(function(){
 		var container = []
 		var name = $(this).find(".exp-name").val()
 		var pay = $(this).find(".exp-pay").val()

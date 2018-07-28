@@ -65,7 +65,7 @@
 							<div class="col s2 fc">Paid</div>
 						</div>
 						
-				    <ul class="collapsible transaction-items" id="transaction-items">
+				    <ul class="collapsible transaction-items" id="daily-transactions-customers">
 			
 					  </ul>
 					</div>
@@ -74,40 +74,48 @@
 					<div id="prod-tab">
 						<div id="transactions-title" class="row transactions-title blk">
 							<div class="col s8">Product</div>
-							<div class="col s2 fc">Units Sold </div>
-							<div class="col s2 fc">Total Price</div>
+							<div class="col s2 fc">Sold</div>
+							<div class="col s2 fc">Worth</div>
 						</div>
-				    <ul class="collapsible transaction-items" id="transaction-items">
-					    <li>
+				    <ul class="collapsible transaction-items" id="daily-transactions-products">
+					    <!-- <li>
 					      <div class="collapsible-header row tr-item-title">
-					      	<span class="col s8 tr-name">Chicken</span>
-					      	<span class="col s2 tr-weight fc">100</span>
-					      	<span class="col s2 tr-amount fc">100</span>
+					      	<span class="col s8">Chicken</span>
+					      	<span class="col s2">100</span>
+					      	<span class="col s2">100</span>
 					    	</div>
 					      <div class="collapsible-body">
 					      	<div class="row blk">
-					      		<span class="p-name col s4">Customer</span>
-					      		<span class="p-quantity col s3">Quantity Bought</span>
-					      		<span class="p-cost col s5 fe">Price</span>
+					      		<span class="col s3">Customer</span>
+					      		<span class="col s2 fe">Bought</span>
+					      		<span class="col s3 fm">Rate</span>
+					      		<span class="col s2 fm"></span>
+					      		<span class="col s2 fe">Price</span>
+					      	</div>
+					      	<div class="row blk">
+					      		<span class="col s3">Customer</span>
+					      		<span class="col s2 fe">Bought</span>
+					      		<span class="col s3 fm">Rate</span>
+					      		<span class="col s2 fm">Heads</span>
+					      		<span class="col s2 fe">Price</span>
 					      	</div>
 					      	<div class="buyers">
 						      	<div class="buyer row">
-						      		<span class="p-name col s4">Chicken</span>
-						      		<span class="p-quantity col s3">10</span>
-						      		<span class="p-cost col s5 fe">1000</span>
+						      		<span class="col s3">Juan</span>
+						      		<span class="col s2 fe">12 kg</span>
+						      		<span class="col s3 fm">130.50</span>
+						      		<span class="col s2 fm">20</span>
+						      		<span class="col s2 fe">1200.25</span>
 						      	</div>
 						      </div>
 					      </div>
-					    </li>
+					    </li> -->
 
 					  </ul>
 					</div>
 					<!-- END OF PRODUCT TAB -->
 					
 				  <div id="transactions-bottomline" class="fe">
-				  	<div><span class="blk">Customers:  </span>
-							<span id="tr-cust" class="gry">0</span>
-						</div>
 						<div><span class="blk">Sales:  </span>
 							<span id="tr-total" class="gry">0.00</span>
 						</div>
@@ -117,18 +125,26 @@
 						<div ><span class="blk">Expenses: </span>  
 							<span id="tr-exps" class="gry">0.00</span>
 						</div>
+						<div ><span class="blk">Profit: </span>  
+							<span id="tr-prof" class="gry">0.00</span>
+						</div>
+
 					</div>
         
 					<!-- CARD REVEAL -->
-			    <div class="card-reveal" style="display: block; transform: translateY(-100%);">
+					<!-- style="display: block; transform: translateY(-100%);" -->
+			    <div class="card-reveal" >
 			    	<div class="new-transaction">
 							<div class="content">
-				    		<span class="grey-text text-darken-4 card-title">
-				    			<span>New Transaction for
+				    		<div class="grey-text text-darken-4 card-title fsb">
+				    			<div class="w400 fac">
+				    				<span>New Transaction</span>
 				    				<input type="text" id="newt-dp" class="datepicker gbtn inv-dp"> 
-				    			</span>
-				    			<i class="material-icons right ">close</i>
-				    		</span>
+				    			</div>
+				    			<div class="w160">
+				    				<i class="material-icons right ">close</i>
+				    			</div>
+				    		</div>
 
 
 
@@ -148,14 +164,14 @@
 					        </div>
 					      </div>
 					      <div class="products-bought-label fac">
-					      	<div class="pblprod">Product</div>
+					      	<div class="w160">Product</div>
 					      	<div class="w80">Weight(kg)</div>
 					      	<div class="w80">Php/kg</div>
-					      	<div class="w80">Heads</div>
+					      	<div class="w80 chk-label hidden">Heads</div>
 					      </div>
 								<div class="products-bought">
 									<div class="product-field fs">
-					        	<div class="prod-name input-field col">
+					        	<div class="prod-name input-field col w160">
 						          <select class="">
 						          	<option value="" disabled selected>Choose Product</option>
 										  </select>
@@ -166,13 +182,13 @@
 						        <div class="prod-rate w80 fs">
 						          <input type="number" min="0" max="1000" value="1">
 						        </div>
-						         <div class="chk-heads fs">
-						          <input type="number" min="0" max="1000" value="1">
+						         <div class="chk-heads fs op0">
+						          <input type="number" min="0" max="1000" value="0">
 						        </div>
 					        	<i class="material-icons right item-close c-hov grow fm">close</i>
 				        	</div>
 									<div class="product-field another-product fs">
-										<div class="prod-name input-field col">
+										<div class="prod-name input-field col w160">
 						        	<select class="">
 						          	<option value="" disabled selected>Another Product</option>
 										  </select>
@@ -219,15 +235,15 @@
 			  </a>
 			  <ul>
 			  	<li>
-			    	<a data-position="left" data-tooltip="Add Business Expenses" href="#expenses_modal"
+			    	<a data-position="left" data-tooltip="Add Business Expenses" href="#expenses-modal"
 			    	class="modal-trigger tooltipped btn-floating waves-effect waves-light green">
 			    	<i class="material-icons">business_center</i></a></li>
 			    <li>
-			    	<a data-position="left" data-tooltip="Add New Product" href="#product_modal"
+			    	<a data-position="left" data-tooltip="Add Product Supply" href="#product-modal"
 			    	class="modal-trigger tooltipped btn-floating waves-effect waves-light red">
 			    	<i class="material-icons">grade</i></a></li>
 			    <li>
-			    	<a data-position="left" data-tooltip="Add New User" href="#user_modal"
+			    	<a data-position="left" data-tooltip="Add New Customer" href="#user-modal"
 			    	class="modal-trigger tooltipped btn-floating waves-effect waves-light amber darken-1">
 			    	<i class="material-icons">person_add</i></a></li>
 			  </ul>
@@ -249,29 +265,78 @@
 
 <!-------------------------------------- MODALS ---------------------------------->
 
-<div id="product_modal" class="modal">
+<div id="product-modal" class="modal modal-fixed-footer w600">
   <div class="modal-content">
-    <h4>Modal Header</h4>
-    <p>A bunch of text</p>
+  	<div class="fsb">
+	  	<div>
+	  		<h4>Product Supply</h4>
+	  		<p>Record newly-delivered supplies here.</p>
+	  	</div>
+	  	<input type="text" id="prodsp-dp" class="datepicker gbtn inv-dp">
+  	</div>
+    
+    	<div class="suppliers-name fac">
+		    <div class="input-field">
+		      <input type="text" id="supp-name">
+		      <label for="supp-name">Supplier Name</label>
+		    </div>
+		    
+		  </div>
+	    <div class="suppliers-products-field fcol fac">
+	    	<div class="supp-prod-field fac w400 fsb">
+	    		<div class="fac">
+		    		<div class="w160">
+				      <input type="text" class="supp-prod autocomplete">
+				      
+			    	</div>
+			    	<div class="spd-qty w80 fs">
+		          <input type="number" min="0" max="1000" value="1">
+		        </div>
+		        <div class="spd-rate w80 fs">
+		          <input type="number" min="0" max="1000" value="1">
+		        </div>
+		      </div>
+	        <div class="spd-price">0</div>
+	    	</div>
+
+		    
+		  </div>
   </div>
   <div class="modal-footer">
-    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    <a href="#!" class="modal-close waves-effect btn-flat cancel">CANCEL</a>
+    <a href="#!" id="save-new-customer" class="modal-close waves-effect btn-flat">SAVE</a>
   </div>
 </div>
-<div id="user_modal" class="modal">
+<div id="user-modal" class="modal w400">
   <div class="modal-content">
-    <h4>Modal Header</h4>
-    <p>A bunch of text</p>
+    <h4>New Customer</h4>
+    <p>Add customers to the system here.</p>
+    <div class="input-field">
+      <input type="text" id="new-cust">
+      <label for="new-cust">Name</label>
+    </div>
+    <div class="input-field">
+      <input type="text" id="new-cust-debt">
+      <label for="new-cust-debt">Starting Debt</label>
+    </div>
   </div>
   <div class="modal-footer">
-    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+  	<a href="#!" class="modal-close waves-effect btn-flat cancel">CANCEL</a>
+    <a href="#!" id="save-new-customer" class="modal-close waves-effect btn-flat">SAVE</a>
   </div>
 </div>
 
 
-<div id="expenses_modal" class="modal modal-fixed-footer">
+<div id="expenses-modal" class="modal modal-fixed-footer w500">
   <div class="modal-content">
-    <h4>Expenses for <input type="text" id="exp-dp" class="datepicker gbtn inv-dp"></h4>
+  	<div class="fsb">
+	  	<div>
+	  		<h4>Daily Expenses</h4>
+	  		<p>Operational and employee expenses</p>
+	  	</div>
+	  	<input type="text" id="exp-dp" class="datepicker gbtn inv-dp">
+  	</div>
+    
     <div class="row p20 expenses">
     	<div class="expense unclicked col s12	">
         <div class="input-field col s4">
@@ -347,5 +412,8 @@
 	<script src="js/materialize.js"></script>
 	<script src="js/initializations.js"></script>
 	<script src="js/Chart.min.js"></script>
+	<script src="js/helpers.js"></script>
+	<script src="js/ajax-calls.js"></script>
+	<script src="js/builders.js"></script>
 	<script src="js/custom.js"></script>
 </body>

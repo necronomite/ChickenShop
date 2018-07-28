@@ -8,8 +8,9 @@
   $('.modal').modal();
   $('select').formSelect();
   M.updateTextFields();
-  queryInit()
   setDatePicker()
+  queryInit()
+  queryTransactions()
 });
 
 

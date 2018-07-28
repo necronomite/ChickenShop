@@ -3,28 +3,28 @@
 include 'DB_connector.php';
 
 
-// $date = $_POST['date'];
-// $cname = $_POST['name'];
-// $amount_paid = $_POST['amount'];
-// $invoice_id = $_POST['invoice_id'];
-// $items = json_decode($_POST['items']);
+$date = $_POST['date'];
+$cname = $_POST['name'];
+$amount_paid = $_POST['amount'];
+$invoice_id = $_POST['invoice_id'];
+$items = json_decode($_POST['items']);
 
 
-$date = '2018-07-20';
-$cname = 'Bestie';
-$amount_paid = '000.00';
-$invoice_id = '201770005';
-$items = [ //item_id, kg, rate, chicken_head
-			[1, 5, 60.00, 0],
-			[2, 3, 100.00, 0],
-			[3, 1, 100.00, 1],
-		 ];
+// $date = '2018-07-20';
+// $cname = 'Bestie';
+// $amount_paid = '000.00';
+// $invoice_id = '201770005';
+// $items = [ //item_id, kg, rate, chicken_head
+// 			[1, 5, 60.00, 0],
+// 			[2, 3, 100.00, 0],
+// 			[3, 1, 100.00, 1],
+// 		 ];
 
 //Checks if customer exists in DB, retrieves customer's id
 $c_match = mysqli_num_rows(mysqli_query($conn, "SELECT *  FROM customers c WHERE c.name = '$cname'"));
 if (!$c_match) { //If customer doesn't exists, add it to DB
-	echo "<br>";
-	echo "New Customer!";
+	// echo "<br>";
+	// echo "New Customer!";
 	mysqli_query($conn, "INSERT INTO customers (id, name) VALUES ('', '$cname')");
 }
 
