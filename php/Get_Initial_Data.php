@@ -3,7 +3,7 @@
 include 'DB_connector.php';
 
 $customers_result = mysqli_query($conn, "Select * FROM customers");
-$items_result = mysqli_query($conn, "Select * FROM items");
+$items_result = mysqli_query($conn, "Select * FROM items");               
 
 $data = array();
 $customers = array();
