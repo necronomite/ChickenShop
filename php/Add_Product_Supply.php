@@ -48,7 +48,7 @@ if (count($items)>0) {
 		$quantity = $item['1'];
 		$rate = $item['2'];
 		$chicken_heads = $item['3'];
-		mysqli_query($conn,"INSERT INTO  supplies_logs (log_date, supplier_id, item_id, quantity, rate, heads) VALUES ( $date, $supplier_id, $item_id, $quantity, $rate, $chicken_heads)");
+		mysqli_query($conn,"INSERT INTO  supplies_logs (log_date, supplier_id, item_id, quantity, rate, heads) VALUES ( '$date', $supplier_id, $item_id, $quantity, $rate, $chicken_heads)");
 	}
 }
 
