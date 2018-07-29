@@ -10,21 +10,21 @@ function populateTables($servername, $username, $password, $dbname){
 
 
 	// Values for Items
-			$filler = "INSERT INTO items (id, name, quantity) VALUES 
-										('', 'Chicken', 200.00),
-										('', 'Liver', 200.00),
-										('', 'Gizzard', 200.00),
-										('', 'Intestine', 200.00),
-										('', 'Large', 200.00),
-										('', 'Provent', 200.00),
-										('', 'Spleen', 200.00),
-										('', 'Head', 200.00),
-										('', 'Feet', 200.00),
-										('', 'Crops', 200.00),
-										('', 'Blood', 200.00),
-										('', 'Fats', 200.00),
-										('', 'Breast', 200.00),
-										('', 'Neck', 200.00)
+			$filler = "INSERT INTO items (id, name) VALUES 
+										('', 'Chicken'),
+										('', 'Liver'),
+										('', 'Gizzard'),
+										('', 'Intestine'),
+										('', 'Large'),
+										('', 'Provent'),
+										('', 'Spleen'),
+										('', 'Head'),
+										('', 'Feet'),
+										('', 'Crops'),
+										('', 'Blood'),
+										('', 'Fats'),
+										('', 'Breast'),
+										('', 'Neck')
 										;";
 	
 
@@ -92,13 +92,13 @@ function populateTables($servername, $username, $password, $dbname){
 												( 4, 4, 1.00, 65.00, 0),  
 												( 4, 9, 3.00, 65.00, 0);";
 	// Values for Supplies Logs
-		$filler .= "INSERT INTO supplies_logs (log_date, supplier_id, item_id, quantity, unit_type) VALUES 
-												( '2017-04-26', 1, 2, 5.00, 'kg'),
-												( '2017-04-26', 1, 8, 15.00, 'kg'),
-												( '2017-04-26', 1, 9, 15.00, 'kg'),
-												( '2017-04-26', 2, 4, 4.00, 'kg'),
-												( '2017-04-26', 2, 6, 2.00, 'kg'),
-												( '2017-04-26', 2, 9, 20.00, 'kg');";
+		$filler .= "INSERT INTO supplies_logs (log_date, supplier_id, item_id, quantity, rate, heads) VALUES 
+												( '2017-04-26', 1, 2, 5.00, 65.00, 0),
+												( '2017-04-26', 1, 8, 15.00, 40.00, 0),
+												( '2017-04-26', 1, 9, 15.00, 60.00, 0),
+												( '2017-04-26', 2, 4, 4.00, 65.00, 0),
+												( '2017-04-26', 2, 6, 2.00, 40.00, 0),
+												( '2017-04-26', 2, 9, 20.00, 60.00, 0);";
 
 	// Values for Debts
 			$filler .= "INSERT INTO debts (record_date, customer_id, amount) VALUES 
@@ -141,8 +141,7 @@ function createTables($servername, $username, $password, $dbname){
 				);
 				CREATE TABLE items (   -- this table holds the selling prices
 					id 	 INT(100) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-					name VARCHAR(100) NOT NULL,
-					quantity DECIMAL(10, 2)
+					name VARCHAR(100) NOT NULL
 				);
 				CREATE TABLE suppliers (
 					id 	 INT(100) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -167,7 +166,8 @@ function createTables($servername, $username, $password, $dbname){
 					supplier_id INT(100),
 					item_id INT(100),					
 					quantity DECIMAL(10, 2),
-					unit_type VARCHAR(10)
+					rate DECIMAL(10, 2),
+					heads INT(100)
 				);
 				CREATE TABLE debts (
 					record_date DATE,
