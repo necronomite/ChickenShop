@@ -105,7 +105,7 @@
 
 	})
 
-	$(document).on('click', "#product-modal #save-new-customer", function(){
+	$(document).on('click', "#product-modal #save-new-supply", function(){
 		var has_blanks = false, has_repeats = false
 		console.log("submitting supplies")
 		console.log($(this))
@@ -121,7 +121,6 @@
 			var qty = $(this).find(".spd-qty input").val()
 			var rate = $(this).find(".spd-rate input").val()
 			var heads = $(this).find(".spd-heads input").val()
-			var price = $(this).find(".spd-price input").val()
 
 			var ischicken = $(this).hasClass("chk-prod")
 			var head = (ischicken)? heads: "0"
@@ -130,7 +129,6 @@
 			container.push(qty)
 			container.push(rate)
 			container.push(head)
-			container.push(price)
 			
 			if(prod==''||qty==''||rate==''){
 				console.log("failed : "+prod+'-'+qty+'-'+rate+"-"+head)
@@ -176,7 +174,7 @@
 	console.log("saving new supplies "+date+" "+name)
 	console.log(items)
 	$.ajax({
-		url: host_php_url+"Add_Transaction.php",
+		url: host_php_url+"Add_Product_Supply.php",
 		type: "post",
 		data: {date:date, supplier:name, items:JSON.stringify(items)},
 		dataType: 'json',

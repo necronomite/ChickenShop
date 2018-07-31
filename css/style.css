@@ -36,17 +36,21 @@ body{
   text-transform: none;
   font-family: Roboto-Bold;
 }*/
+
 .row{
   margin-bottom: 0px;
 }
 .card{
   margin: 0px;
 }
-h4, .h4{
+h4, .h4, .card .card-title{
   font-family: Google-Sans;
-  /*font-size: */
+  font-size: 28px;
   margin: 0px!important;
 }
+/*h4 ~ p{
+  font-family: Google-Sans;
+}*/
 .tabs{
   background-color: transparent;
 }
@@ -173,6 +177,9 @@ h4, .h4{
   height: 2.3rem;
   padding-bottom: 1px;
   font-size: 14.5px;
+}
+#product-modal .suppliers-name label{
+  left: 10px;
 }
 #product-modal .suppliers-name input[type=text],
 #product-modal .suppliers-name .input-field{
@@ -457,6 +464,7 @@ nav ul a, nav a, nav .brand-logo{
 .tabs .tab{
   line-height: 64px;
   height: 64px;
+  font-family: Roboto-Bold;
 }
 
 .row .col{
