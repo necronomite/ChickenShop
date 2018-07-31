@@ -28,7 +28,6 @@
 	</div>
 
   <div class="row">
-    <div class="col s12">
     	<!-- START OF ALL TABS -->
      
 	
@@ -38,12 +37,12 @@
 
 	<!------------------------ TRANSACTIONS TAB ------------------------------->
 	<!----------------- TRANSACTIONS CARD ---------------------->
-    <div id="tab1" class="col s12">
-    	<div id="transactions-space" class=" tabcontent">
+    <div id="tab1" class="">
 
-
-
-  			<div id="transactions-form" class="card col s12 offset-m2 m8 offset-l3 l6 no-transactions">
+    	
+    	<div id="transactions-space" class=" tabcontent fjc">
+    		<div id="expenses-view" class="card">Expenses</div>
+  			<div id="transactions-form" class="card no-transactions">
 					<div id="card-header" class="fac">
 						<input type="text" id="inv-dp" class="datepicker gbtn inv-dp">
 	  				<div class="card-tabs">
@@ -149,7 +148,7 @@
 
 
 				    
-			    			<div class="customer-info row fac">
+			    			<div class="customer-info row fae">
 					        <div class="input-field col s4">
 					          <input type="text" id="customer-name" class="autocomplete">
 					          <label for="customer-name">Customer</label>
@@ -272,31 +271,40 @@
 	  		<h4>Product Supply</h4>
 	  		<p>Record newly-delivered supplies here.</p>
 	  	</div>
-	  	<input type="text" id="prodsp-dp" class="datepicker gbtn inv-dp">
-  	</div>
-    
-    	<div class="suppliers-name fac">
-		    <div class="input-field">
-		      <input type="text" id="supp-name">
-		      <label for="supp-name">Supplier Name</label>
+	  	<div class="suppliers-name">
+		    <div class="input-field w100">
+		      <input type="text" id="supp-name" class="autocomplete">
+		      <label for="supp-name">Supplier</label>
 		    </div>
 		    
 		  </div>
-	    <div class="suppliers-products-field fcol fac">
-	    	<div class="supp-prod-field fac w400 fsb">
-	    		<div class="fac">
-		    		<div class="w160">
-				      <input type="text" class="supp-prod autocomplete">
-				      
+	  	<input type="text" id="prodsp-dp" class="datepicker gbtn inv-dp">
+  	</div>
+    
+    	
+		  <div class="supp-label fac">
+      	<div class="w160">Product</div>
+      	<div class="w80">Weight</div>
+      	<div class="w80">Php/kg</div>
+      	<div class="w50 chk-label op0">Heads</div>
+      	<div class="w80 fe">Cost</div>
+      </div>
+	    <div class="supplies ova">
+	    	<div class="supply fac unclicked">
+		    		<div class="spd-name w160 input-field mar0">
+				      <input type="text" class="autocomplete">
 			    	</div>
 			    	<div class="spd-qty w80 fs">
-		          <input type="number" min="0" max="1000" value="1">
+		          <input type="number" min="0" max="1000" value="0">
 		        </div>
 		        <div class="spd-rate w80 fs">
 		          <input type="number" min="0" max="1000" value="1">
 		        </div>
-		      </div>
-	        <div class="spd-price">0</div>
+		        <div class="spd-heads w50 fs op0">
+		          <input type="number" min="0" max="1000" value="1">
+		        </div>
+	        	<div class="spd-price w80 fe">0</div>
+	        	<i class="material-icons right item-close c-hov grow fm">close</i>
 	    	</div>
 
 		    
@@ -304,7 +312,7 @@
   </div>
   <div class="modal-footer">
     <a href="#!" class="modal-close waves-effect btn-flat cancel">CANCEL</a>
-    <a href="#!" id="save-new-customer" class="modal-close waves-effect btn-flat">SAVE</a>
+    <a href="#!" id="save-new-customer" class="waves-effect btn-flat">SAVE</a>
   </div>
 </div>
 <div id="user-modal" class="modal w400">

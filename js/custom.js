@@ -1,133 +1,286 @@
-$(document).on('click', "a[for^='#tab']", function () {
-	value = $(this).attr("for")
-	activateSideItem(value);
-	$("a[href^='"+value+"']").click();
-	var name = value.replace("#","");
-	$('ul.tabs').tabs('select' , name);
-});
+// SIDE ITEMS AND TABS COORDINATION
+	$(document).on('click', "a[for^='#tab']", function () {
+		value = $(this).attr("for")
+		activateSideItem(value);
+		$("a[href^='"+value+"']").click();
+		var name = value.replace("#","");
+		$('ul.tabs').tabs('select' , name);
+	});
 
-$(document).on('click', "a[href^='#tab']", function () {
-	value = $(this).attr("href");
-	activateSideItem(value);
-});
+	$(document).on('click', "a[href^='#tab']", function () {
+		value = $(this).attr("href");
+		activateSideItem(value);
+	});
 
-$(document).on('change', "#tab1 .products-bought .select-wrapper select", function () {
-	var product = $(this).find("option:selected").text();
-	var product = $(this).find("option:selected").text();
-	var granparent = $(this).parent().parent()
-	var heads_field = granparent.parent().find(".chk-heads")
-
-	if(product=="Chicken"){
-		granparent.addClass("chk-prod")
-		heads_field.removeClass("op0")
-		lg("Chicken Detected")
-	}else{
-		granparent.removeClass("chk-prod")
-		heads_field.addClass("op0")
+	function activateSideItem(for_value){
+		$(".sidenav").find("a[for^='#tab']").removeClass("active");
+		$(".sidenav").find("a[for="+for_value+"]").addClass("active");
 	}
-
-	toggleChickenLabel()
-});
+// SIDE ITEMS AND TABS COORDINATION
 
 
-$(document).on('click', "#save-new-customer", function () {
-	var name = $("#user-modal #new-cust")
-	var debt = $("#user-modal #new-cust-debt")
-	n = name.val()
-	d = debt.val()
-	console.log(n+"  "+d)
+//PRODUCT SUPPLY MODAL
 	
+
+	function resetProductModal(){
+		$("#product-modal .supplies .supply").not(".unclicked").find("i.item-close").click()
+		// $(this).parent().parent().find(".modal-content input").val("")
+		// M.updateTextFields();
+	}
+	
+	$(document).on('click', "#product-modal .cancel", resetProductModal)
+
+	$(document).on('change', "#product-modal .supplies .supply .spd-name input.autocomplete", function () {
+		var product = $(this).val()
+		var granparent = $(this).parent().parent()
+		var heads_field = granparent.find(".spd-heads")
+		if(product =='Chicken'){
+			heads_field.removeClass("op0")
+			granparent.addClass("chk-prod")
+			lg("Chicken Detected")
+		}else{
+			granparent.removeClass("chk-prod")
+			heads_field.addClass("op0")
+		}	
+		toggleChickenLabelPS()
+	})
+	$(document).on('click change keyup', "#product-modal input[type='number']", function () {
+		var g = $(this).parent().parent()
+		var qty = g.find(".spd-qty input").val()
+		var rate = g.find(".spd-rate input").val()
+		g.find(".spd-price").text((qty*rate).toFixed(2))
+	})
+
+
+	$(document).on('click', "#save-new-customer", function () {
+		var name = $("#user-modal #new-cust")
+		var debt = $("#user-modal #new-cust-debt")
+		n = name.val()
+		d = debt.val()
+		console.log(n+"  "+d)
+		
+		$.ajax({
+			url: host_php_url+"Add_New_Customer.php",
+			type: "post",
+			data: {name:n, amount: d},
+			dataType: 'json',
+			success: function(data){
+				console.log("saved new customer "+n+"  "+d);
+				name.val("")
+				debt.val("")
+				M.updateTextFields();
+			},
+			error: function(error){
+				console.log(error);
+			}
+		});
+	})
+
+	
+
+	function toggleChickenLabelPS(){
+		var label = $("#product-modal .chk-label")
+		if($("#product-modal .supplies .supply.chk-prod").length){
+			label.removeClass("op0")
+		}else{
+			label.addClass("op0")
+		}
+	}
+	
+
+	$(document).on('click', "#product-modal .modal-content .item-close", function () {
+		$(this).parent().remove();
+		toggleChickenLabelPS();
+	})
+
+	$(document).on('click', "#product-modal .modal-content .supplies .supply.unclicked", function(){
+		modclone = $(this).clone().append("")
+		$(this).clone().appendTo("#product-modal .supplies")
+		$(this).removeClass("unclicked")
+		$('#product-modal .spd-name input.autocomplete').autocomplete({
+	      data: product_autofills,
+	      limit : 3
+	    });
+	    $('select').formSelect();	
+
+	})
+
+	$(document).on('click', "#product-modal #save-new-customer", function(){
+		var has_blanks = false, has_repeats = false
+		console.log("submitting supplies")
+		console.log($(this))
+		var d = new Date(M.Datepicker.getInstance(g("prodsp-dp")).date)
+		var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
+		var name = $("#product-modal #supp-name").val()
+
+		var items = []
+		var prods = []
+		$("#product-modal .supplies .supply").not(".unclicked").each(function(){
+			var container = []
+			var prod = $(this).find(".spd-name input").val()
+			var qty = $(this).find(".spd-qty input").val()
+			var rate = $(this).find(".spd-rate input").val()
+			var heads = $(this).find(".spd-heads input").val()
+			var price = $(this).find(".spd-price input").val()
+
+			var ischicken = $(this).hasClass("chk-prod")
+			var head = (ischicken)? heads: "0"
+
+			container.push(prod)
+			container.push(qty)
+			container.push(rate)
+			container.push(head)
+			container.push(price)
+			
+			if(prod==''||qty==''||rate==''){
+				console.log("failed : "+prod+'-'+qty+'-'+rate+"-"+head)
+				has_blanks = true
+			}else if(prods.indexOf(prod)!=-1){
+				has_repeats = true
+			}else{
+				console.log("pushed : "+prod+'   '+qty+'   '+rate+"   "+head)
+				prods.push(prod)
+				items.push(container)
+			}
+			
+		})
+
+		
+
+		
+		if(prods.length){
+			if(name==''){
+				toast("Please enter supplier name")
+			}else if(has_repeats){
+				toast("Please remove duplicates")
+			}else if(has_blanks){
+				toast("Please fill in blank fields")
+			}else if(!has_blanks&&!has_repeats){
+				toast("Saved "+prods.length+"")
+				closeM("#product-modal")
+				resetProductModal()
+				saveNewSupplies(date,name,items)
+			}
+
+		}else{
+			toast("No entries were saved.")
+			closeM("#product-modal")
+			resetProductModal()
+		}
+		
+		
+	})
+
+
+	function saveNewSupplies(date,name,items){
+	console.log("saving new supplies "+date+" "+name)
+	console.log(items)
 	$.ajax({
-		url: host_php_url+"Add_New_Customer.php",
+		url: host_php_url+"Add_Transaction.php",
 		type: "post",
-		data: {name:n, amount: d},
+		data: {date:date, supplier:name, items:JSON.stringify(items)},
 		dataType: 'json',
+		cache: false,
 		success: function(data){
-			console.log("saved new customer "+n+"  "+d);
-			name.val("")
-			debt.val("")
-			M.updateTextFields();
+			console.log("data received --- "+data)
+			// REFRESH EXPENSES DISPLAY
+
+
+			$(".new-transaction .card-title").click()
+			clearNewTransactionsForm();
 		},
 		error: function(error){
 			console.log(error);
 		}
 	});
-})
-
-$(document).on('click', ".cancel", function () {
-	$(this).parent().parent().find(".modal-content input").val("")
-	M.updateTextFields();
-})
-
-
-
-function activateSideItem(for_value){
-	$(".sidenav").find("a[for^='#tab']").removeClass("active");
-	$(".sidenav").find("a[for="+for_value+"]").addClass("active");
 }
+//PRODUCT SUPPLY MODAL
 
-function toggleExes(){
-	if($(".card-reveal .product-field").not(".another-product").length>1){
-		$(".card-reveal .products-bought").addClass("multiple-products");
-	}else{
-		$(".card-reveal .products-bought").removeClass("multiple-products");
+
+
+//DAILY TRANSACTIONS
+	$(document).on('click', ".card-reveal .new-transaction .submit-btn", submitTransaction)
+
+	$(document).on('change', "#tab1 .products-bought .select-wrapper select", function () {
+		var product = $(this).find("option:selected").text();
+		var granparent = $(this).parent().parent()
+		var heads_field = granparent.parent().find(".chk-heads")
+
+		if(product=="Chicken"){
+			granparent.addClass("chk-prod")
+			heads_field.removeClass("op0")
+		}else{
+			granparent.removeClass("chk-prod")
+			heads_field.addClass("op0")
+		}
+
+		toggleChickenLabel()
+	});
+
+	function toggleExes(){
+		if($(".card-reveal .product-field").not(".another-product").length>1){
+			$(".card-reveal .products-bought").addClass("multiple-products");
+		}else{
+			$(".card-reveal .products-bought").removeClass("multiple-products");
+		}
 	}
-}
-function toggleChickenLabel(){
-	var label = $(".products-bought-label .chk-label")
-	if($(".products-bought .prod-name.chk-prod").length){
-		label.show()
-	}else{
-		label.hide()
+	function toggleChickenLabel(){
+		var label = $(".products-bought-label .chk-label")
+		if($(".products-bought .prod-name.chk-prod").length){
+			label.show()
+		}else{
+			label.hide()
+		}
 	}
-}
 
-$(document).on('click', ".card-reveal .product-field .item-close", function () {
-	$(this).parent().remove();
-	toggleChickenLabel();
-	toggleExes();
-})
-
-function clearNewTransactionsForm(){
-	$("#tab1 .card-reveal .products-bought i.item-close").click();
-	$("#tab1 .card-reveal .products-bought .another-product").click();
-}
+	$(document).on('click', ".card-reveal .product-field .item-close", function () {
+		$(this).parent().remove();
+		toggleChickenLabel();
+		toggleExes();
+	})
 
 
-$(document).on('click', ".card-reveal .products-bought .product-field.another-product", function () {
-	var copy = ""
-	+		"<div class='product-field another-product fs'>"
-	+			"<div class='prod-name input-field col w160'>"
-	+		    	"<select>"
-	+		      		"<option disabled selected>Another Product</option>"
-	+			  	"</select>"
-	+			"</div>"
-	+		"</div>"
+	function clearNewTransactionsForm(){
+		$("#tab1 .card-reveal .products-bought i.item-close").click();
+		$("#tab1 .card-reveal .products-bought .another-product").click();
+	}
 
 
-	$(".card-reveal .products-bought").append(copy);
-	$(this).removeClass("another-product");
-	$(this).find("option:first").text("Choose Product")
-	$(this).find("select").append(psels)
-	$('select').formSelect();
+	$(document).on('click', ".card-reveal .products-bought .product-field.another-product", function () {
+		var copy = ""
+		+		"<div class='product-field another-product fs'>"
+		+			"<div class='prod-name input-field col w160'>"
+		+		    	"<select>"
+		+		      		"<option disabled selected>Another Product</option>"
+		+			  	"</select>"
+		+			"</div>"
+		+		"</div>"
 
 
-	var a = "" 
-	+"		<div class='prod-qty w80 fs'>"
-    +"			<input type='number' min='0' max='1000' value='1'>"
-    +"		</div>"
-    +"		<div class='prod-rate w80 fs'>"
-    +"			<input type='number' min='0' max='1000' value='1'>"
-    +"		</div>"
-    +"		<div class='chk-heads fs op0'>"
-    +"			<input type='number' min='0' max='1000' value='1'>"
-    +"		</div>"
-    +"		<i class='material-icons right item-close c-hov grow fm'>close</i>"
+		$(".card-reveal .products-bought").append(copy);
+		$(this).removeClass("another-product");
+		$(this).find("option:first").text("Choose Product")
+		$(this).find("select").append(product_selects)
+		$('select').formSelect();
 
 
-    $(this).append(a);
-	toggleExes()
-});
+		var a = "" 
+		+"		<div class='prod-qty w80 fs'>"
+	    +"			<input type='number' min='0' max='1000' value='1'>"
+	    +"		</div>"
+	    +"		<div class='prod-rate w80 fs'>"
+	    +"			<input type='number' min='0' max='1000' value='1'>"
+	    +"		</div>"
+	    +"		<div class='chk-heads fs op0'>"
+	    +"			<input type='number' min='0' max='1000' value='1'>"
+	    +"		</div>"
+	    +"		<i class='material-icons right item-close c-hov grow fm'>close</i>"
+
+
+	    $(this).append(a);
+		toggleExes()
+	});
+//DAILY TRANSACTIONS
 
 
 
@@ -145,18 +298,6 @@ function queryTransactions(){
 			console.log("queryTransactions");
 			console.log(data);	
 			buildTransactions(data)
-			
-				// for(var trans in data){
-				// 	var name = trans['name'];
-				// 	for(var item in trans['items']){
-				// 			console.log(item['name']);
-				// 	}
-				// }
-			
-			// $.each(data, function (key, value){
-			// 	value['username']
-			// 	value['name']
-			// });
 				
 		},
 		error: function(error){
@@ -164,7 +305,6 @@ function queryTransactions(){
 		}
 		
 	});
-
 }
 
 function buildTransactions(data){
@@ -312,7 +452,7 @@ function buildTransactions(data){
 	}
 }
 
-$(document).on('click', ".card-reveal .new-transaction .submit-btn", submitTransaction)
+
 function submitTransaction(){
 	var d = new Date(M.Datepicker.getInstance(g("newt-dp")).date)
 	var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
@@ -358,6 +498,7 @@ function submitTransaction(){
 
 
 
+
 function saveNewTransaction(date,name,paid,invoice,items){
 	// M.Datepicker.getInstance(g("inv-dp"))
 	var d = new Date(M.Datepicker.getInstance(g("newt-dp")).date)
@@ -399,13 +540,16 @@ function queryInit(){
 
 			var sel=""
 			if(data["items"]){
+				product_names = []
 				for(p in data["items"]){
 					var id = data["items"][p]["id"]
 					var name = data["items"][p]["name"]
+					product_names[name] = null
 					o = "<option value='"+id+"' >"+name+"</option>"
 					sel+=o
 				}
-				psels = sel
+				product_autofills = product_names
+				product_selects = sel
 				$(".product-field").not(".another-product").find(".prod-name select").each(function(){
 					$(this).empty();
 					$(this).append("<option disabled selected>Choose Product</option>")
@@ -413,22 +557,37 @@ function queryInit(){
 				})
 				lg("The products list has been appended to all selects")
 			}
+			if(data["customers"]){
+				customer_names = []
+				for(c in data['customers']){
+					var key = data['customers'][c]['name']
+					var value = null
+					customer_names[key]=value
+				}
+				customer_autofills = customer_names
 
-			customer_names = []
-			for(customer in data['customers']){
-				key = data['customers'][customer]['name']
-				value = null
-				customer_names[key]=value
+
+				$('.customer-info #customer-name.autocomplete').autocomplete({
+			      data: customer_names,
+			      limit : 3
+			    });
 			}
+			if(data["suppliers"]){
+				supplier_names = []
+				for(s in data['suppliers']){
+					var key = data['suppliers'][s]['name']
+					var value = null
+					supplier_names[key]=value
+				}
+				supplier_autofills = supplier_names
 
 
-			$('.customer-info #customer-name.autocomplete').autocomplete({
-		      data: customer_names,
-		      limit : 3
-		    });
+				$('#product-modal .suppliers-name input.autocomplete').autocomplete({
+			      data: supplier_autofills,
+			      limit : 3
+			    });
+			}
 			
-
-
 			$('select').formSelect();				
 		},
 		error: function(error){
@@ -437,6 +596,7 @@ function queryInit(){
 		
 	});
 }
+
 
 
 
