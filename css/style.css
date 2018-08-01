@@ -47,6 +47,7 @@ h4, .h4, .card .card-title{
   font-family: Google-Sans;
   font-size: 28px;
   margin: 0px!important;
+  opacity: .85;
 }
 /*h4 ~ p{
   font-family: Google-Sans;
@@ -71,8 +72,12 @@ h4, .h4, .card .card-title{
   border-left: 2px solid transparent;
 }
 .card-tabs{
-  height: 48px;
-  width: 250px;
+  height: 47px;
+  /*width: 250px;*/
+}
+.card-tabs i.material-icons{
+  padding-right: 10px;
+  font-size: 22px;
 }
 .card-tabs .tabs .tab a{
   line-height: 48px;
@@ -214,12 +219,20 @@ ul.dropdown-content.select-dropdown li{
 
 .modal-content p{
   margin: 7px 0px 25px 0px;
+  opacity: .8;
 }
 
 
 
 /*--------------FIXES END---------------*/
 /*--------------UNIVERSALS---------------*/
+.noshadow{
+  box-shadow: none;
+}
+.defcurs{
+  cursor: default;
+}
+
 .op0{
   opacity: 0;
 }
@@ -405,6 +418,30 @@ input[type="text"].gbtn:hover{
   font-family: Roboto-Bold;
   color: rgba(0,0,0,0.57);
 }
+.c-hov{
+  border-radius: 100px;
+}
+#card-header .activator{
+  margin-left: 60px;
+  font-size: 28px;
+  /*width: 32px;*/
+  /*height: 32px;*/
+  cursor: pointer;
+  opacity: .7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#expense-items li .regular-expense{
+    display: flex;
+    -webkit-tap-highlight-color: transparent;
+    line-height: 1.5;
+    padding: 1rem;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
 nav a.sidenav-trigger i.c-hov{
   margin-top: 8px;
   width: 48px;
@@ -413,7 +450,6 @@ nav a.sidenav-trigger i.c-hov{
   text-align: center;
 }
 .c-hov:hover{
-  border-radius: 100px;
   background-color: rgba(0,0,0,.07);
 }
 
@@ -461,10 +497,14 @@ nav ul a, nav a, nav .brand-logo{
   height: 100%;
 }
 
-.tabs .tab{
+nav .tabs .tab{
   line-height: 64px;
   height: 64px;
   font-family: Roboto-Bold;
+}
+.tabs .tab a{
+  display: flex;
+  align-items: center;
 }
 
 .row .col{
@@ -521,8 +561,8 @@ div[id^="tab"].active .tabcontent{
   top: 0px;
 }
 
-.transaction-items{
-  max-height: 330px;
+.transaction-items, #expense-items{
+  max-height: 331px;
   overflow: auto;
 }
 
@@ -547,11 +587,11 @@ div[id^="tab"].active .tabcontent{
   padding-left: 20px;
 }
 
-#card-header{
+#card-header, #expenses-title{
   display: flex;
   justify-content: space-between;
   height: 64px;
-  padding: 8px 20px;
+  padding: 8px 24px;
   margin-bottom: 15px;
   border-bottom: #e0e0e0 1px solid;
 }
@@ -625,20 +665,25 @@ i.item-close{
   transition: all 500ms ease-in;
 }
 
-#transactions-form .no-items{
+#transactions-form .no-items, 
+#expenses-view .no-items{
   display: none;
 }
-#transactions-form.no-transactions .no-items{
+#transactions-form.empty .no-items, 
+#expenses-view.empty .no-items{
   height: 100px;
   display: flex;
   justify-content: center;
   text-align: center;
   align-items: center;
-
 }
-#transactions-form.no-transactions #cust-tab,
-#transactions-form.no-transactions #prod-tab,
-#transactions-form.no-transactions #transactions-bottomline{
+
+
+#transactions-form.empty #cust-tab,
+#transactions-form.empty #prod-tab,
+#expenses-view.empty #expenses-content,
+#expenses-view.empty #expenses-bottomline,
+#transactions-form.empty #transactions-bottomline{
   opacity: 0;
   display: none;
 }
@@ -676,6 +721,16 @@ i.item-close{
 #transactions-form #card-header .tab a,
 #transactions-form #card-header .btn.activator{
   font-family: Roboto-Bold;
+}
+
+#expenses-view #expenses-title{
+  justify-content: flex-start;
+  height: 64px;
+  padding: 24px;
+  text-transform: uppercase;
+  font-family: Roboto-Bold;
+  font-size: 14px;
+  color: rgba(0,0,0,.54);
 }
 
 /*-----------------ANIMATIONS--------------------*/

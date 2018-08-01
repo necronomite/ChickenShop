@@ -280,6 +280,31 @@
 	});
 //DAILY TRANSACTIONS
 
+function queryExpenses(){
+	// M.Datepicker.getInstance(g("inv-dp"))
+	var d = new Date(M.Datepicker.getInstance(g("inv-dp")).date)
+	var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
+	console.log("Date used for query:" +date) 
+	$.ajax({
+		url: host_php_url+"Get_Expenses.php",
+		type: "post",
+		data: {date:date},
+		dataType: 'json',
+		success: function(data){
+			console.log("queryExpenses");
+			console.log(data);	
+			buildExpenses(data)
+				
+		},
+		error: function(error){
+			console.log(error);
+		}
+		
+	});
+}
+
+
+
 
 
 function queryTransactions(){
@@ -304,7 +329,53 @@ function queryTransactions(){
 		
 	});
 }
+function buildExpenses(data){
+	data1 = data
+	var expense_total = 0
+	console.log("expenses")
+	if(data.expenses.length+data.supply.length){
+		$("#expenses-view").removeClass("empty")
+		$("#expense-items").html("")
+		console.log("clearing and filling in new entries")
+	}else{
+		$("#expenses-view").addClass("empty")
+	}
+	edata = data.expenses
+	for(i1 in edata){
+		var dom = ""
+		var source = edata[i1]['source']
+		var amount = edata[i1]['amount']
+		dom+=""
+		+" 	<li>"
+		+" 		<div class='regular-expense row tr-item-title'>"   	
+		+" 			<span class='col s10 tr-name'>"+source+"</span>"  
+		+" 			<span class='col s2 tr-paid fe'>"+amount+"</span>"	
+		+" 		</div>"
+		+" 	</li>"
+		$("#expenses-content #expense-items").append(dom);
+	}
 
+	sdata = data.supply
+	for(i1 in sdata){
+		var dom = ""
+		var name = sdata[i1]['name']
+		var total = sdata[i1]['total']
+		var products = sdata[i1]['products']
+		dom+=""
+		+" 	<li>"
+		+" 		<div class='regular-expense row tr-item-title'>"   	
+		+" 			<span class='col s10 tr-name'>"+source+"</span>"  
+		+" 			<span class='col s2 tr-paid fe'>"+amount+"</span>"	
+		+" 		</div>"
+		dom+=""
+		+" 	</li>"
+
+
+		$("#expenses-content #expense-items").append(dom);
+	}
+	
+
+}
 function buildTransactions(data){
 	$("#daily-transactions-customers").html("")
 	$("#daily-transactions-products").html("")
@@ -314,9 +385,9 @@ function buildTransactions(data){
 	var cash_received2 = 0
 	console.log("transactions")
 	if(data.customers.length){
-		$("#transactions-form").removeClass("no-transactions")
+		$("#transactions-form").removeClass("empty")
 	}else{
-		$("#transactions-form").addClass("no-transactions")
+		$("#transactions-form").addClass("empty")
 	}
 	
 	console.log(data)
@@ -367,9 +438,9 @@ function buildTransactions(data){
 			+"	      	  <div class='sold-item row'>"
 			+"	      		<span class='col s3'>"+name+"</span>"
 			+"	      		<span class='col s2'>"+quantity+" kg</span>"
-			+"	      		<span class='col s3 fm'>"+cost+"</span>"
+			+"	      		<span class='col s3 fm'>"+price+"</span>"
 			+"	      		<span class='col s2'>"+chk+"</span>"
-			+"	      		<span class='col s2 fe'>"+price+"</span>"
+			+"	      		<span class='col s2 fe'>"+cost+"</span>"
 			+"	      	  </div>"
 		}
 
@@ -652,7 +723,7 @@ function saveNewExpenses(date,expenses){
 		cache: false,
 		success: function(data){
 			console.log("data received --- "+data)
-			queryTransactions()
+			queryExpenses()
 
 		},
 		error: function(error){

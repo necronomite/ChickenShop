@@ -13,20 +13,25 @@
   queryTransactions()
 });
 
+function autoQuery(){
+  queryTransactions()
+  queryExpenses()
+}
+
 
  function setDatePicker(){
   $('.datepicker').datepicker();
   var today = new Date();
   var options = 
   {
-    "onClose": queryTransactions,
+    "onClose": autoQuery,
     "setDefaultDate": true,
     "defaultDate" : today,
     "maxDate":today
   }
   var elems = document.querySelectorAll('.datepicker');
   var instances = M.Datepicker.init(elems, options);
-  // queryTransactions()
+  // autoQuery()
 }
 
 

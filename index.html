@@ -42,18 +42,75 @@
     	
     	<div id="transactions-space" class=" tabcontent fjc">
     		<div id="expenses-view" class="card">
-    		<div class="h4">Expenses</div>
+	    		<div class="fac" id="expenses-title">
+	    			<i class="material-icons left ">credit_card</i>
+	    			<span></span>Expenses
+	    		</div>
+
+	    		<div class="fm gry no-items">There are no expenses for this day.</div>
+
+	    		<div id="expenses-content">
+	    			<div id="transactions-title" class="row transactions-title blk">
+						<div class="col s10">Source</div>
+						<div class="col s2 fe">Cost</div>
+					</div>
+					<ul class ="collapsible transaction-items noshadow" id="expense-items">	 
+						<li>      
+							<div class="collapsible-header row tr-item-title">      	
+								<span class="col s10 tr-name">Cheasasdche</span>     
+								<span class="col s2 tr-paid fe">12.00</span>    	
+							</div>      
+							<div class="collapsible-body">      	
+								<div class="row blk">      		
+									<span class="col s3">Product</span>      		
+									<span class="col s3">Weight</span>      		
+									<span class="col s3 fm">Php/kg</span>      		
+									<span class="col s3 fe">Heads</span>      	
+								</div>      	
+								<div class="sold-items">	      	  
+									<div class="sold-item row">	      		
+										<span class="col s3">Gizzard</span>	      		
+										<span class="col s3">1.00 kg</span>	      		
+										<span class="col s3 fm">1.00</span>	      		
+										<span class="col s3 fe"></span>	      	   	  
+									</div>	        
+								</div>      
+							</div>    
+						</li>
+						<li>      
+							<div class="regular-expense row tr-item-title">      	
+								<span class="col s10 tr-name">Cheasasdche</span>     
+								<span class="col s2 tr-paid fe">12.00</span>    	
+							</div>
+						</li>
+					</ul>
+				</div>
+	
+
     		</div>
-  			<div id="transactions-form" class="card no-transactions">
+  			<div id="transactions-form" class="card empty">
 					<div id="card-header" class="fac">
 						<input type="text" id="inv-dp" class="datepicker gbtn inv-dp">
 	  				<div class="card-tabs">
 				      <ul class="tabs tabs-fixed-width">
-				        <li class="tab"><a href="#cust-tab">Customers</a></li>
-				        <li class="tab"><a href="#prod-tab">Products</a></li>
+				        <li class="tab"><a href="#cust-tab">
+				        	<i class="material-icons ">person_outline</i>Customers</a></li>
+				        <li class="tab"><a href="#prod-tab">
+				        	<i class="material-icons ">receipt</i>Products</a></li>
+			        	<!-- <li class="tab">
+			        		<a href="#cust-tab" class="tooltipped" data-position="top" data-tooltip="Customers">
+				        		<i class="material-icons ">person_outline</i>
+				        	</a>
+				        </li>
+				        <li class="tab">
+				        	<a href="#prod-tab" class="tooltipped" data-position="top" data-tooltip="Products">
+					        	<i class="material-icons ">receipt</i>
+					        </a>
+				        </li> -->
 				      </ul>
 				    </div>
-			    	<a class="waves-effect activator btn waves-light theme-gradient">Add Transaction</a>
+				    <i class="material-icons right activator">add</i>
+			    	<!-- <a class="activator btn waves-light">Add Transaction</a> -->
 			    </div>
 
 
@@ -62,11 +119,10 @@
 					<div id="cust-tab">
 						<div id="transactions-title" class="row transactions-title blk">
 							<div class="col s8">Customer</div>
-							<div class="col s2 fc">Total Price </div>
-							<div class="col s2 fc">Paid</div>
+							<div class="col s2 fe">Total Price </div>
+							<div class="col s2 fe">Paid</div>
 						</div>
-						
-				    <ul class="collapsible transaction-items" id="daily-transactions-customers">
+				    <ul class="collapsible transaction-items noshadow" id="daily-transactions-customers">
 			
 					  </ul>
 					</div>
@@ -78,41 +134,7 @@
 							<div class="col s2 fc">Sold</div>
 							<div class="col s2 fc">Worth</div>
 						</div>
-				    <ul class="collapsible transaction-items" id="daily-transactions-products">
-					    <!-- <li>
-					      <div class="collapsible-header row tr-item-title">
-					      	<span class="col s8">Chicken</span>
-					      	<span class="col s2">100</span>
-					      	<span class="col s2">100</span>
-					    	</div>
-					      <div class="collapsible-body">
-					      	<div class="row blk">
-					      		<span class="col s3">Customer</span>
-					      		<span class="col s2 fe">Bought</span>
-					      		<span class="col s3 fm">Rate</span>
-					      		<span class="col s2 fm"></span>
-					      		<span class="col s2 fe">Price</span>
-					      	</div>
-					      	<div class="row blk">
-					      		<span class="col s3">Customer</span>
-					      		<span class="col s2 fe">Bought</span>
-					      		<span class="col s3 fm">Rate</span>
-					      		<span class="col s2 fm">Heads</span>
-					      		<span class="col s2 fe">Price</span>
-					      	</div>
-					      	<div class="buyers">
-						      	<div class="buyer row">
-						      		<span class="col s3">Juan</span>
-						      		<span class="col s2 fe">12 kg</span>
-						      		<span class="col s3 fm">130.50</span>
-						      		<span class="col s2 fm">20</span>
-						      		<span class="col s2 fe">1200.25</span>
-						      	</div>
-						      </div>
-					      </div>
-					    </li> -->
-
-					  </ul>
+				    <ul class="collapsible transaction-items noshadow" id="daily-transactions-products"></ul>
 					</div>
 					<!-- END OF PRODUCT TAB -->
 					
