@@ -24,6 +24,8 @@
 
 	function resetProductModal(){
 		$("#product-modal .supplies .supply").not(".unclicked").find("i.item-close").click()
+		$("#product-modal .suppliers-name input").val("")
+	  	M.updateTextFields();
 	}
 	
 	$(document).on('click', "#product-modal .cancel", resetProductModal)
@@ -767,7 +769,7 @@ function saveNewExpenses(date,expenses){
 
 function queryDebts(){
 	$.ajax({
-		url: host_php_url+"Get_Customers_Debts.php",
+		url: host_php_url+"Get_Customer_Debts.php",
 		type: "post",
 		data: {},
 		dataType: 'json',

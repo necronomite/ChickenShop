@@ -63,11 +63,11 @@ foreach ($dates as $d) {
 	$sales[] = $result;
 }
 
-// echo "<pre>";
-// print_r($sales);
+echo "<pre>";
+print_r($sales);
 
 
-echo json_encode($sales);
+// echo json_encode($sales);
 
 
 ?>

@@ -88,6 +88,9 @@ h4, .h4, .card .card-title{
 #tab1 .card-reveal{
   padding: 0px;
 }
+#tab1, #tab2, #tab3, #tab4, #tab5{
+  background-color: #f6f7fa;
+}
 #tab1 .card-reveal div .content{
   overflow: hidden;
   position: absolute;
@@ -433,7 +436,7 @@ input[type="text"].gbtn:hover{
   align-items: center;
 }
 
-#expense-items li .regular-expense{
+#expense-items li .regular-expense, .regular-item{
     display: flex;
     -webkit-tap-highlight-color: transparent;
     line-height: 1.5;
@@ -527,8 +530,11 @@ div[id^="tab"].active .tabcontent{
 
 
 
-#transactions-space,#expenses-space{
-  padding: 20px;
+#balance-form{
+  min-width: 400px;
+}
+#balance-form ul{
+  margin: 0px;
 }
 #transactions-form{
   min-width: 663px;
@@ -543,7 +549,12 @@ div[id^="tab"].active .tabcontent{
   min-width: 350px;
 }
 
-#transactions-space{
+#transactions-space,
+#inventory-space,
+#financial-space,
+#balance-space,
+#history-space{
+  padding: 20px;
   height: calc(100vh - 85px);
 }
 
