@@ -10,7 +10,7 @@
   M.updateTextFields();
   setDatePicker()
   queryInit()
-  queryTransactions()
+  autoQuery()
 });
 
 function autoQuery(){
@@ -31,7 +31,7 @@ function autoQuery(){
   }
   var elems = document.querySelectorAll('.datepicker');
   var instances = M.Datepicker.init(elems, options);
-  // autoQuery()
+  
 }
 
 

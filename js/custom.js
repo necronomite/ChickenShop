@@ -181,7 +181,7 @@
 		cache: false,
 		success: function(data){
 			console.log("data received --- "+data)
-			// REFRESH EXPENSES DISPLAY
+			queryExpenses()
 
 
 			$(".new-transaction .card-title").click()
@@ -345,6 +345,8 @@ function buildExpenses(data){
 		var dom = ""
 		var source = edata[i1]['source']
 		var amount = edata[i1]['amount']
+		expense_total+=parseFloat(amount)
+		console.log(amount+" is added to expenses = "+expense_total)
 		dom+=""
 		+" 	<li>"
 		+" 		<div class='regular-expense row tr-item-title'>"   	
@@ -361,19 +363,49 @@ function buildExpenses(data){
 		var name = sdata[i1]['name']
 		var total = sdata[i1]['total']
 		var products = sdata[i1]['products']
+		expense_total+=parseFloat(total)
+		console.log(total+" is added to expenses = "+expense_total)
 		dom+=""
 		+" 	<li>"
-		+" 		<div class='regular-expense row tr-item-title'>"   	
-		+" 			<span class='col s10 tr-name'>"+source+"</span>"  
-		+" 			<span class='col s2 tr-paid fe'>"+amount+"</span>"	
+		+" 		<div class='collapsible-header row tr-item-title'>"   	
+		+" 			<span class='col s10 tr-name'>"+name+"</span>"  
+		+" 			<span class='col s2 tr-paid fe'>"+total+"</span>"	
 		+" 		</div>"
+		+"		<div class='collapsible-body'>"    	
+		+"			<div class='row blk'>"     		
+		+"				<span class='col s3'>Product</span>"     		
+		+"				<span class='col s3'>Weight</span>"    		
+		+"				<span class='col s3 fm'>Php/kg</span>"    		
+		+"				<span class='col s3 fe'>Heads</span>"    	
+		+"			</div>"
+		+"			<div class='sold-items'>"
+
+		for(i2 in products){
+	    	var name = products[i2]['name']
+	    	var quantity = products[i2]['quantity']
+	    	var rate = products[i2]['rate']
+	    	var heads = products[i2]['heads']
+	    	heads = (heads==0)? "" : heads
+	    	dom+=""
+    		+"			<div class='sold-item row'>	"      		
+			+"				<span class='col s3'>"+name+"</span>	  "    		
+			+"				<span class='col s3'>"+quantity+"</span>	  "    		
+			+"				<span class='col s3 fm'>"+rate+"</span>	 "     		
+			+"				<span class='col s3 fe'>"+heads+"</span>	    "  	   	  
+			+"			</div>	"
+		}
+	    	
 		dom+=""
+		+" 			</div>"
+		+" 		</div>"
 		+" 	</li>"
 
 
 		$("#expenses-content #expense-items").append(dom);
 	}
-	
+	$("#tr-exps").text(parseFloat(expense_total).toFixed(2))
+	var profit = $("#tr-total").text() - expense_total
+	$("#tr-prof").text(parseFloat(profit).toFixed(2))
 
 }
 function buildTransactions(data){
