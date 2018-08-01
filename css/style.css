@@ -649,7 +649,15 @@ i.item-close{
 
 
 #expenses-modal .modal-content .expenses .expense .input-field{
+  margin: 0px;
   margin-left: 20px;
+}
+#expenses-modal .modal-content .expenses .expense .input-field label,
+#expenses-modal .modal-content .expenses .expense .input-field input{
+  line-height: 30px;
+}
+#expenses-modal .input-field > label:not(.label-icon).active{
+  transform: translateY(-8px) scale(0.8);
 }
 
 .another-product{

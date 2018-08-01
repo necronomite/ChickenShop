@@ -24,8 +24,6 @@
 
 	function resetProductModal(){
 		$("#product-modal .supplies .supply").not(".unclicked").find("i.item-close").click()
-		// $(this).parent().parent().find(".modal-content input").val("")
-		// M.updateTextFields();
 	}
 	
 	$(document).on('click', "#product-modal .cancel", resetProductModal)
@@ -154,7 +152,7 @@
 			}else if(has_blanks){
 				toast("Please fill in blank fields")
 			}else if(!has_blanks&&!has_repeats){
-				toast("Saved "+prods.length+"")
+				toast("Saved "+prods.length+" supplies")
 				closeM("#product-modal")
 				resetProductModal()
 				saveNewSupplies(date,name,items)
@@ -755,6 +753,7 @@ function saveNewExpenses(date,expenses){
 		cache: false,
 		success: function(data){
 			console.log("data received --- "+data)
+			resetExpensesModal()
 			queryExpenses()
 
 		},
@@ -793,3 +792,13 @@ function queryDebts(){
 		
 	});
 }
+
+$(document).on('click', "#expenses-modal .cancel", resetExpensesModal)
+function resetExpensesModal(){
+	$("#expenses-modal .expense").not(".unclicked").find("i.item-close").click()
+	closeM("#expenses-modal")
+}
+$(document).on('click', "#expenses-modal .modal-content .item-close", function () {
+	$(this).parent().remove();
+	toggleChickenLabelPS();
+})
