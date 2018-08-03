@@ -34,7 +34,7 @@ function getDatesFromRange($start, $end){
 }
 
 $week_array = getStartAndEndDate($week,2018);
-// print_r($week_array);
+print_r($week_array);
 
 $start = $week_array['week_start'];
 $end = $week_array['week_end'];
@@ -63,11 +63,11 @@ foreach ($dates as $d) {
 	$sales[] = $result;
 }
 
-// echo "<pre>";
-// print_r($sales);
+echo "<pre>";
+print_r($sales);
 
 
-echo json_encode($sales);
+// echo json_encode($sales);
 
 
 ?>
