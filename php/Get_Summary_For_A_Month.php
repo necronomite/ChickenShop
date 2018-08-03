@@ -17,7 +17,7 @@ $month = $date->format("m");
 // echo '<br> First day'.date('Y-m-01', strtotime($ddate));
 
 // // Last day of the month.
-// echo '<br> Last day'.date('Y-m-t', strtotime($ddate));
+// echo '<br> Last day'.date('Y-m-t', strtotime($ddate)); 
 
 
 function getDatesFromRange($start, $end){
