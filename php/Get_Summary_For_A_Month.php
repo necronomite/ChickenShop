@@ -6,24 +6,19 @@ include 'DB_connector.php';
 $ddate = $_POST['date'];
 // $ddate = "2018-08-01";
 $date = new DateTime($ddate);
-$week = $date->format("W");
+$year = $date->format("Y");
+$month = $date->format("m");
+
 // echo "Weeknumber: $week <br>";
+// echo "Year: $year <br>";
+// echo "Month: $month <br>";
 
+// // First day of the month.
+// echo '<br> First day'.date('Y-m-01', strtotime($ddate));
 
-/*
-Create a new DateTime object which defaults to now()
-Call setISODate to change object to first day of $week of $year instead of now()
-Format date as 'Y-m-d' and put in $ret['week_start']
-Modify the object by adding 6 days, which will be the end of $week
-Format date as 'Y-m-d' and put in $ret['week_end']
-*/
+// // Last day of the month.
+// echo '<br> Last day'.date('Y-m-t', strtotime($ddate));
 
-function getStartAndEndDate($week, $year) {
-  $dto = new DateTime();
-  $ret['week_start'] = $dto->setISODate($year, $week)->format('Y-m-d');
-  $ret['week_end'] = $dto->modify('+6 days')->format('Y-m-d');
-  return $ret;
-}
 
 function getDatesFromRange($start, $end){
     $dates = array($start);
@@ -33,11 +28,8 @@ function getDatesFromRange($start, $end){
     return $dates;
 }
 
-$week_array = getStartAndEndDate($week,2018);
-print_r($week_array);
-
-$start = $week_array['week_start'];
-$end = $week_array['week_end'];
+$start = date('Y-m-01', strtotime($ddate));
+$end = date('Y-m-t', strtotime($ddate));
 $dates = getDatesFromRange($start, $end);
 // echo "<pre>";
 // print_r($dates);
@@ -63,11 +55,11 @@ foreach ($dates as $d) {
 	$sales[] = $result;
 }
 
-echo "<pre>";
-print_r($sales);
+// echo "<pre>";
+// print_r($sales);
 
 
-// echo json_encode($sales);
+echo json_encode($sales);
 
 
 ?>
