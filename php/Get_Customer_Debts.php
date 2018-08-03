@@ -9,30 +9,46 @@ while ($row = mysqli_fetch_assoc($sql_all_customers)) {
 	$customer_id = $row['id'];
 
 		$sql_get_transactions = "
-			SELECT * FROM 
-				((SELECT '' as tid, d.record_date as transaction_date, 'debt' as type, d.amount as total_price, '0.00' as paid
-					FROM debts d, customers c
-					WHERE c.id = d.customer_id AND c.id = '$customer_id')
-				UNION
-				(SELECT t.id as tid, s.transaction_date, 'purchase' as type, sum(s.cost) as total_price, t.amount_paid as paid
-					FROM transactions t, 
-					(SELECT t.id, t.transaction_date, t.customer_id, p.item_id, p.quantity, p.rate, round(p.quantity*p.rate, 2) as cost
-					     
-					     FROM transactions t, purchases p
-					     
-					     WHERE t.id = p.transaction_id AND t.customer_id='$customer_id') as s
-					WHERE t.id = s.id
-					Group By t.transaction_date)
-				UNION 
-				(SELECT '' as tid, p.record_date as transaction_date, 'payment' as type, '0.00' as total_price, p.amount as paid
-					FROM payments p, customers c
-					WHERE c.id = p.customer_id AND c.id = '$customer_id')
-				              
-				 ) g
-			ORDER By g.transaction_date
-				";
+			SELECT * 
+
+			FROM 
+
+				(
+					(
+						SELECT '' as tid, d.record_date as transaction_date, 'debt' as type, d.amount as total_price, '0.00' as paid
+						FROM debts d, customers c
+						WHERE c.id = d.customer_id AND c.id = '$customer_id'
+					)
+
+					UNION
+
+					(
+						SELECT t.id as tid, s.transaction_date, 'purchase' as type, sum(s.cost) as total_price, t.amount_paid as paid
+						FROM transactions t, 
+						(
+							SELECT t.id, t.transaction_date, t.customer_id, p.item_id, p.quantity, p.rate, round(p.quantity*p.rate, 2) as cost
+						    FROM transactions t, purchases p
+						    WHERE t.id = p.transaction_id AND t.customer_id='$customer_id'
+						) as s
+						WHERE t.id = s.id
+						GROUP BY t.transaction_date
+					)
+
+					UNION 
+
+					(
+						SELECT '' as tid, p.record_date as transaction_date, 'payment' as type, '0.00' as total_price, p.amount as paid
+						FROM payments p, customers c
+						WHERE c.id = p.customer_id AND c.id = '$customer_id'
+					)
+					              
+				) AS g
+
+			ORDER BY g.transaction_date
+			";
 
 		$result = mysqli_query($conn, $sql_get_transactions);
+
 		$data = array();
 		while ($row_temp = mysqli_fetch_assoc($result)) {
 			if ($row_temp['type'] == 'purchase') {
@@ -53,15 +69,17 @@ while ($row = mysqli_fetch_assoc($sql_all_customers)) {
 			
 			$data[] = $row_temp;
 		}//end of inner while
+
 	$name = $row['name'];
 	$all_data[''.$name] = $data;
+	
 }//end of main while
 
 
 
 
-echo "<pre>";
-print_r($all_data);
+// echo "<pre>";
+// print_r($all_data);
 
 
 // header('Content-Type: application/json');
