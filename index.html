@@ -16,12 +16,11 @@
 	 		<div class="nav-wrapper">
 				<a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
 					<i class="material-icons c-hov">menu</i></a>
-					<ul id="nav-mobile" class="center tabs hide-on-med-and-down fm">
+					<ul id="nav-mobile" class="tabs hide-on-med-and-down fm">
 			      <li class="tab col s3"><a active href="#tab1">Daily Inventory</a></li>
 			      <li class="tab col s3"><a href="#tab2">Inventory Records</a></li>
 			      <li class="tab col s3"><a href="#tab3">Financial Statement</a></li>
 			      <li class="tab col s3"><a href="#tab4">Balances</a></li>
-			      <li class="tab col s3"><a href="#tab5">History</a></li>
 	      	</ul>
 	    </div>
 	  </nav>
@@ -42,15 +41,15 @@
     	
     	<div id="transactions-space" class=" tabcontent fjc">
     		<div id="expenses-view" class="card">
-	    		<div class="fac" id="expenses-title">
+	    		<div class="fac fs cc" id="expenses-title">
 	    			<i class="material-icons left ">credit_card</i>
-	    			<span></span>Expenses
+	    			<span>Expenses</span>
 	    		</div>
 
 	    		<div class="fm gry no-items">There are no expenses for this day.</div>
 
-	    		<div id="expenses-content">
-	    			<div id="transactions-title" class="row transactions-title blk">
+	    		<div id="expenses-content" class="cc-con">
+	    			<div class="row blk ul-title">
 						<div class="col s10">Source</div>
 						<div class="col s2 fe">Cost</div>
 					</div>
@@ -89,7 +88,7 @@
 
     		</div>
   			<div id="transactions-form" class="card empty">
-					<div id="card-header" class="fac">
+					<div id="card-header" class="fac fsb">
 						<input type="text" id="inv-dp" class="datepicker gbtn inv-dp">
 	  				<div class="card-tabs">
 				      <ul class="tabs tabs-fixed-width">
@@ -97,16 +96,6 @@
 				        	<i class="material-icons ">person_outline</i>Customers</a></li>
 				        <li class="tab"><a href="#prod-tab">
 				        	<i class="material-icons ">receipt</i>Products</a></li>
-			        	<!-- <li class="tab">
-			        		<a href="#cust-tab" class="tooltipped" data-position="top" data-tooltip="Customers">
-				        		<i class="material-icons ">person_outline</i>
-				        	</a>
-				        </li>
-				        <li class="tab">
-				        	<a href="#prod-tab" class="tooltipped" data-position="top" data-tooltip="Products">
-					        	<i class="material-icons ">receipt</i>
-					        </a>
-				        </li> -->
 				      </ul>
 				    </div>
 				    <i class="material-icons right activator">add</i>
@@ -117,7 +106,7 @@
 			    <div class="fm gry no-items">There are no transactions for this day.</div>
 					<!-- CUSTOMER TAB -->
 					<div id="cust-tab">
-						<div id="transactions-title" class="row transactions-title blk">
+						<div class="row ul-title blk">
 							<div class="col s8">Customer</div>
 							<div class="col s2 fe">Total Price </div>
 							<div class="col s2 fe">Paid</div>
@@ -283,37 +272,151 @@
 			
 		</div>
 
+
+
+
     </div></div>
     <div id="tab3" class="col s12"><div class="tabcontent">
     	<div id="financial-space" class=" tabcontent fjc">
-			
+			<div id="finance-form" class="card">
+				<div class="cc-title fac fsb">
+					<div>
+						<span class="cc">Graph Date</span> 
+						<input type="text" id="graph-dp" class="datepicker gbtn inv-dp">
+					</div>
+					<div class="fac graph-view">
+						<span class="cc">Graph Display Type</span>
+						<select >
+					      <option value="w" selected>Selected Week</option>
+					      <option value="m">Selected Month</option>
+    					</select>
+					</div>
+					
+				</div>
+
+						<div class="cc-con">
+					<div id="graph">
+						<canvas id="line"></canvas>
+					</div>
+					<div id="graph-details">
+						<div>
+							<span id="f-sls">1200.00</span>
+							<span class="gry">Sales</span>
+						</div>
+						
+						<div>
+							<span id="f-exp">1200.00</span>
+							<span class="gry">Expenses</span>
+						</div>
+						<div>
+							<span id="f-prf">1200.00</span>
+							<span class="gry">Profit</span>
+						</div>
+						<div>
+							<span id="f-dbt">1200.00</span>
+							<span class="gry">Debt</span>
+						</div>
+						<div>
+							<span id="f-coh">1200.00</span>
+							<span class="gry">Cash-on-Hand</span>
+						</div>
+					</div>
+				</div>
+				
+			</div>
     	</div>
 
     </div></div>
     <div id="tab4" class="col s12 active" style="display: block"><div class="tabcontent">
-    	<div id="balance-space" class=" tabcontent fjc">
-			<div id="balance-form" class="card">
-				<ul class ="collapsible transaction-items noshadow" id="balance-items">	 
-					<li>      
-						<div class="regular-item row tr-item-title">      	
-							<span class="col s10 tr-name">Customer</span>     
-							<span class="col s2 tr-paid fe">12.00</span>    	
-						</div>  
-					</li>
-					<li>      
-						<div class="regular-item row tr-item-title">      	
-							<span class="col s10 tr-name">Customer</span>     
-							<span class="col s2 tr-paid fe">12.00</span>    	
-						</div>  
-					</li>
-				</ul>
+    	<div id="balance-space" class="tabcontent fjc">
+    		<div class="card fac">
+				<div id="balance-form" class="">
+					<div class="fac fs cc-title cc">
+		    			<i class="material-icons left ">credit_card</i>
+		    			<span>Balances</span>
+		    		</div>
+					<div class="fm gry no-items">There were no balances found.</div>
+					<ul class ="collapsible transaction-items noshadow cc-con" id="balance-items">	 
+						<li>      
+							<div class="regular-item row tr-item-title">      	
+								<span class="col s10 tr-name">Customer 1</span>     
+								<span class="col s2 tr-paid fe">1600.00</span>    	
+							</div>  
+						</li>
+						<li>      
+							<div class="regular-item row tr-item-title">      	
+								<span class="col s10 tr-name">Customer 2</span>     
+								<span class="col s2 tr-paid fe">12.00</span>    	
+							</div>  
+						</li>
+					</ul>
+				</div>
+				<div id="history-form" class="empty">
+					<div id="history-title" class="fac fsb">
+						<div>
+							<span class="cc">Start Date</span> 
+							<input type="text" id="start-dp" class="datepicker gbtn inv-dp">
+							
+						</div>
+						<div>
+							<span class="cc">End Date</span> 
+							<input type="text" id="end-dp" class="datepicker gbtn inv-dp">
+						</div>
+
+					</div>
+					<div class="fm gry no-items">There was no history found.</div>
+					<div class="row transactions-title gry ul-title">
+						<div class="col s6">Date</div>
+						<div class="col s3 fe">Purchase/Debt</div>
+						<div class="col s3 fe">Payment</div>
+					</div>
+					<ul class ="collapsible transaction-items noshadow" id="history-items">	 
+						<li>      
+							<div class="regular-item row tr-item-title">      	
+								<span class="col s6 tr-name">AUG 1, 2018</span>
+								<span class="col s3 tr-name">Starting Debt </span>   
+								<span class="col s3 tr-paid fe">2000.00</span>    	
+							</div>  
+						</li>
+						<li class="active">      
+							<div class="collapsible-header row tr-item-title">      	
+								<span class="col s6">AUG 2, 2018</span>      	
+								<span class="col s3">Purchased 400 Php </span>      	
+								<span class="col s3 fe">Paid 400 Php</span>    	
+							</div>      
+							<div class="collapsible-body" style="display: block;">      	
+								<div class="row blk">	      		
+									<span class="p-name col s3">Product Name</span>	      		
+									<span class="p-name col s2 fe">Weight</span>	      		
+									<span class="p-name col s3 fm">Php/kg</span>	      		
+									<span class="p-name col s2 fm">Chk. Heads</span>	      		
+									<span class="p-name col s2 fe">Price</span>      	
+								</div>      	
+								<div class="buyers">	      	  
+									<div class="buyer row">	      		
+										<span class="p-name col s3">Chicken</span>	      		
+										<span class="p-name col s2 fe">5.00 kg</span>	      		
+										<span class="p-name col s3 fm">4.00</span>	      		
+										<span class="p-name col s2 fm">2</span>	      		
+										<span class="p-name col s2 fe">20.00</span>	      	  
+									</div>	        
+								</div>      
+							</div>    
+						</li>
+						<li>      
+							<div class="regular-item row tr-item-title">      	
+								<span class="col s9">AUG 3, 2018</span>      	    	
+								<span class="col s3 fe">Paid 400 Php</span>   	
+							</div>  
+						</li>
+					</ul>
+					<div class="ul-bottomline fe">
+						<div ><span class="blk">Total Unpaid :</span>  
+							<span class="gry" id="history-balance">1200.00</span>
+						</div>
+					</div>
+				</div>
 			</div>
-    	</div>
-    	
-    </div></div>
-    <div id="tab5" class="col s12"><div class="tabcontent">
-    	<div id="history-space" class=" tabcontent fjc">
-			
     	</div>
     	
     </div></div>
@@ -443,7 +546,6 @@
 		<li><a for="#tab2">Inventory Records</a></li>
 		<li><a for="#tab3">Financial Statement</a></li>
 		<li><a for="#tab4">Balances</a></li>
-		<li><a for="#tab5">History</a></li>
   </ul>
 
 
@@ -485,4 +587,9 @@
 	<script src="js/ajax-calls.js"></script>
 	<script src="js/builders.js"></script>
 	<script src="js/custom.js"></script>
+
+
+	<!-- <script src="js/Chart.bundle.min.js"></script> -->
+	<script src="js/utils.js"></script>
+	<script src="js/chart-control.js"></script>
 </body>

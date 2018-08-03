@@ -38,7 +38,7 @@ while ($row = mysqli_fetch_assoc($sql_all_customers)) {
 			if ($row_temp['type'] == 'purchase') {
 				$transaction_id = $row_temp['tid'];
 				$sql_get_items  = "
-					SELECT  i.name, p.quantity, p.rate, round(p.quantity*p.rate, 2) as cost
+					SELECT  i.name, p.quantity, p.rate, round(p.quantity*p.rate, 2) as cost, p.chicken_head
 					FROM purchases p, items i
 					WHERE '$transaction_id' = p.transaction_id AND p.item_id = i.id
 					";
@@ -60,10 +60,10 @@ while ($row = mysqli_fetch_assoc($sql_all_customers)) {
 
 
 
-echo "<pre>";
-print_r($all_data);
+// echo "<pre>";
+// print_r($all_data);
 
 
 // header('Content-Type: application/json');
-// echo json_encode($all_data);
+echo json_encode($all_data);
 ?>
