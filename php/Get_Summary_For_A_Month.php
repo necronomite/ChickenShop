@@ -38,7 +38,7 @@ print_r($week_array);
 
 $start = $week_array['week_start'];
 $end = $week_array['week_end'];
-$dates = getDatesFromRange($start, $end); 
+$dates = getDatesFromRange($start, $end);
 // echo "<pre>";
 // print_r($dates);
 
