@@ -808,7 +808,8 @@ i.item-close{
   padding: 8px 24px;
 }
 
-.graph-view input{
+.graph-view input.select-dropdown,
+.graph-view input.select-dropdown:focus{
   background-color:rgba(0, 0, 0, 0);
   color: rgba(0, 0, 0, 0.3);
   cursor: pointer;
@@ -849,6 +850,12 @@ i.item-close{
   position: absolute;
   width: 100%;
   height: calc(100% - 64px);
+}
+#balance-items li{
+  cursor: pointer;
+}
+#balance-items li.active div{
+  background-color: #eee;
 }
 
 /*-----------------ANIMATIONS--------------------*/

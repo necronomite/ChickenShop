@@ -12,6 +12,7 @@
   queryInit()
   autoQuery()
   queryDebts()
+  queryWeek()
 });
 
 function autoQuery(){
@@ -26,7 +27,7 @@ function queryHistory(){
  function setDatePicker(){
   $('.datepicker').datepicker();
   var today = new Date();
-  var past = new Date(2000,0,1)
+  var past = new Date(2018,0,1)
   var daily_options = 
   {
     "onClose": autoQuery,

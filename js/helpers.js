@@ -39,6 +39,10 @@ function b(s){
 	}
 	return word;
 }
+
+function dateFormat(d){
+	return d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
+}
 function lg(item){
 	console.log(item)
 }
@@ -59,6 +63,10 @@ function getDP(elem){
 
 function closeM(string){
 	getM($(string)).close()
+}
+
+function getDate(string){
+	return dateFormat(new Date(getDP(g(string)).date))
 }
 
 // TODO: create date formatting function. copy the code from custom.js

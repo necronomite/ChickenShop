@@ -109,8 +109,7 @@
 		var has_blanks = false, has_repeats = false
 		console.log("submitting supplies")
 		console.log($(this))
-		var d = new Date(M.Datepicker.getInstance(g("prodsp-dp")).date)
-		var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
+		var date = getDate("prodsp-dp")
 		var name = $("#product-modal #supp-name").val()
 
 		var items = []
@@ -281,17 +280,13 @@
 //DAILY TRANSACTIONS
 
 function queryExpenses(){
-	var d = new Date(M.Datepicker.getInstance(g("inv-dp")).date)
-	var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
-	console.log("Date used for query:" +date) 
+	var date = getDate("inv-dp")
 	$.ajax({
 		url: host_php_url+"Get_Expenses.php",
 		type: "post",
 		data: {date:date},
 		dataType: 'json',
 		success: function(data){
-			console.log("queryExpenses");
-			console.log(data);	
 			buildExpenses(data)
 				
 		},
@@ -303,18 +298,13 @@ function queryExpenses(){
 }
 
 function queryTransactions(){
-	// M.Datepicker.getInstance(g("inv-dp"))
-	var d = new Date(M.Datepicker.getInstance(g("inv-dp")).date)
-	var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
-	console.log("Date used for query:" +date) 
+	var date = getDate("inv-dp")
 	$.ajax({
 		url: host_php_url+"Get_Transactions.php",
 		type: "post",
 		data: {date:date},
 		dataType: 'json',
 		success: function(data){
-			console.log("queryTransactions");
-			console.log(data);	
 			buildTransactions(data)
 				
 		},
@@ -328,7 +318,7 @@ function queryTransactions(){
 function buildExpenses(data){
 	data1 = data
 	var expense_total = 0
-	console.log("expenses")
+	console.log("building expenses...")
 	if(data.expenses.length+data.supply.length){
 		$("#expenses-view").removeClass("empty")
 		$("#expense-items").html("")
@@ -411,14 +401,12 @@ function buildTransactions(data){
 	var cash_received = 0
 	var sales2 = 0
 	var cash_received2 = 0
-	console.log("transactions")
+	console.log("building transactions...")
 	if(data.customers.length){
 		$("#transactions-form").removeClass("empty")
 	}else{
 		$("#transactions-form").addClass("empty")
 	}
-	
-	console.log(data)
 	
 	cdata = data.customers
 	for(i1 in cdata){
@@ -550,8 +538,7 @@ function buildTransactions(data){
 }
 
 function submitTransaction(){
-	var d = new Date(M.Datepicker.getInstance(g("newt-dp")).date)
-	var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
+	var date = getDate("newt-dp")
 
 	var name = $(".card-reveal .new-transaction #customer-name").val()
 	var paid = $(".card-reveal .new-transaction #customer-payment").val()
@@ -594,8 +581,7 @@ function submitTransaction(){
 
 function saveNewTransaction(date,name,paid,invoice,items){
 	// M.Datepicker.getInstance(g("inv-dp"))
-	var d = new Date(M.Datepicker.getInstance(g("newt-dp")).date)
-	var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
+	var date = getDate("newt-dp")
 
 	console.log(items)// next set of items has UNDEFINED value for item_id :(, this leads to insertion problems for items
 	// items = [[1, 2, 'kg'],[2, 10, 'pcs']] //just for testing
@@ -647,7 +633,7 @@ function queryInit(){
 					$(this).append("<option disabled selected>Choose Product</option>")
 					$(this).append(sel)
 				})
-				lg("The products list has been appended to all selects")
+				console.log("appended product selections!")
 			}
 			if(data["customers"]){
 				customer_names = []
@@ -663,6 +649,7 @@ function queryInit(){
 			      data: customer_names,
 			      limit : 3
 			    });
+			    console.log("initiated customer autofills!")
 			}
 			if(data["suppliers"]){
 				supplier_names = []
@@ -678,6 +665,7 @@ function queryInit(){
 			      data: supplier_autofills,
 			      limit : 3
 			    });
+			    console.log("initiated customer autofills!")
 			}
 			
 			$('select').formSelect();				
@@ -714,8 +702,7 @@ function queryInit(){
 	})
 
 	$(document).on('click', "#expenses-modal .done-btn", function(){
-		var d = new Date(M.Datepicker.getInstance(g("exp-dp")).date)
-		var date = d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
+		var date = getDate("exp-dp")
 
 		var expenses = []
 		$('#expenses-modal .modal-content .expenses .expense').not(".unclicked").each(function(){
@@ -776,7 +763,6 @@ function queryDebts(){
 		success: function(data){
 			console.log("Received debts data");
 			customer_history = data
-			console.log(customer_history);
 			buildBalances()
 		},
 		error: function(error){
@@ -795,6 +781,7 @@ function buildBalances(){
 	}else{
 		$("#balance-form").addClass("empty")
 	}
+	var active = ""
 	for(c in customer_history){
 		var payments = 0
 		var purchases = 0
@@ -807,23 +794,21 @@ function buildBalances(){
     	var balance = purchases - payments
     	
 		var dom = ""
-		console.log(c)
 		dom+=""
-		+"	<li>"
+		+"	<li class='"+active+"'>"
 		+"		<div class='regular-item row tr-item-title'>" 	
 		+"			<span class='col s10'>"+c+"</span>"   
 		+"			<span class='col s2 fe'>"+balance.toFixed(2)+"</span>"  	
 		+"		</div>"
 		+"	</li>"
 		$("#balance-items").append(dom);
+		active = ""
 	}
 }
 
-var xxxx
+
 $(document).on('click', "#balance-items li div", function(){
 	var customerName = $(this).find("span")[0].textContent
-	xxxx = customerName
-	console.log(customerName)
 	buildHistory(customerName)
 })
 
@@ -929,4 +914,62 @@ function buildHistory(name){
 	$("#history-balance").text(balance.toFixed(2))
 }
 
+$(document).on('change', "#finance-form .graph-view .select-wrapper select, #finance-form #graph-dp", function () {
+	console.log("change detected")
+	var view = $("#finance-form .graph-view .select-wrapper select option:selected").val();
+	if(view=="m"){
+		queryMonth()
+	}else if(view=="w"){
+		queryWeek()
+	}
+});
 
+
+function queryWeek(){
+	console.log("querying week")
+	var date = getDate("graph-dp")
+	$.ajax({
+		url: host_php_url+"Get_Summary_For_A_Week.php",
+		type: "post",
+		data: {date:date},
+		dataType: 'json',
+		success: function(data){
+			console.log("Received week data");
+			week_data = data;
+			buildGraph(data)
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+function queryMonth(){
+	
+	var date = getDate("graph-dp")
+	console.log("querying month using date "+date)
+	$.ajax({
+		url: host_php_url+"Get_Summary_For_A_Month.php",
+		type: "post",
+		data: {date:date},
+		dataType: 'json',
+		success: function(data){
+			console.log(data)
+			console.log("Received month data");
+			month_data = data;
+			buildGraph(data)
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+
+$(document).on('click', "#balance-items li", function(){
+	$("#balance-items li").removeClass("active")
+	$(this).addClass("active")
+})
+$(document).on('change', "#history-form .datepicker", function () { 
+	start = getDate("start-dp")
+	end = getDate("end-dp")
+	console.log("query from "+start+" to "+end)
+});
