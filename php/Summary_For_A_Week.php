@@ -7,6 +7,8 @@ $ddate = $_POST['date'];
 // $ddate = "2018-08-01";
 $date = new DateTime($ddate);
 $week = $date->format("W");
+$year = $date->format("Y");
+
 // echo "Weeknumber: $week <br>";
 
 
@@ -33,7 +35,7 @@ function getDatesFromRange($start, $end){
     return $dates;
 }
 
-$week_array = getStartAndEndDate($week,2018);
+$week_array = getStartAndEndDate($week,$year);
 // print_r($week_array);
 
 $start = $week_array['week_start'];
