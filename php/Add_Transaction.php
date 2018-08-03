@@ -34,7 +34,7 @@ $c_id = $c_match['id'];
 // echo "Customer's ID--> ".$c_id;
 
 // Insert Row In Transactions Table, Get Transaction ID -> $tid
-$sql_add_transaction = "INSERT INTO transactions (id, invoice_id, customer_id, amount_paid, transaction_date) VALUES ('', $invoice_id, $c_id, $amount_paid, '$date')";
+$sql_add_transaction = "INSERT INTO transactions (id, invoice_id, customer_id, amount_paid, transaction_date) VALUES ('', '$invoice_id', $c_id, $amount_paid, '$date')";
 
 mysqli_query($conn, $sql_add_transaction);
 $tid = mysqli_insert_id($conn);

@@ -3,17 +3,15 @@
 include 'DB_connector.php';
 
 
-$ddate = $_POST['date'];
-// $ddate = "2018-08-01";
+// $ddate = $_POST['date'];
+$ddate = "2018-07-01";
 $date = new DateTime($ddate);
 $year = $date->format("Y");
 $month = $date->format("m");
 
-// echo "Weeknumber: $week <br>";
-// echo "Year: $year <br>";
-// echo "Month: $month <br>";
-// echo '<br> First day'.date('Y-m-01', strtotime($ddate));
-// echo '<br> Last day'.date('Y-m-t', strtotime($ddate)); 
+echo "Month: $month <br>";
+echo '<br> First day'.date('Y-m-01', strtotime($ddate));
+echo '<br> Last day'.date('Y-m-t', strtotime($ddate)); 
 
 
 function getDatesFromRange($start, $end){
@@ -28,6 +26,22 @@ $start = date('Y-m-01', strtotime($ddate));
 $end = date('Y-m-t', strtotime($ddate));
 $dates = getDatesFromRange($start, $end);
 
+$total_debts = 00.00;
+$total_expenses = 00.00;
+
+$debt_result = mysqli_fetch_assoc(mysqli_query($conn,"SELECT sum(d.amount) as total_debts
+										             FROM debts d
+										             WHERE d.record_date BETWEEN '$start' AND '$end'"));
+$total_debts += $debt_result['total_debts'];
+
+$exp_result = mysqli_fetch_assoc(mysqli_query($conn,"SELECT sum(e.amount) as total_expenses
+										             FROM expenses e
+										             WHERE e.record_date BETWEEN '$start' AND '$end'"));
+$total_expenses += $exp_result['total_expenses'];
+
+
+
+$total_sales = 00.00;
 $sales = array();
 foreach ($dates as $d) {
 	$date = $d;
@@ -46,14 +60,17 @@ foreach ($dates as $d) {
 	if(empty($result['sales'])){
 		$result['sales'] = '00.00';
 	}
+
+	$total_sales += (float) $result['sales'];
+
 	$sales[''.$date] = $result['sales'];
 }
 $details = array();
 
-$details['total_sales'] = 0;
-$details['total_debts'] = 0;
+$details['total_sales'] = number_format($total_sales, 2);
+$details['total_debts'] = number_format($total_debts, 2);
 $details['total_coh'] = 0;
-$details['total_expenses'] = 0;
+$details['total_expenses'] = number_format($total_expenses, 2);
 $details['total_profit'] = 0;
 
 
@@ -61,8 +78,8 @@ $data = array();
 $data['individual_sales'] = $sales;
 $data['sales_details'] = $details;
 
-// echo "<pre>";
-// print_r($data);
+echo "<pre>";
+print_r($data);
 
 
 echo json_encode($data);

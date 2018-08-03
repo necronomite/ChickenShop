@@ -60,8 +60,8 @@ while ($row = mysqli_fetch_assoc($sql_all_customers)) {
 
 
 
-// echo "<pre>";
-// print_r($all_data);
+echo "<pre>";
+print_r($all_data);
 
 
 // header('Content-Type: application/json');
