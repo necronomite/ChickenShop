@@ -12,11 +12,7 @@ $month = $date->format("m");
 // echo "Weeknumber: $week <br>";
 // echo "Year: $year <br>";
 // echo "Month: $month <br>";
-
-// // First day of the month.
 // echo '<br> First day'.date('Y-m-01', strtotime($ddate));
-
-// // Last day of the month.
 // echo '<br> Last day'.date('Y-m-t', strtotime($ddate)); 
 
 
@@ -31,8 +27,6 @@ function getDatesFromRange($start, $end){
 $start = date('Y-m-01', strtotime($ddate));
 $end = date('Y-m-t', strtotime($ddate));
 $dates = getDatesFromRange($start, $end);
-// echo "<pre>";
-// print_r($dates);
 
 $sales = array();
 foreach ($dates as $d) {
@@ -52,14 +46,26 @@ foreach ($dates as $d) {
 	if(empty($result['sales'])){
 		$result['sales'] = '00.00';
 	}
-	$sales[] = $result;
+	$sales[''.$date] = $result['sales'];
 }
+$details = array();
+
+$details['total_sales'] = 0;
+$details['total_debts'] = 0;
+$details['total_coh'] = 0;
+$details['total_expenses'] = 0;
+$details['total_profit'] = 0;
+
+
+$data = array();
+$data['individual_sales'] = $sales;
+$data['sales_details'] = $details;
 
 // echo "<pre>";
-// print_r($sales);
+// print_r($data);
 
 
-echo json_encode($sales);
+echo json_encode($data);
 
 
 ?>

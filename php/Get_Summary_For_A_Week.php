@@ -3,8 +3,8 @@
 include 'DB_connector.php';
 
 
-$ddate = $_POST['date'];
-// $ddate = "2018-08-01";
+// $ddate = $_POST['date'];
+$ddate = "2018-08-01";
 $date = new DateTime($ddate);
 $week = $date->format("W");
 $year = $date->format("Y");
@@ -62,14 +62,26 @@ foreach ($dates as $d) {
 	if(empty($result['sales'])){
 		$result['sales'] = '00.00';
 	}
-	$sales[] = $result;
+	$sales[''.$date] = $result['sales'];
 }
 
-// echo "<pre>";
-// print_r($sales);
+$details = array();
+
+$details['total_sales'] = 0;
+$details['total_debts'] = 0;
+$details['total_coh'] = 0;
+$details['total_expenses'] = 0;
+$details['total_profit'] = 0;
+
+$data = array();
+$data['individual_sales'] = $sales;
+$data['sales_details'] = $details;
+
+echo "<pre>";
+print_r($data);
 
 
-echo json_encode($sales);
+// echo json_encode($data);
 
 
 ?>
