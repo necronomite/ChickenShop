@@ -201,16 +201,16 @@ h4, .h4, .card .card-title{
   padding-bottom: 4px;
 }
 
-ul.dropdown-content.select-dropdown{
+.new-transaction ul.dropdown-content.select-dropdown{
   width: 200px!important;
   height: 250px!important;
   /*display: flex;*/
 }
-ul.dropdown-content.select-dropdown li.disabled{
+.new-transaction ul.dropdown-content.select-dropdown li.disabled{
   display: block!important;
   width: auto!important;
 }
-ul.dropdown-content.select-dropdown li{
+.new-transaction ul.dropdown-content.select-dropdown li{
   clear: none!important;
   height: 50px!important;
   left: auto!important;
@@ -229,6 +229,12 @@ ul.dropdown-content.select-dropdown li{
 
 /*--------------FIXES END---------------*/
 /*--------------UNIVERSALS---------------*/
+
+.mono{
+  font-family: RobotoMono;
+  text-transform: uppercase;
+}
+
 .noshadow{
   box-shadow: none;
 }
@@ -530,12 +536,10 @@ div[id^="tab"].active .tabcontent{
 
 
 
-#balance-form{
-  min-width: 400px;
-}
-#balance-form ul{
-  margin: 0px;
-}
+
+
+
+
 #transactions-form{
   min-width: 663px;
 }
@@ -586,26 +590,35 @@ div[id^="tab"].active .tabcontent{
   background-color: #bbb;
   opacity: .84;
 }
-#transactions-title, #transactions-bottomline{
-  padding: 1rem;
+#transactions-title, 
+#transactions-bottomline,
+.ul-title, .ul-bottomline{
+  padding: 15px 35px;
+  line-height: 24px;
   border: 1px solid transparent;
   border-bottom: transparent;
-  /*height: 50px;*/
-  margin: 0 20px;
-  
+  margin: 0px;
 }
 #transactions-bottomline div{
   padding-left: 20px;
 }
-
-#card-header, #expenses-title{
-  display: flex;
-  justify-content: space-between;
-  height: 64px;
-  padding: 8px 24px;
-  margin-bottom: 15px;
-  border-bottom: #e0e0e0 1px solid;
+#transactions-title, .ul-title{
+  padding-top: 20px;
 }
+#history-form .ul-title{
+  padding-top: 15px;
+}
+#transactions-bottomline, .ul-bottomline{
+  padding-bottom: 20px;
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+}
+.ul-bottomline{
+  width: 700px;
+}
+
+
 #card-header a.btn, .bottom.submit-btn{
   font-size: 16px;
   line-height: 38px;
@@ -685,11 +698,15 @@ i.item-close{
 }
 
 #transactions-form .no-items, 
-#expenses-view .no-items{
+#expenses-view .no-items,
+#balance-form .no-items,
+#history-form .no-items{
   display: none;
 }
 #transactions-form.empty .no-items, 
-#expenses-view.empty .no-items{
+#expenses-view.empty .no-items,
+#balance-form.empty .no-items,
+#history-form.empty .no-items{
   height: 100px;
   display: flex;
   justify-content: center;
@@ -697,21 +714,20 @@ i.item-close{
   align-items: center;
 }
 
-
 #transactions-form.empty #cust-tab,
 #transactions-form.empty #prod-tab,
 #expenses-view.empty #expenses-content,
 #expenses-view.empty #expenses-bottomline,
-#transactions-form.empty #transactions-bottomline{
+#transactions-form.empty #transactions-bottomline,
+#balance-form.empty #balance-items,
+#history-form.empty #history-items,
+#history-form.empty .ul-title,
+#history-form.empty .ul-bottomline{
   opacity: 0;
   display: none;
 }
-#transactions-bottomline{
-  position: absolute;
-  width: calc(100% - 40px);
-  bottom: 0px;
-  margin-bottom: 5px;
-}
+
+
 
 .unclicked div[class^="spd"]:not(:first-child) , .unclicked i.item-close {
   display: none;
@@ -732,7 +748,33 @@ i.item-close{
 .modal .modal-content .datepicker-modal .modal-content{
   position: relative;
 }
+#balance-form{
+  height: 100%;
+  width: 300px;
+}
+#history-form{
+  height: 100%;
+  width: 700px;
+}
+#finance-form{
+  height: 100%;
+  width: 900px;
+}
+#finance-form #stats{
+  padding: 0px 0px 0px 30px;
+}
+#finance-form #stats>div:first-child{
+  width:41.6%;
+}
+#finance-form #stats>div:last-child{
+  width:58.3%;
+}
 
+#balance-form ul{
+  border-top: 0px;
+  margin: 0px;
+  max-height: calc(100% - 64px)
+}
 #product-modal .supplies{
   height: calc(100% - 105px)
 }
@@ -742,14 +784,71 @@ i.item-close{
   font-family: Roboto-Bold;
 }
 
-#expenses-view #expenses-title{
-  justify-content: flex-start;
+#expenses-view #expenses-title, 
+#expenses-title, 
+#history-title,
+#card-header,
+.cc-title{
   height: 64px;
   padding: 24px;
+  border-bottom: #e0e0e0 1px solid;
+}
+.cc{
   text-transform: uppercase;
   font-family: Roboto-Bold;
-  font-size: 14px;
   color: rgba(0,0,0,.54);
+  font-size: 14px;
+}
+
+.cc-con{
+  height: calc(100% - 64px);
+}
+
+#card-header{
+  padding: 8px 24px;
+}
+
+.graph-view input{
+  background-color:rgba(0, 0, 0, 0);
+  color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  font-weight:400;
+  margin-bottom: 0px;
+  list-style-type:none;
+  width: 144px;
+  border: 0px;
+}
+.graph-view .select-wrapper{
+  margin-left: 20px;
+}
+#graph-details{
+    height: 100%;
+    font-size: 20px;
+    font-family: Roboto-Light;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    /*flex-direction: column;*/
+    /*justify-content: flex-end;*/
+    /*padding: 20px;*/
+    /*line-height: 1.5;*/
+}
+#graph-details .gry{
+  font-size: 16px;
+}
+#graph-details>div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  width: 145px;
+}
+#graph{
+  padding: 20px;
+  padding-bottom: 81px;
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 64px);
 }
 
 /*-----------------ANIMATIONS--------------------*/

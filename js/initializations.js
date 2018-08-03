@@ -11,27 +11,52 @@
   setDatePicker()
   queryInit()
   autoQuery()
+  queryDebts()
 });
 
 function autoQuery(){
   queryTransactions()
   queryExpenses()
 }
+function queryHistory(){
+
+}
 
 
  function setDatePicker(){
   $('.datepicker').datepicker();
   var today = new Date();
-  var options = 
+  var past = new Date(2000,0,1)
+  var daily_options = 
   {
     "onClose": autoQuery,
     "setDefaultDate": true,
     "defaultDate" : today,
     "maxDate":today
   }
-  var elems = document.querySelectorAll('.datepicker');
-  var instances = M.Datepicker.init(elems, options);
-  
+  var options = 
+  {
+    "setDefaultDate": true,
+    "defaultDate" : today,
+    "maxDate":today
+  }
+  var past_options = 
+  {
+    "onClose": queryHistory,
+    "setDefaultDate": true,
+    "defaultDate" : past,
+    "maxDate":today
+  }
+
+
+
+  var elems = document.querySelectorAll('#start-dp');
+  M.Datepicker.init(elems, past_options);
+  var elems = document.querySelectorAll('#newt-dp,#graph-dp,#end-dp,#prodsp-dp,#exp-dp');
+  M.Datepicker.init(elems, options);
+  var elems = document.querySelectorAll('#inv-dp');
+  M.Datepicker.init(elems, daily_options);
+
 }
 
 

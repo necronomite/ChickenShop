@@ -50,13 +50,32 @@ foreach ($dates as $d) {
 	$get_daily_sales = "
 						SELECT
 						    '$date' AS date, sum(a.cost) as sales
-						FROM (SELECT i.id, i.name, sum(s.quantity) as quantity, sum(s.chicken_head) as head, sum(cost) as cost
-						    	FROM
-							        (SELECT p.item_id, c.name, p.quantity, p.rate, p.chicken_head, round(p.quantity*p.rate , 2) as cost 
+						FROM(
+								SELECT 
+									i.id, 
+									i.name, 
+									sum(s.quantity) as quantity, 
+									sum(s.chicken_head) as head, 
+									sum(cost) as cost
+						    	FROM(
+						    		SELECT 
+							        	p.item_id, 
+							        	c.name, 
+							        	p.quantity, 
+							        	p.rate, 
+							        	p.chicken_head, 
+							        	round(p.quantity*p.rate , 2) as cost 
 							        FROM customers c, purchases p, transactions t
-							        WHERE c.id = t.customer_id AND t.id = p.transaction_id AND t.transaction_date = '$date') as s,items i 
-							    WHERE s.item_id = i.id
-							    Group By s.item_id) a
+							        WHERE 
+							        	c.id = t.customer_id AND 
+							        	t.id = p.transaction_id AND 
+							        	t.transaction_date = '$date'
+							    ) as s,items i 
+							    WHERE 
+							    	s.item_id = i.id
+							    Group By 
+							    	s.item_id
+						) a
 						";
 	$result = mysqli_fetch_assoc(mysqli_query($conn, $get_daily_sales));
 	if(empty($result['sales'])){

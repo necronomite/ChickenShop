@@ -44,7 +44,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 	if ($row['type'] == 'purchase') {
 		$transaction_id = $row['tid'];
 		$sql_get_items  = "
-			SELECT  i.name, p.quantity, p.rate, round(p.quantity*p.rate, 2) as cost
+			SELECT  i.name, p.quantity, p.rate, round(p.quantity*p.rate, 2) as cost, p.chicken_head
 			FROM purchases p, items i
 			WHERE '$transaction_id' = p.transaction_id AND p.item_id = i.id
 			";
