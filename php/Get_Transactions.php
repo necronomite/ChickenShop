@@ -3,15 +3,15 @@ include 'DB_connector.php';
 
 
 // $date = date("Y-m-d", strtotime($_POST['date']."+1 days",)));
-$date = $_POST['date'];
-// $date = '2018-07-20';
+// $date = $_POST['date'];
+$date = '2018-07-20';
 $alldata = array(); 
 
-$sql_get_transactions = "SELECT t.id, c.name, DATE_FORMAT(t.transaction_date, '%b %d, %Y') as transaction_date, round(sum(a.cost), 2) as total, t.amount_paid, round((sum(a.cost) - t.amount_paid), 2) as balance 
+$sql_get_transactions = "SELECT t.id, t.invoice_id as invoice, c.name, DATE_FORMAT(t.transaction_date, '%b %d, %Y') as transaction_date, round(sum(a.cost), 2) as total, t.amount_paid, round((sum(a.cost) - t.amount_paid), 2) as balance 
         	FROM 
 		customers c, 
 		transactions t, 
-		(SELECT p.transaction_id as tid, p.quantity, p.rate, round(p.quantity*p.rate, 2) as cost 
+		(SELECT p.transaction_id as tid, p.quantity, p.rate, round(p.quantity*p.rate, 2) as cost
          FROM purchases p, transactions t 
          WHERE t.id = p.transaction_id) a 
         WHERE t.customer_id = c.id AND t.id = a.tid AND t.transaction_date = '$date'
@@ -69,8 +69,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 $alldata['customers'] = $customerdata;
 $alldata['products'] = $productsdata; 
-// echo "<pre>";
-// print_r($alldata);
+echo "<pre>";
+print_r($alldata);
 
 
 header('Content-Type: application/json');
