@@ -43,9 +43,6 @@ $orig_customer_id = $original_transaction['customer_id'];
 $orig_amount_paid = $original_transaction['amount_paid'];
 
 
-// String of queries
-$queries = "";
-
 
 // Updating Invoice ID
 	if( $orig_invoice != $new_invoice_id ){
