@@ -235,11 +235,14 @@
 		toggleExes();
 	})
 
+	$(document).on('click', ".card-reveal .t-close", clearNewTransactionsForm)
 
 	function clearNewTransactionsForm(){
 		$("#tab1 .card-reveal .products-bought i.item-close").click();
 		$("#tab1 .card-reveal .products-bought .another-product").click();
 		$("#tab1 .card-reveal .customer-info input").val("")
+		$(".card-reveal .edit-transaction").addClass("hidden")
+		$(".card-reveal .new-transaction").removeClass("hidden")
 		M.updateTextFields()
 	}
 
@@ -654,8 +657,6 @@
 				queryTransactions()
 				$(".edit-transaction .card-title").click()
 				clearNewTransactionsForm();
-				$(".card-reveal .edit-transaction").addClass("hidden")
-				$(".card-reveal .new-transaction").removeClass("hidden")
 
 			},
 			error: function(error){
@@ -704,7 +705,7 @@
 					customer_autofills = customer_names
 
 
-					$('.customer-info #customer-name.autocomplete, #payment-modal #paying-cust.autocomplete').autocomplete({
+					$('.customer-info #customer-name.autocomplete, .customer-info #edit-name.autocomplete, #payment-modal #paying-cust.autocomplete').autocomplete({
 				      data: customer_names,
 				      limit : 3
 				    });
