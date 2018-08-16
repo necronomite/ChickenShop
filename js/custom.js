@@ -327,7 +327,7 @@
 		var elems = document.querySelectorAll('#editt-dp');
 	  	M.Datepicker.init(elems, options);
 	  	$("#tab1 .card-reveal .products-bought i.item-close").click();
-	  	for (i = 0; i < items.length-1; i++) {
+	  	for (i = 0; i < items.length; i++) {
 	  		$(".edit-transaction .another-product").click()
 	  	}
 	  	i = 0
