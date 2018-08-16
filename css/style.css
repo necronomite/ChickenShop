@@ -43,7 +43,7 @@ body{
 .card{
   margin: 0px;
 }
-h4, .h4, .card .card-title{
+h4, .h4, .card .card-title .w400>span{
   font-family: Google-Sans;
   font-size: 28px;
   margin: 0px!important;
@@ -201,16 +201,19 @@ h4, .h4, .card .card-title{
   padding-bottom: 4px;
 }
 
-.new-transaction ul.dropdown-content.select-dropdown{
+.new-transaction ul.dropdown-content.select-dropdown,
+.edit-transaction ul.dropdown-content.select-dropdown{
   width: 200px!important;
   height: 250px!important;
   /*display: flex;*/
 }
-.new-transaction ul.dropdown-content.select-dropdown li.disabled{
+.new-transaction ul.dropdown-content.select-dropdown li.disabled,
+.edit-transaction ul.dropdown-content.select-dropdown li.disabled{
   display: block!important;
   width: auto!important;
 }
-.new-transaction ul.dropdown-content.select-dropdown li{
+.new-transaction ul.dropdown-content.select-dropdown li,
+.edit-transaction ul.dropdown-content.select-dropdown li{
   clear: none!important;
   height: 50px!important;
   left: auto!important;
@@ -562,6 +565,7 @@ div[id^="tab"].active .tabcontent{
   height: calc(100vh - 85px);
 }
 
+
 .collapsible{
   margin: 0px 20px;
 }
@@ -576,9 +580,16 @@ div[id^="tab"].active .tabcontent{
   top: 0px;
 }
 
-.transaction-items, #expense-items{
-  max-height: 331px;
+.transaction-items{
+  /*max-height: 331px;*/
+  max-height: calc(100% - 87px);
   overflow: auto;
+}
+#transactions-form .transaction-items{
+  max-height: calc(100% - 142px)
+}
+#history-form .transaction-items{
+  max-height: calc(100% - 180px)
 }
 
 .transaction-items::-webkit-scrollbar{
@@ -700,13 +711,17 @@ i.item-close{
 #transactions-form .no-items, 
 #expenses-view .no-items,
 #balance-form .no-items,
-#history-form .no-items{
+#history-form .no-items,
+#inventory-form .no-items,
+#inv-sales-form .no-items{
   display: none;
 }
 #transactions-form.empty .no-items, 
 #expenses-view.empty .no-items,
 #balance-form.empty .no-items,
-#history-form.empty .no-items{
+#history-form.empty .no-items,
+#inventory-form.empty .no-items,
+#inv-sales-form.empty .no-items{
   height: 100px;
   display: flex;
   justify-content: center;
@@ -722,7 +737,9 @@ i.item-close{
 #balance-form.empty #balance-items,
 #history-form.empty #history-items,
 #history-form.empty .ul-title,
-#history-form.empty .ul-bottomline{
+#history-form.empty .ul-bottomline,
+#inventory-form.empty .ul-title,
+#inventory-form.empty ul.collapsible{
   opacity: 0;
   display: none;
 }
@@ -748,15 +765,15 @@ i.item-close{
 .modal .modal-content .datepicker-modal .modal-content{
   position: relative;
 }
-#balance-form{
+#balance-form, #inventory-form{
   height: 100%;
   width: 300px;
 }
-#history-form{
+#history-form, #inv-sales-form{
   height: 100%;
   width: 700px;
 }
-#finance-form{
+#finance-form, {
   height: 100%;
   width: 900px;
 }
@@ -773,7 +790,11 @@ i.item-close{
 #balance-form ul{
   border-top: 0px;
   margin: 0px;
-  max-height: calc(100% - 64px)
+  height: calc(100% - 64px);
+  max-height: calc(100% - 64px);
+}
+#balance-form ul{
+
 }
 #product-modal .supplies{
   height: calc(100% - 105px)
@@ -857,6 +878,79 @@ i.item-close{
 #balance-items li.active div{
   background-color: #eee;
 }
+
+#doughnut-chart-label {
+    width: 130px;
+    text-align: center;
+    font-size: 15;
+    color: #8492AF;
+    position: absolute;
+    right: calc(-19px + 50%);
+    /*height: 100%;*/
+    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: calc(-50% + 100px);
+}
+#doughnut-chart-label div:first-child {
+    font-size: 35px;
+    font-family: Roboto-Bold;
+}
+
+
+body.print div.navbar, 
+body.print #balance-form,
+body.print .modal,
+body.print ul.sidenav{
+  display: none;
+}
+
+body.print #balance-space, body.print #history-form{
+  height: auto;
+}
+body.print #history-items{
+  margin-bottom: 60px;
+}
+
+.addword{
+  position: absolute;
+  right: 55px;
+}
+.collp-edit-btn{
+  opacity: 0;
+  position: absolute;
+  margin-top: -55px;
+  left: calc(100% - 230px);
+  font-family: Roboto-Bold;
+  cursor: pointer;
+  text-align: center;
+  height: 54px;
+  width: 200px;
+  background-color: white;
+  color: rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.collp-edit-btn:hover{
+  opacity: 1;
+}
+
+.collp-edit-btn span{
+  line-height: 40px;
+  height: 40px;
+  width: 100px;
+  border-radius: 2px;
+  background-color :rgba(0,0,0,0.04);
+}
+.collp-edit-btn span:hover{
+  background-color: rgba(0,0,0,0.08);
+}
+
+/*#balance-space{
+  height: auto;
+}*/
 
 /*-----------------ANIMATIONS--------------------*/
 @keyframes fadeIn {

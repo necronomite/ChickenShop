@@ -1,10 +1,12 @@
 var host_php_url = "php/";
 var data1
 var product_selects=""
+var queried_transactions=[]
 var customer_autofills=[]
 var product_autofills=[]
 var supplier_autofills=[]
 var customer_history=[]
+var inventory_sales=[]
 function a(s){
 	return ((s<10) ? "0"+s : ""+s);
 }
@@ -40,6 +42,9 @@ function b(s){
 	return word;
 }
 
+
+
+
 function dateFormat(d){
 	return d.getFullYear()+"-"+a(d.getMonth()+1)+"-"+a(d.getDate())
 }
@@ -52,6 +57,16 @@ function g(item){
 
 function toast(msg){
 	M.toast({html: msg})
+}
+
+function within(start, mid, end){
+	function d(string){
+		return new Date(string).getTime()
+	}
+	s = d(start)
+	m = d(mid)
+	e = d(end)
+	return (s <= m && m <= e)
 }
 
 function getM(elem){
@@ -68,5 +83,7 @@ function closeM(string){
 function getDate(string){
 	return dateFormat(new Date(getDP(g(string)).date))
 }
+
+
 
 // TODO: create date formatting function. copy the code from custom.js

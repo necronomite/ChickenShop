@@ -17,10 +17,10 @@
 				<a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
 					<i class="material-icons c-hov">menu</i></a>
 					<ul id="nav-mobile" class="tabs hide-on-med-and-down fm">
-			      <li class="tab col s3"><a active href="#tab1">Daily Inventory</a></li>
-			      <li class="tab col s3"><a href="#tab2">Inventory Records</a></li>
-			      <li class="tab col s3"><a href="#tab3">Financial Statement</a></li>
-			      <li class="tab col s3"><a href="#tab4">Balances</a></li>
+			      <li class="tab col s3"><a active href="#tab1" id="link-tab1">Daily Inventory</a></li>
+			      <li class="tab col s3"><a href="#tab2" id="link-tab2">Inventory Records</a></li>
+			      <li class="tab col s3"><a href="#tab3" id="link-tab3">Financial Statement</a></li>
+			      <li class="tab col s3"><a href="#tab4" id="link-tab4">Balances</a></li>
 	      	</ul>
 	    </div>
 	  </nav>
@@ -38,238 +38,353 @@
 	<!----------------- TRANSACTIONS CARD ---------------------->
     <div id="tab1" class="">
 
-    	
-    	<div id="transactions-space" class=" tabcontent fjc">
-    		<div id="expenses-view" class="card">
-	    		<div class="fac fs cc" id="expenses-title">
-	    			<i class="material-icons left ">credit_card</i>
-	    			<span>Expenses</span>
-	    		</div>
 
-	    		<div class="fm gry no-items">There are no expenses for this day.</div>
+    <div id="transactions-space" class=" tabcontent fjc">
+        <div id="expenses-view" class="card empty">
+            <div class="fac fs cc" id="expenses-title">
+                <i class="material-icons left ">credit_card</i>
+                <span>Expenses</span>
+            </div>
 
-	    		<div id="expenses-content" class="cc-con">
-	    			<div class="row blk ul-title">
-						<div class="col s10">Source</div>
-						<div class="col s2 fe">Cost</div>
-					</div>
-					<ul class ="collapsible transaction-items noshadow" id="expense-items">	 
-						<li>      
-							<div class="collapsible-header row tr-item-title">      	
-								<span class="col s10 tr-name">Cheasasdche</span>     
-								<span class="col s2 tr-paid fe">12.00</span>    	
-							</div>      
-							<div class="collapsible-body">      	
-								<div class="row blk">      		
-									<span class="col s3">Product</span>      		
-									<span class="col s3">Weight</span>      		
-									<span class="col s3 fm">Php/kg</span>      		
-									<span class="col s3 fe">Heads</span>      	
-								</div>      	
-								<div class="sold-items">	      	  
-									<div class="sold-item row">	      		
-										<span class="col s3">Gizzard</span>	      		
-										<span class="col s3">1.00 kg</span>	      		
-										<span class="col s3 fm">1.00</span>	      		
-										<span class="col s3 fe"></span>	      	   	  
-									</div>	        
-								</div>      
-							</div>    
-						</li>
-						<li>      
-							<div class="regular-expense row tr-item-title">      	
-								<span class="col s10 tr-name">Cheasasdche</span>     
-								<span class="col s2 tr-paid fe">12.00</span>    	
-							</div>
-						</li>
-					</ul>
-				</div>
-	
+            <div class="fm gry no-items">There are no expenses for this day.</div>
 
-    		</div>
-  			<div id="transactions-form" class="card empty">
-					<div id="card-header" class="fac fsb">
-						<input type="text" id="inv-dp" class="datepicker gbtn inv-dp">
-	  				<div class="card-tabs">
-				      <ul class="tabs tabs-fixed-width">
-				        <li class="tab"><a href="#cust-tab">
-				        	<i class="material-icons ">person_outline</i>Customers</a></li>
-				        <li class="tab"><a href="#prod-tab">
-				        	<i class="material-icons ">receipt</i>Products</a></li>
-				      </ul>
-				    </div>
-				    <i class="material-icons right activator">add</i>
-			    	<!-- <a class="activator btn waves-light">Add Transaction</a> -->
-			    </div>
-
-
-			    <div class="fm gry no-items">There are no transactions for this day.</div>
-					<!-- CUSTOMER TAB -->
-					<div id="cust-tab">
-						<div class="row ul-title blk">
-							<div class="col s8">Customer</div>
-							<div class="col s2 fe">Total Price </div>
-							<div class="col s2 fe">Paid</div>
-						</div>
-				    <ul class="collapsible transaction-items noshadow" id="daily-transactions-customers">
-			
-					  </ul>
-					</div>
-					<!-- END OF CUSTOMER TAB -->
-					<!-- PRODUCT TAB -->
-					<div id="prod-tab">
-						<div id="transactions-title" class="row transactions-title blk">
-							<div class="col s8">Product</div>
-							<div class="col s2 fc">Sold</div>
-							<div class="col s2 fc">Worth</div>
-						</div>
-				    <ul class="collapsible transaction-items noshadow" id="daily-transactions-products"></ul>
-					</div>
-					<!-- END OF PRODUCT TAB -->
-					
-				  <div id="transactions-bottomline" class="fe">
-						<div><span class="blk">Sales:  </span>
-							<span id="tr-total" class="gry">0.00</span>
-						</div>
-						<div ><span class="blk">Cash Received: </span>  
-							<span id="tr-cash" class="gry">0.00</span>
-						</div>
-						<div ><span class="blk">Expenses: </span>  
-							<span id="tr-exps" class="gry">0.00</span>
-						</div>
-						<div ><span class="blk">Profit: </span>  
-							<span id="tr-prof" class="gry">0.00</span>
-						</div>
-
-					</div>
+            <div id="expenses-content" class="cc-con">
+                <div class="row blk ul-title">
+                    <div class="col s10">Source</div>
+                    <div class="col s2 fe">Cost</div>
+                </div>
+                <ul class="collapsible transaction-items noshadow" id="expense-items">
         
-					<!-- CARD REVEAL -->
-					<!-- style="display: block; transform: translateY(-100%);" -->
-			    <div class="card-reveal" >
-			    	<div class="new-transaction">
-							<div class="content">
-				    		<div class="grey-text text-darken-4 card-title fsb">
-				    			<div class="w400 fac">
-				    				<span>New Transaction</span>
-				    				<input type="text" id="newt-dp" class="datepicker gbtn inv-dp"> 
-				    			</div>
-				    			<div class="w160">
-				    				<i class="material-icons right ">close</i>
-				    			</div>
-				    		</div>
+                </ul>
+            </div>
 
 
+        </div>
+        <div id="transactions-form" class="card empty">
+            <div id="card-header" class="fac fsb">
+                <input type="text" id="inv-dp" class="datepicker gbtn inv-dp">
+                <div class="card-tabs">
+                    <ul class="tabs tabs-fixed-width">
+                        <li class="tab"><a href="#cust-tab">
+				        	<i class="material-icons ">person_outline</i>Customers</a></li>
+                        <li class="tab"><a href="#prod-tab">
+				        	<i class="material-icons ">receipt</i>Products</a></li>
+                    </ul>
+                </div>
+                <i class="material-icons right activator">add</i>
+                <span class="cc addword">Add</span>
+                <!-- <a class="activator btn waves-light">Add Transaction</a> -->
+            </div>
 
-				    
-			    			<div class="customer-info row fae">
-					        <div class="input-field col s4">
-					          <input type="text" id="customer-name" class="autocomplete">
-					          <label for="customer-name">Customer</label>
-					        </div>
-					        <div class="input-field col s3">
-					          <input type="number" id="customer-payment" min="0" max="1000" class="autocomplete">
-					          <label for="customer-payment">Amount Paid</label>
-					        </div>
-					        <div class="input-field col s3">
-					          <input type="text" id="new-invoice" class="autocomplete">
-					          <label for="new-invoice">Invoice</label>
-					        </div>
-					      </div>
-					      <div class="products-bought-label fac">
-					      	<div class="w160">Product</div>
-					      	<div class="w80">Weight(kg)</div>
-					      	<div class="w80">Php/kg</div>
-					      	<div class="w80 chk-label hidden">Heads</div>
-					      </div>
-								<div class="products-bought">
-									<div class="product-field fs">
-					        	<div class="prod-name input-field col w160">
-						          <select class="">
+
+            <div class="fm gry no-items">There are no transactions for this day.</div>
+            <!-- CUSTOMER TAB -->
+            <div id="cust-tab" class="cc-con">
+                <div class="row ul-title blk">
+                    <div class="col s6">Customer</div>
+                    <div class="col s2 fc">Invoice </div>
+                    <div class="col s2 fe">Total Price </div>
+                    <div class="col s2 fe">Paid</div>
+                </div>
+                <ul class="collapsible transaction-items noshadow" id="daily-transactions-customers">
+					<li class="active">      
+						<div class="collapsible-header row tr-item-title">      	
+							<span class="col s8 tr-name">Sanny Servidad</span>      	
+							<span class="col s2 tr-cost fe">32.00</span>      	
+							<span class="col s2 tr-paid fe">12.00</span>
+							   	
+						</div>
+						<div class="collp-edit-btn"><span>EDIT</span></div>
+						<div class="collapsible-body" style="display: block;">      	
+							<div class="row blk">      		
+								<span class="col s3">Product Name</span>      		
+								<span class="col s2">Weight</span>      		
+								<span class="col s3 fm">Php/kg</span>      		
+								<span class="col s2">Chk. Heads</span>      		
+								<span class="col s2 fe">Price</span>      	
+							</div>      	
+							<div class="sold-items">	      	  
+								<div class="sold-item row">	      		
+									<span class="col s3">Chicken</span>	      		
+									<span class="col s2">4.00 kg</span>	      		
+									<span class="col s3 fm">3.00</span>	      		
+									<span class="col s2">2</span>	      		
+									<span class="col s2 fe">12.00</span>	      	  
+								</div>	      	  
+								<div class="sold-item row">	      		
+									<span class="col s3">Gizzard</span>	      		
+									<span class="col s2">5.00 kg</span>	      		
+									<span class="col s3 fm">4.00</span>	      		
+									<span class="col s2"></span>	      		
+									<span class="col s2 fe">20.00</span>	      	  
+								</div>	        
+							</div>      
+						</div>    
+					</li>
+                </ul>
+            </div>
+            <!-- END OF CUSTOMER TAB -->
+            <!-- PRODUCT TAB -->
+            <div id="prod-tab" class="cc-con">
+                <div id="transactions-title" class="row transactions-title blk">
+                    <div class="col s8">Product</div>
+                    <div class="col s2 fc">Sold</div>
+                    <div class="col s2 fc">Worth</div>
+                </div>
+                <ul class="collapsible transaction-items noshadow" id="daily-transactions-products"></ul>
+            </div>
+            <!-- END OF PRODUCT TAB -->
+
+            <div id="transactions-bottomline" class="fe">
+                <div><span class="blk">Sales:  </span>
+                    <span id="tr-total" class="gry">0.00</span>
+                </div>
+                <div><span class="blk">Cash Received: </span>
+                    <span id="tr-cash" class="gry">0.00</span>
+                </div>
+                <div><span class="blk">Expenses: </span>
+                    <span id="tr-exps" class="gry">0.00</span>
+                </div>
+                <div><span class="blk">Profit: </span>
+                    <span id="tr-prof" class="gry">0.00</span>
+                </div>
+
+            </div>
+
+            <!-- CARD REVEAL -->
+            <!-- style="display: block; transform: translateY(-100%);" -->
+            <div class="card-reveal">
+                <div class="new-transaction">
+                    <div class="content">
+                        <div class="grey-text text-darken-4 card-title fsb">
+                            <div class="w400 fac">
+                                <span>New Transaction</span>
+                                <input type="text" id="newt-dp" class="datepicker gbtn inv-dp">
+                            </div>
+                            <div class="w160">
+                                <i class="material-icons right ">close</i>
+                            </div>
+                        </div>
+
+
+                        <div class="customer-info row fae">
+                            <div class="input-field col s4">
+                                <input type="text" id="customer-name" class="autocomplete">
+                                <label for="customer-name">Customer</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input type="number" id="customer-payment" min="0" max="1000" class="autocomplete">
+                                <label for="customer-payment">Amount Paid</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input type="text" id="new-invoice" class="autocomplete">
+                                <label for="new-invoice">Invoice</label>
+                            </div>
+                        </div>
+                        <div class="products-bought-label fac">
+                            <div class="w160">Product</div>
+                            <div class="w80">Weight(kg)</div>
+                            <div class="w80">Php/kg</div>
+                            <div class="w80 chk-label hidden">Heads</div>
+                        </div>
+                        <div class="products-bought">
+                            <div class="product-field fs">
+                                <div class="prod-name input-field col w160">
+                                    <select class="">
 						          	<option value="" disabled selected>Choose Product</option>
 										  </select>
-						        </div>
-						        <div class="prod-qty w80 fs">
-						          <input type="number" min="0" max="1000" value="1">
-						        </div>
-						        <div class="prod-rate w80 fs">
-						          <input type="number" min="0" max="1000" value="1">
-						        </div>
-						         <div class="chk-heads fs op0">
-						          <input type="number" min="0" max="1000" value="0">
-						        </div>
-					        	<i class="material-icons right item-close c-hov grow fm">close</i>
-				        	</div>
-									<div class="product-field another-product fs">
-										<div class="prod-name input-field col w160">
-						        	<select class="">
+                                </div>
+                                <div class="prod-qty w80 fs">
+                                    <input type="number" min="0" max="1000" value="1">
+                                </div>
+                                <div class="prod-rate w80 fs">
+                                    <input type="number" min="0" max="1000" value="1">
+                                </div>
+                                <div class="chk-heads fs op0">
+                                    <input type="number" min="0" max="1000" value="0">
+                                </div>
+                                <i class="material-icons right item-close c-hov grow fm">close</i>
+                            </div>
+                            <div class="product-field another-product fs">
+                                <div class="prod-name input-field col w160">
+                                    <select class="">
+						          		<option value="" disabled selected>Another Product</option>
+									</select>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="buttons fe fac">
+                        <div class="submit-btn disabled bottom waves-effect">
+                            <a href="#" class="black-text">SAVE TRANSACTION</a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+                <div class="edit-transaction hidden">
+                    <div class="content">
+                        <div class="grey-text text-darken-4 card-title fsb">
+                            <div class="w400 fac">
+                                <span>Edit Transaction</span>
+                                <input type="text" id="editt-dp" class="datepicker gbtn inv-dp">
+                            </div>
+                            <div class="w160">
+                                <i class="material-icons right ">close</i>
+                            </div>
+                        </div>
+
+
+                        <div class="customer-info row fae">
+                            <div class="input-field col s4">
+                                <input type="text" id="edit-name" class="autocomplete">
+                                <label for="edit-name">Customer</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input type="number" id="edit-payment" min="0" max="1000" class="autocomplete">
+                                <label for="edit-payment">Amount Paid</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input type="text" id="edit-invoice" class="autocomplete">
+                                <label for="edit-invoice">Invoice</label>
+                            </div>
+                            <input type="text" id="edit-tid" class="hidden">
+                        </div>
+
+                        <div class="products-bought-label fac">
+                            <div class="w160">Product</div>
+                            <div class="w80">Weight(kg)</div>
+                            <div class="w80">Php/kg</div>
+                            <div class="w80 chk-label hidden">Heads</div>
+                        </div>
+                        <div class="products-bought">
+                            <div class="product-field fs">
+                                <div class="prod-name input-field col w160">
+                                    <select class="">
+						          	<option value="" disabled selected>Choose Product</option>
+										  </select>
+                                </div>
+                                <div class="prod-qty w80 fs">
+                                    <input type="number" min="0" max="1000" value="1">
+                                </div>
+                                <div class="prod-rate w80 fs">
+                                    <input type="number" min="0" max="1000" value="1">
+                                </div>
+                                <div class="chk-heads fs op0">
+                                    <input type="number" min="0" max="1000" value="0">
+                                </div>
+                                <i class="material-icons right item-close c-hov grow fm">close</i>
+                            </div>
+                            <div class="product-field another-product fs">
+                                <div class="prod-name input-field col w160">
+                                    <select class="">
 						          	<option value="" disabled selected>Another Product</option>
 										  </select>
-										</div>
-				        	</div>
+                                </div>
+                            </div>
 
 
 
-								</div>
-					    </div>
-					    <div class="buttons fe fac">
-					    	<div class="submit-btn disabled bottom waves-effect">
-				          <a href="#" class="black-text">SAVE TRANSACTION</a>
-			        	</div>
-					    </div>
-			    	</div>
-				   
-
-
-		
+                        </div>
+                    </div>
+                    <div class="buttons fe fac">
+                        <div class="submit-btn disabled bottom waves-effect">
+                            <a href="#" class="black-text">SAVE EDITED TRANSACTION</a>
+                        </div>
+                    </div>
+                </div>
 
 
 
-			    	<div class="edit-transaction" style="display:none;">
-			      	<span class="card-title grey-text text-darken-4">Edit Transaction
-			    			<i class="material-icons right">close</i>
-			    		</span>
-			    	</div>
-
-
-			    	
-			    </div>
-			    <!-- END OF CARD REVEAL -->
+            </div>
+            <!-- END OF CARD REVEAL -->
 
 
 
-			  </div>
-			
-			<!------------------- END OF TRANSACTIONS CARD -------------------->
-			
-			<div class="fixed-action-btn">
-			  <a class="btn-floating waves-effect waves-light btn-large grow indigo darken-3">
+        </div>
+
+        <!------------------- END OF TRANSACTIONS CARD -------------------->
+
+        <div class="fixed-action-btn">
+            <a class="btn-floating waves-effect waves-light btn-large grow indigo darken-3">
 			    <i class="large material-icons">add</i>
 			  </a>
-			  <ul>
-			  	<li>
-			    	<a data-position="left" data-tooltip="Add Business Expenses" href="#expenses-modal"
-			    	class="modal-trigger tooltipped btn-floating waves-effect waves-light green">
+            <ul>
+                <li>
+                    <a data-position="left" data-tooltip="Add Business Expenses" href="#expenses-modal" class="modal-trigger tooltipped btn-floating waves-effect waves-light green">
 			    	<i class="material-icons">business_center</i></a></li>
-			    <li>
-			    	<a data-position="left" data-tooltip="Add Product Supply" href="#product-modal"
-			    	class="modal-trigger tooltipped btn-floating waves-effect waves-light red">
+                <li>
+                    <a data-position="left" data-tooltip="Add Product Supply" href="#product-modal" class="modal-trigger tooltipped btn-floating waves-effect waves-light red">
 			    	<i class="material-icons">grade</i></a></li>
-			    <li>
-			    	<a data-position="left" data-tooltip="Add New Customer" href="#user-modal"
-			    	class="modal-trigger tooltipped btn-floating waves-effect waves-light amber darken-1">
+                <li>
+                    <a data-position="left" data-tooltip="Add New Customer" href="#user-modal" class="modal-trigger tooltipped btn-floating waves-effect waves-light amber darken-1">
 			    	<i class="material-icons">person_add</i></a></li>
-			  </ul>
-			</div>
+            </ul>
+        </div>
 
-			</div>
     </div>
+</div>
 		<!---------------------------------- END OF TAB 1 ----------------------------------->
 
 
 
     <div id="tab2" class="col s12"><div class="tabcontent">
 		<div id="inventory-space" class=" tabcontent fjc">
-			
+			<div class="card fac">
+				<div id="inventory-form" class="card">
+					<div class="fac fs cc cc-title">
+						<i class="material-icons left ">credit_card</i>
+						<span>Beginning Balance</span>
+					</div>
+					<div class="cc-con">
+						<div class="fm gry no-items">There were no products found.</div>
+						<div class="row transactions-title gry ul-title">
+							<div class="col s5">Product</div>
+							<div class="col s3">Heads</div>
+							<div class="col s4 fe">Stock (kg)</div>
+						</div>
+						<ul class ="collapsible transaction-items noshadow" id="inventory-list">	 
+							<li>      
+								<div class="regular-item row tr-item-title">      	
+									<span class="col s10 tr-name">Product 1</span>     
+									<span class="col s2 tr-paid fe">1600.00</span>    	
+								</div>  
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div id="inv-sales-form" class="card">
+
+					<div class="fac fsb cc-title">
+						<div>
+							<span class="cc">Graph Date</span> 
+							<input type="text" id="invr-dp" class="datepicker gbtn inv-dp">
+						</div>
+						<div class="fac graph-view">
+							<span class="cc">Graph Display Type</span>
+							<select >
+						      <option value="week" selected>Selected Week</option>
+						      <option value="month">Selected Month</option>
+	    					</select>
+						</div>
+					</div>
+					<div class="cc-con p20">
+						<canvas id="doughnut"></canvas>
+						<div id="doughnut-chart-label">
+							<div>1,560</div>
+							<div>Sales</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 
@@ -418,6 +533,19 @@
 				</div>
 			</div>
     	</div>
+    	<div class="fixed-action-btn direction-top">
+		  <a class="btn-floating waves-effect waves-light btn-large grow indigo darken-3">
+		    <i class="large material-icons">add</i>
+		  </a>
+		  <ul>
+		  	<li>
+                <a data-position="left" data-tooltip="Add Customer Payment" href="#payment-modal" 
+                	class="modal-trigger tooltipped btn-floating waves-effect waves-light amber darken-1">
+		    		<i class="material-icons">credit_card</i>
+		    	</a>
+		    </li>
+		  </ul>
+		</div>
     	
     </div></div>
   </div>
@@ -438,8 +566,7 @@
 		      <input type="text" id="supp-name" class="autocomplete">
 		      <label for="supp-name">Supplier</label>
 		    </div>
-		    
-		  </div>
+	  	</div>
 	  	<input type="text" id="prodsp-dp" class="datepicker gbtn inv-dp">
   	</div>
     
@@ -493,6 +620,25 @@
   <div class="modal-footer">
   	<a href="#!" class="modal-close waves-effect btn-flat cancel">CANCEL</a>
     <a href="#!" id="save-new-customer" class="modal-close waves-effect btn-flat">SAVE</a>
+  </div>
+</div>
+
+<div id="payment-modal" class="modal w400">
+  <div class="modal-content">
+    <h4>Customer Payment</h4>
+    <p>Customer makes a payment</p>
+    <div class="input-field">
+      <input type="text" id="paying-cust" class="autocomplete">
+      <label for="paying-cust">Name</label>
+    </div>
+    <div class="input-field">
+      <input type="text" id="cust-payment">
+      <label for="cust-payment">Customer Payment</label>
+    </div>
+  </div>
+  <div class="modal-footer">
+  	<a href="#!" class="modal-close waves-effect btn-flat cancel">CANCEL</a>
+    <a href="#!" id="save-cust-payment" class="modal-close waves-effect btn-flat">SAVE</a>
   </div>
 </div>
 

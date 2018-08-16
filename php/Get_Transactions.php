@@ -69,8 +69,8 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 $alldata['customers'] = $customerdata;
 $alldata['products'] = $productsdata; 
-echo "<pre>";
-print_r($alldata);
+// echo "<pre>";
+// print_r($alldata);
 
 
 header('Content-Type: application/json');

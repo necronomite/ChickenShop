@@ -53,7 +53,7 @@ function queryHistory(){
 
   var elems = document.querySelectorAll('#start-dp');
   M.Datepicker.init(elems, past_options);
-  var elems = document.querySelectorAll('#newt-dp,#graph-dp,#end-dp,#prodsp-dp,#exp-dp');
+  var elems = document.querySelectorAll('#newt-dp,#graph-dp,#end-dp,#prodsp-dp,#exp-dp,#invr-dp');
   M.Datepicker.init(elems, options);
   var elems = document.querySelectorAll('#inv-dp');
   M.Datepicker.init(elems, daily_options);

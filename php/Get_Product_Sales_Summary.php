@@ -9,7 +9,7 @@ $period = $_POST['period'];
 // $period = 'month';
 
 
-$date = new DateTime($ddate);
+$date = new DateTime($date);
 $year = $date->format("Y");
 $month = $date->format("m");
 

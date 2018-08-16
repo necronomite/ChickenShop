@@ -182,7 +182,6 @@
 				console.log("data received --- "+data)
 				queryExpenses()
 
-
 				$(".new-transaction .card-title").click()
 				clearNewTransactionsForm();
 			},
@@ -195,7 +194,7 @@
 
 
 
-//DAILY TRANSACTIONS
+//DAILY TRANSACTIONS (EDIT + ADD)
 	$(document).on('click', ".card-reveal .new-transaction .submit-btn", submitTransaction)
 
 	$(document).on('change', "#tab1 .products-bought .select-wrapper select", function () {
@@ -240,6 +239,8 @@
 	function clearNewTransactionsForm(){
 		$("#tab1 .card-reveal .products-bought i.item-close").click();
 		$("#tab1 .card-reveal .products-bought .another-product").click();
+		$("#tab1 .card-reveal .customer-info input").val("")
+		M.updateTextFields()
 	}
 
 
@@ -254,7 +255,7 @@
 		+		"</div>"
 
 
-		$(".card-reveal .products-bought").append(copy);
+		$(this).parent().append(copy);
 		$(this).removeClass("another-product");
 		$(this).find("option:first").text("Choose Product")
 		$(this).find("select").append(product_selects)
@@ -277,411 +278,567 @@
 	    $(this).append(a);
 		toggleExes()
 	});
+
 //DAILY TRANSACTIONS
 
-function queryExpenses(){
-	var date = getDate("inv-dp")
-	$.ajax({
-		url: host_php_url+"Get_Expenses.php",
-		type: "post",
-		data: {date:date},
-		dataType: 'json',
-		success: function(data){
-			buildExpenses(data)
-				
-		},
-		error: function(error){
-			console.log(error);
-		}
-		
-	});
-}
+//TRANSACTIONS PART 2
 
-function queryTransactions(){
-	var date = getDate("inv-dp")
-	$.ajax({
-		url: host_php_url+"Get_Transactions.php",
-		type: "post",
-		data: {date:date},
-		dataType: 'json',
-		success: function(data){
-			buildTransactions(data)
-				
-		},
-		error: function(error){
-			console.log(error);
-		}
-		
-	});
-}
+	$(document).on('click', ".card-reveal .edit-transaction .submit-btn", submitEditedTransaction)
 
-function buildExpenses(data){
-	data1 = data
-	var expense_total = 0
-	console.log("building expenses...")
-	if(data.expenses.length+data.supply.length){
-		$("#expenses-view").removeClass("empty")
-		$("#expense-items").html("")
-		console.log("clearing and filling in new entries")
-	}else{
-		$("#expenses-view").addClass("empty")
-	}
-	edata = data.expenses
-	for(i1 in edata){
-		var dom = ""
-		var source = edata[i1]['source']
-		var amount = edata[i1]['amount']
-		expense_total+=parseFloat(amount)
-		console.log(amount+" is added to expenses = "+expense_total)
-		dom+=""
-		+" 	<li>"
-		+" 		<div class='regular-expense row tr-item-title'>"   	
-		+" 			<span class='col s10 tr-name'>"+source+"</span>"  
-		+" 			<span class='col s2 tr-paid fe'>"+amount+"</span>"	
-		+" 		</div>"
-		+" 	</li>"
-		$("#expenses-content #expense-items").append(dom);
-	}
+	$(document).on('click', ".collp-edit-btn span", function () {
+		$(".card-reveal .edit-transaction").removeClass("hidden")
+		$(".card-reveal .new-transaction").addClass("hidden")
 
-	sdata = data.supply
-	for(i1 in sdata){
-		var dom = ""
-		var name = sdata[i1]['name']
-		var total = sdata[i1]['total']
-		var products = sdata[i1]['products']
-		expense_total+=parseFloat(total)
-		console.log(total+" is added to expenses = "+expense_total)
-		dom+=""
-		+" 	<li>"
-		+" 		<div class='collapsible-header row tr-item-title'>"   	
-		+" 			<span class='col s10 tr-name'>"+name+"</span>"  
-		+" 			<span class='col s2 tr-paid fe'>"+total+"</span>"	
-		+" 		</div>"
-		+"		<div class='collapsible-body'>"    	
-		+"			<div class='row blk'>"     		
-		+"				<span class='col s3'>Product</span>"     		
-		+"				<span class='col s3'>Weight</span>"    		
-		+"				<span class='col s3 fm'>Php/kg</span>"    		
-		+"				<span class='col s3 fe'>Heads</span>"    	
-		+"			</div>"
-		+"			<div class='sold-items'>"
+		$("#transactions-form .activator").click()
+		var tid = $(this).parent().parent().attr("value")
+		console.log("finding id no. "+tid )
+		var ctrans = queried_transactions.customers
+		var match
 
-		for(i2 in products){
-	    	var name = products[i2]['name']
-	    	var quantity = products[i2]['quantity']
-	    	var rate = products[i2]['rate']
-	    	var heads = products[i2]['heads']
-	    	heads = (heads==0)? "" : heads
-	    	dom+=""
-    		+"			<div class='sold-item row'>	"      		
-			+"				<span class='col s3'>"+name+"</span>	  "    		
-			+"				<span class='col s3'>"+quantity+"</span>	  "    		
-			+"				<span class='col s3 fm'>"+rate+"</span>	 "     		
-			+"				<span class='col s3 fe'>"+heads+"</span>	    "  	   	  
-			+"			</div>	"
-		}
-	    	
-		dom+=""
-		+" 			</div>"
-		+" 		</div>"
-		+" 	</li>"
-
-
-		$("#expenses-content #expense-items").append(dom);
-	}
-	$("#tr-exps").text(parseFloat(expense_total).toFixed(2))
-	var profit = $("#tr-total").text() - expense_total
-	$("#tr-prof").text(parseFloat(profit).toFixed(2))
-}
-
-function buildTransactions(data){
-	$("#daily-transactions-customers").html("")
-	$("#daily-transactions-products").html("")
-	var sales = 0
-	var cash_received = 0
-	var sales2 = 0
-	var cash_received2 = 0
-	console.log("building transactions...")
-	if(data.customers.length){
-		$("#transactions-form").removeClass("empty")
-	}else{
-		$("#transactions-form").addClass("empty")
-	}
-	
-	cdata = data.customers
-	for(i1 in cdata){
-		var dom = ""
-		var amount_paid = cdata[i1]['amount_paid']
-		var balance = cdata[i1]['balance']
-		var id = cdata[i1]['id']
-		var name = cdata[i1]['name']
-		var transaction_date = cdata[i1]['transaction_date']
-		var total = cdata[i1]['total']
-		var items = cdata[i1]['items']
-
-		sales+=parseFloat(total)
-		cash_received+=parseFloat(amount_paid)
-
-		dom+=""
-		+"	 <li>"
-		+"      <div class='collapsible-header row tr-item-title'>"
-		+"      	<span class='col s8 tr-name'>"+name+"</span>"
-		+"      	<span class='col s2 tr-cost fe'>"+total+"</span>"
-		+"      	<span class='col s2 tr-paid fe'>"+amount_paid+"</span>"
-		+"    	</div>"
-		+"      <div class='collapsible-body'>"
-		+"      	<div class='row blk'>"
-		+"      		<span class='col s3'>Product Name</span>"
-		+"      		<span class='col s2'>Weight</span>"
-		+"      		<span class='col s3 fm'>Php/kg</span>"
-		+"      		<span class='col s2'>Chk. Heads</span>"
-		+"      		<span class='col s2 fe'>Price</span>"
-		+"      	</div>"
-		+"      	<div class='sold-items'>"
-
-
-	    for(i2 in items){
-	    	var chicken_head = items[i2]['chicken_head']
-	       	var cost = items[i2]['cost']
-			var name = items[i2]['name']
-			var ops = items[i2]['ops']
-			var price = items[i2]['price']
-			var quantity = items[i2]['quantity']
-			var tid = items[i2]['tid']
-			var chk = (chicken_head=="0")? "": chicken_head
-
-			dom+=""
-			+"	      	  <div class='sold-item row'>"
-			+"	      		<span class='col s3'>"+name+"</span>"
-			+"	      		<span class='col s2'>"+quantity+" kg</span>"
-			+"	      		<span class='col s3 fm'>"+price+"</span>"
-			+"	      		<span class='col s2'>"+chk+"</span>"
-			+"	      		<span class='col s2 fe'>"+cost+"</span>"
-			+"	      	  </div>"
-		}
-
-		dom+=""
-		+"	        </div>"
-		+"      </div>"
-		+"    </li>"
-
-		$("#daily-transactions-customers").append(dom);
-	}
-	$("#tr-cust").text(cdata.length)
-	$("#tr-total").text(parseFloat(sales).toFixed(2))
-	$("#tr-cash").text(parseFloat(cash_received).toFixed(2))
-
-
-
-
-	pdata = data.products
-	for(i1 in pdata){
-		var dom = ""
-		var weight = pdata[i1]['quantity']
-		var name = pdata[i1]['name']
-		var id = pdata[i1]['id']
-		var head = pdata[i1]['head']		
-		var total_price = pdata[i1]['cost']
-		var buyers = pdata[i1]['buyers']
-
-		var ischicken = (name=="Chicken")
-		var insert1 = (ischicken ? "Heads" : "");
-
-		sales2+=parseFloat(total_price)
-
-		
-
-		dom+=""
-		+"	 <li>"
-		+"      <div class='collapsible-header row tr-item-title'>"
-		+"      	<span class='col s8'>"+name+"</span>"
-		+"      	<span class='col s2 fc'>"+weight+" kg</span>"
-		+"      	<span class='col s2 fc'>"+total_price+"</span>"
-		+"    	</div>"
-		+"      <div class='collapsible-body'>"
-		+"      	<div class='row blk'>"
-		+"	      		<span class='p-name col s3'>Customer</span>"
-		+"	      		<span class='p-name col s2 fe'>Bought</span>"
-		+"	      		<span class='p-name col s3 fm'>Rate</span>"
-		+"	      		<span class='p-name col s2 fm'>"+insert1+"</span>"
-		+"	      		<span class='p-name col s2 fe'>Price</span>"
-		+"      	</div>"
-		+"      	<div class='buyers'>"
-
-
-	    for(i2 in buyers){
-	       	var chicken_head = buyers[i2]['chicken_head']
-			var cost = buyers[i2]['cost']
-			var name = buyers[i2]['name']
-			var quantity = buyers[i2]['quantity']
-			var rate = buyers[i2]['rate']
-			var insert2 = (ischicken ? chicken_head : "");
-
-
-			dom+=""
-			+"	      	  <div class='buyer row'>"
-			+"	      		<span class='p-name col s3'>"+name+"</span>"
-			+"	      		<span class='p-name col s2 fe'>"+quantity+" kg</span>"
-			+"	      		<span class='p-name col s3 fm'>"+rate+"</span>"
-			+"	      		<span class='p-name col s2 fm'>"+insert2+"</span>"
-			+"	      		<span class='p-name col s2 fe'>"+cost+"</span>"
-			+"	      	  </div>"
-		}
-
-		dom+=""
-		+"	        </div>"
-		+"      </div>"
-		+"    </li>"
-
-		$("#daily-transactions-products").append(dom);
-	}
-}
-
-function submitTransaction(){
-	var date = getDate("newt-dp")
-
-	var name = $(".card-reveal .new-transaction #customer-name").val()
-	var paid = $(".card-reveal .new-transaction #customer-payment").val()
-	var invoice = $(".card-reveal .new-transaction #new-invoice").val()
-
-	var items = []
-	var prods = []
-	$(".card-reveal .new-transaction .product-field").not(".another-product").each(function(){
-		var container = []
-		var prod = $(this).find(".select-wrapper select").val() //modified by sanz, dynamically added selects does not have an outer DIV element with a class "prod-name"
-		var qty = $(this).find(".prod-qty input").val()
-		var rate = $(this).find(".prod-rate input").val()
-		var chicken_head = $(this).find(".chk-heads input").val()
-		var ischicken = $(this).find(".prod-name").hasClass("chk-prod")
-		chicken_head = (ischicken)? chicken_head: "0"
-
-		
-		container.push(prod)
-		container.push(qty) //weight in kg
-		container.push(rate)
-		container.push(chicken_head)
-		if(prod==null){
-			console.log("failed : "+prod+'   '+qty+'   '+rate+"   "+chicken_head)
-			toast("Please fill in all fields")
-			return false
-		}else if(prods.indexOf(prod)!=-1){
-			console.log("product"+prod+" previously detected")
-			toast("Please remove duplicate entries")
-			return false
-		}else{
-			console.log("pushed : "+prod+'   '+qty+'   '+rate+"   "+chicken_head)
-			prods.push(prod)
-			items.push(container)
-		}
-		
-	})
-	console.log(items)
-	saveNewTransaction(date,name,paid,invoice,items)
-}
-
-function saveNewTransaction(date,name,paid,invoice,items){
-	// M.Datepicker.getInstance(g("inv-dp"))
-	var date = getDate("newt-dp")
-
-	console.log(items)// next set of items has UNDEFINED value for item_id :(, this leads to insertion problems for items
-	// items = [[1, 2, 'kg'],[2, 10, 'pcs']] //just for testing
-	$.ajax({
-		url: host_php_url+"Add_Transaction.php",
-		type: "post",
-		data: {date:date, name:name, amount:paid, invoice_id:invoice, items:JSON.stringify(items)},
-		dataType: 'json',
-		cache: false,
-		success: function(data){
-			console.log("data received --- "+data)
-			console.log("saving was a success")
-			queryTransactions()
-			$(".new-transaction .card-title").click()
-			clearNewTransactionsForm();
-
-		},
-		error: function(error){
-			console.log(error);
-		}
-		
-	});
-}
-
-function queryInit(){
-	$.ajax({
-		url: host_php_url+"Get_Initial_Data.php",
-		type: "post",
-		data: {},
-		dataType: 'json',
-		success: function(data){
-			console.log("Successfully Retrieved Customer and Products List");
-			console.log(data);	
-
-			var sel=""
-			if(data["items"]){
-				product_names = []
-				for(p in data["items"]){
-					var id = data["items"][p]["id"]
-					var name = data["items"][p]["name"]
-					product_names[name] = null
-					o = "<option value='"+id+"' >"+name+"</option>"
-					sel+=o
-				}
-				product_autofills = product_names
-				product_selects = sel
-				$(".product-field").not(".another-product").find(".prod-name select").each(function(){
-					$(this).empty();
-					$(this).append("<option disabled selected>Choose Product</option>")
-					$(this).append(sel)
-				})
-				console.log("appended product selections!")
+		for(t in ctrans){
+			item = ctrans[t]
+			if(item["id"]==tid){
+				match = item
+				break
 			}
-			if(data["customers"]){
-				customer_names = []
-				for(c in data['customers']){
-					var key = data['customers'][c]['name']
-					var value = null
-					customer_names[key]=value
+		}
+		console.log("match found")
+		console.log(match)
+
+		var name  = match["name"]
+		var invoice = match["invoice"]
+		var id = match["id"]
+		var date = match["transaction_date"]
+		var total = match["total"]
+		var payment = match["amount_paid"]
+		var items = match["items"]
+
+		$("#edit-name").val(name)
+		$("#edit-invoice").val(invoice)
+		$("#edit-payment").val(payment)
+		$("#edit-tid").val(tid)
+
+	  	var options = 
+		{
+			"setDefaultDate": true,
+			"defaultDate" : new Date(date)
+		}
+		console.log("----------")
+		var elems = document.querySelectorAll('#editt-dp');
+	  	M.Datepicker.init(elems, options);
+	  	$("#tab1 .card-reveal .products-bought i.item-close").click();
+	  	for (i = 0; i < items.length-1; i++) {
+	  		$(".edit-transaction .another-product").click()
+	  	}
+	  	i = 0
+	  	console.log(items)
+	  	console.log("----------")
+	  	$(".card-reveal .edit-transaction .product-field").not(".another-product").each(function(){
+	  		console.log(item[i])
+	  		// $(this).find(".prod-name input").val(items[i]["name"])
+	  		$(this).find(".prod-name ul.select-dropdown li").each(function(){
+	  			var zxc = $(this).find("span").text()
+	  			if(zxc == items[i]["name"]){
+					$(this).click()
 				}
-				customer_autofills = customer_names
+	  		})
+	  		
+	  		$(this).find(".prod-qty input").val(items[i]["quantity"])
+	  		$(this).find(".prod-rate input").val(items[i]["cost"])
+	  		$(this).find(".chk-heads input").val(items[i]["chicken_head"])
+	  		
+	  		i++
+	  	})
 
+	  	// .find(".chk-heads")
+	  	// $(".products-bought-label .chk-label").show()
 
-				$('.customer-info #customer-name.autocomplete').autocomplete({
-			      data: customer_names,
-			      limit : 3
-			    });
-			    console.log("initiated customer autofills!")
-			}
-			if(data["suppliers"]){
-				supplier_names = []
-				for(s in data['suppliers']){
-					var key = data['suppliers'][s]['name']
-					var value = null
-					supplier_names[key]=value
-				}
-				supplier_autofills = supplier_names
+	  	M.updateTextFields();
+	});
 
-
-				$('#product-modal .suppliers-name input.autocomplete').autocomplete({
-			      data: supplier_autofills,
-			      limit : 3
-			    });
-			    console.log("initiated customer autofills!")
+	function queryTransactions(){
+		var date = getDate("inv-dp")
+		console.log("querying transaction using date "+date)
+		$.ajax({
+			url: host_php_url+"Get_Transactions.php",
+			type: "post",
+			data: {date:date},
+			dataType: 'json',
+			success: function(data){
+				console.log("----------received this data from PHP")
+				console.log(data)
+				buildTransactions(data)
+			},
+			error: function(error){
+				console.log(error);
 			}
 			
-			$('select').formSelect();				
-		},
-		error: function(error){
-			console.log(error);
+		});
+	}
+
+	function buildTransactions(data){
+		queried_transactions = data
+		$("#daily-transactions-customers").html("")
+		$("#daily-transactions-products").html("")
+		var sales = 0
+		var cash_received = 0
+		var sales2 = 0
+		var cash_received2 = 0
+		console.log("building transactions...")
+		if(data.customers.length){
+			$("#transactions-form").removeClass("empty")
+		}else{
+			$("#transactions-form").addClass("empty")
 		}
 		
-	});
-}
+		cdata = data.customers
+		for(i1 in cdata){
+			var dom = ""
+			var amount_paid = cdata[i1]['amount_paid']
+			var balance = cdata[i1]['balance']
+			var id = cdata[i1]['id']
+			console.log("id is "+id)
+			var name = cdata[i1]['name']
+			var transaction_date = cdata[i1]['transaction_date']
+			var total = cdata[i1]['total']
+			var items = cdata[i1]['items']
+			var invoice = cdata[i1]['invoice']
+
+			sales+=parseFloat(total)
+			cash_received+=parseFloat(amount_paid)
+
+			dom+=""
+			+"	 <li value='"+id+"'>"
+			+"      <div class='collapsible-header row tr-item-title'>"
+			+"      	<span class='col s6 tr-name'>"+name+"</span>"
+			+"      	<span class='col s2 tr-invoice fc'>"+invoice+"</span>"
+			+"      	<span class='col s2 tr-cost fe'>"+total+"</span>"
+			+"      	<span class='col s2 tr-paid fe'>"+amount_paid+"</span>"
+			+"    	</div>"
+			+" 		<div class='collp-edit-btn'><span>EDIT</span></div>"
+			+"      <div class='collapsible-body'>"
+			+"      	<div class='row blk'>"
+			+"      		<span class='col s3'>Product Name</span>"
+			+"      		<span class='col s2'>Weight</span>"
+			+"      		<span class='col s3 fm'>Php/kg</span>"
+			+"      		<span class='col s2'>Chk. Heads</span>"
+			+"      		<span class='col s2 fe'>Price</span>"
+			+"      	</div>"
+			+"      	<div class='sold-items'>"
 
 
+		    for(i2 in items){
+		    	var chicken_head = items[i2]['chicken_head']
+		       	var cost = items[i2]['cost']
+				var name = items[i2]['name']
+				var ops = items[i2]['ops']
+				var price = items[i2]['price']
+				var quantity = items[i2]['quantity']
+				var tid = items[i2]['tid']
+				var chk = (chicken_head=="0")? "": chicken_head
+
+				dom+=""
+				+"	      	  <div class='sold-item row'>"
+				+"	      		<span class='col s3'>"+name+"</span>"
+				+"	      		<span class='col s2'>"+quantity+" kg</span>"
+				+"	      		<span class='col s3 fm'>"+price+"</span>"
+				+"	      		<span class='col s2'>"+chk+"</span>"
+				+"	      		<span class='col s2 fe'>"+cost+"</span>"
+				+"	      	  </div>"
+			}
+
+			dom+=""
+			+"	        </div>"
+			+"      </div>"
+			+"    </li>"
+
+			$("#daily-transactions-customers").append(dom);
+		}
+		$("#tr-cust").text(cdata.length)
+		$("#tr-total").text(parseFloat(sales).toFixed(2))
+		$("#tr-cash").text(parseFloat(cash_received).toFixed(2))
+
+
+
+
+		pdata = data.products
+		for(i1 in pdata){
+			var dom = ""
+			var weight = pdata[i1]['quantity']
+			var name = pdata[i1]['name']
+			var id = pdata[i1]['id']
+			var head = pdata[i1]['head']		
+			var total_price = pdata[i1]['cost']
+			var buyers = pdata[i1]['buyers']
+
+			var ischicken = (name=="Chicken")
+			var insert1 = (ischicken ? "Heads" : "");
+
+			sales2+=parseFloat(total_price)
+
+			
+
+			dom+=""
+			+"	 <li>"
+			+"      <div class='collapsible-header row tr-item-title'>"
+			+"      	<span class='col s8'>"+name+"</span>"
+			+"      	<span class='col s2 fc'>"+weight+" kg</span>"
+			+"      	<span class='col s2 fc'>"+total_price+"</span>"
+			+"    	</div>"
+			+"      <div class='collapsible-body'>"
+			+"      	<div class='row blk'>"
+			+"	      		<span class='p-name col s3'>Customer</span>"
+			+"	      		<span class='p-name col s2 fe'>Bought</span>"
+			+"	      		<span class='p-name col s3 fm'>Rate</span>"
+			+"	      		<span class='p-name col s2 fm'>"+insert1+"</span>"
+			+"	      		<span class='p-name col s2 fe'>Price</span>"
+			+"      	</div>"
+			+"      	<div class='buyers'>"
+
+
+		    for(i2 in buyers){
+		       	var chicken_head = buyers[i2]['chicken_head']
+				var cost = buyers[i2]['cost']
+				var name = buyers[i2]['name']
+				var quantity = buyers[i2]['quantity']
+				var rate = buyers[i2]['rate']
+				var insert2 = (ischicken ? chicken_head : "");
+
+
+				dom+=""
+				+"	      	  <div class='buyer row'>"
+				+"	      		<span class='p-name col s3'>"+name+"</span>"
+				+"	      		<span class='p-name col s2 fe'>"+quantity+" kg</span>"
+				+"	      		<span class='p-name col s3 fm'>"+rate+"</span>"
+				+"	      		<span class='p-name col s2 fm'>"+insert2+"</span>"
+				+"	      		<span class='p-name col s2 fe'>"+cost+"</span>"
+				+"	      	  </div>"
+			}
+
+			dom+=""
+			+"	        </div>"
+			+"      </div>"
+			+"    </li>"
+
+			$("#daily-transactions-products").append(dom);
+		}
+	}
+
+	function submitTransaction(){
+		var date = getDate("newt-dp")
+
+		var name = $(".card-reveal .new-transaction #customer-name").val()
+		var paid = $(".card-reveal .new-transaction #customer-payment").val()
+		var invoice = $(".card-reveal .new-transaction #new-invoice").val()
+
+		var items = []
+		var prods = []
+		$(".card-reveal .new-transaction .product-field").not(".another-product").each(function(){
+			var container = []
+			var prod = $(this).find(".select-wrapper select").val() //modified by sanz, dynamically added selects does not have an outer DIV element with a class "prod-name"
+			var qty = $(this).find(".prod-qty input").val()
+			var rate = $(this).find(".prod-rate input").val()
+			var chicken_head = $(this).find(".chk-heads input").val()
+			var ischicken = $(this).find(".prod-name").hasClass("chk-prod")
+			chicken_head = (ischicken)? chicken_head: "0"
+
+			
+			container.push(prod)
+			container.push(qty) //weight in kg
+			container.push(rate)
+			container.push(chicken_head)
+			if(prod==null){
+				console.log("failed : "+prod+'   '+qty+'   '+rate+"   "+chicken_head)
+				toast("Please fill in all fields")
+				return false
+			}else if(prods.indexOf(prod)!=-1){
+				console.log("product"+prod+" previously detected")
+				toast("Please remove duplicate entries")
+				return false
+			}else{
+				console.log("pushed : "+prod+'   '+qty+'   '+rate+"   "+chicken_head)
+				prods.push(prod)
+				items.push(container)
+			}
+			
+		})
+		console.log(items)
+		saveNewTransaction(date,name,paid,invoice,items)
+	}
+
+	function saveNewTransaction(date,name,paid,invoice,items){
+
+		console.log(items)
+		
+		$.ajax({
+			url: host_php_url+"Add_Transaction.php",
+			type: "post",
+			data: {date:date, name:name, amount:paid, invoice_id:invoice, items:JSON.stringify(items)},
+			dataType: 'json',
+			cache: false,
+			success: function(data){
+				console.log("data received --- "+data)
+				console.log("saving was a success")
+				queryTransactions()
+				$(".new-transaction .card-title").click()
+				clearNewTransactionsForm();
+
+			},
+			error: function(error){
+				console.log(error);
+			}
+			
+		});
+	}
+
+	function submitEditedTransaction(){
+		var date = getDate("editt-dp")
+		var tid = $(".card-reveal .edit-transaction #edit-tid").val()
+		var name = $(".card-reveal .edit-transaction #edit-name").val()
+		var paid = $(".card-reveal .edit-transaction #edit-payment").val()
+		var invoice = $(".card-reveal .edit-transaction #edit-invoice").val()
+
+		var items = []
+		var prods = []
+		$(".card-reveal .edit-transaction .product-field").not(".another-product").each(function(){
+			var container = []
+			var prod = $(this).find(".select-wrapper select").val() //modified by sanz, dynamically added selects does not have an outer DIV element with a class "prod-name"
+			var qty = $(this).find(".prod-qty input").val()
+			var rate = $(this).find(".prod-rate input").val()
+			var chicken_head = $(this).find(".chk-heads input").val()
+			var ischicken = $(this).find(".prod-name").hasClass("chk-prod")
+			chicken_head = (ischicken)? chicken_head: "0"
+
+			
+			container.push(prod)
+			container.push(qty) //weight in kg
+			container.push(rate)
+			container.push(chicken_head)
+			if(prod==null){
+				console.log("failed : "+prod+'   '+qty+'   '+rate+"   "+chicken_head)
+				toast("Please fill in all fields")
+				return false
+			}else if(prods.indexOf(prod)!=-1){
+				console.log("product"+prod+" previously detected")
+				toast("Please remove duplicate entries")
+				return false
+			}else{
+				console.log("pushed : "+prod+'   '+qty+'   '+rate+"   "+chicken_head)
+				prods.push(prod)
+				items.push(container)
+			}
+			
+		})
+		console.log(items)
+		saveEditedTransaction(tid, date,name,paid,invoice,items)
+	}
+
+	function saveEditedTransaction(tid, date,name,paid,invoice,items){
+		console.log("saving the following info...")
+		console.log(tid)
+		console.log(date)
+		console.log(name)
+		console.log(paid)
+		console.log(invoice)
+		console.log(items)
+		
+		$.ajax({
+			url: host_php_url+"Update_Transaction.php",
+			type: "post",
+			data: {transaction_id:tid, date:date, name:name, amount:paid, invoice_id:invoice, items:JSON.stringify(items)},
+			dataType: 'json',
+			cache: false,
+			success: function(data){
+				console.log("data received --- "+data)
+				console.log("saving the edit was a success")
+				queryTransactions()
+				$(".edit-transaction .card-title").click()
+				clearNewTransactionsForm();
+				$(".card-reveal .edit-transaction").addClass("hidden")
+				$(".card-reveal .new-transaction").removeClass("hidden")
+
+			},
+			error: function(error){
+				console.log(error);
+			}
+			
+		});
+	}
+
+	function queryInit(){
+		$.ajax({
+			url: host_php_url+"Get_Initial_Data.php",
+			type: "post",
+			data: {},
+			dataType: 'json',
+			success: function(data){
+				console.log("Successfully Retrieved Customer and Products List");
+				console.log(data);	
+
+				var sel=""
+				if(data["items"]){
+					product_names = []
+					for(p in data["items"]){
+						var id = data["items"][p]["id"]
+						var name = data["items"][p]["name"]
+						product_names[name] = null
+						o = "<option value='"+id+"' >"+name+"</option>"
+						sel+=o
+					}
+					product_autofills = product_names
+					product_selects = sel
+					$(".product-field").not(".another-product").find(".prod-name select").each(function(){
+						$(this).empty();
+						$(this).append("<option disabled selected>Choose Product</option>")
+						$(this).append(sel)
+					})
+					console.log("appended product selections!")
+				}
+				if(data["customers"]){
+					customer_names = []
+					for(c in data['customers']){
+						var key = data['customers'][c]['name']
+						var value = null
+						customer_names[key]=value
+					}
+					customer_autofills = customer_names
+
+
+					$('.customer-info #customer-name.autocomplete, #payment-modal #paying-cust.autocomplete').autocomplete({
+				      data: customer_names,
+				      limit : 3
+				    });
+				    console.log("initiated customer autofills!")
+				}
+				if(data["suppliers"]){
+					supplier_names = []
+					for(s in data['suppliers']){
+						var key = data['suppliers'][s]['name']
+						var value = null
+						supplier_names[key]=value
+					}
+					supplier_autofills = supplier_names
+
+
+					$('#product-modal .suppliers-name input.autocomplete').autocomplete({
+				      data: supplier_autofills,
+				      limit : 3
+				    });
+				    console.log("initiated customer autofills!")
+				}
+				
+				$('select').formSelect();				
+			},
+			error: function(error){
+				console.log(error);
+			}
+			
+		});
+	}
+
+//TRANSACTIONS PART 2
 
 
 
 //EXPENSES MODAL
+
+	function queryExpenses(){
+		var date = getDate("inv-dp")
+		$.ajax({
+			url: host_php_url+"Get_Expenses.php",
+			type: "post",
+			data: {date:date},
+			dataType: 'json',
+			success: function(data){
+				buildExpenses(data)
+					
+			},
+			error: function(error){
+				console.log(error);
+			}
+			
+		});
+	}
+
+	function buildExpenses(data){
+		data1 = data
+		var expense_total = 0
+		console.log("building expenses...")
+		if(data.expenses.length+data.supply.length){
+			$("#expenses-view").removeClass("empty")
+			$("#expense-items").html("")
+			console.log("clearing and filling in new entries")
+		}else{
+			$("#expenses-view").addClass("empty")
+		}
+		edata = data.expenses
+		for(i1 in edata){
+			var dom = ""
+			var source = edata[i1]['source']
+			var amount = edata[i1]['amount']
+			expense_total+=parseFloat(amount)
+			console.log(amount+" is added to expenses = "+expense_total)
+			dom+=""
+			+" 	<li>"
+			+" 		<div class='regular-expense row tr-item-title'>"   	
+			+" 			<span class='col s10 tr-name'>"+source+"</span>"  
+			+" 			<span class='col s2 tr-paid fe'>"+amount+"</span>"	
+			+" 		</div>"
+			+" 	</li>"
+			$("#expenses-content #expense-items").append(dom);
+		}
+
+		sdata = data.supply
+		for(i1 in sdata){
+			var dom = ""
+			var name = sdata[i1]['name']
+			var total = sdata[i1]['total']
+			var products = sdata[i1]['products']
+			expense_total+=parseFloat(total)
+			console.log(total+" is added to expenses = "+expense_total)
+			dom+=""
+			+" 	<li>"
+			+" 		<div class='collapsible-header row tr-item-title'>"   	
+			+" 			<span class='col s10 tr-name'>"+name+"</span>"  
+			+" 			<span class='col s2 tr-paid fe'>"+total+"</span>"	
+			+" 		</div>"
+			+"		<div class='collapsible-body'>"    	
+			+"			<div class='row blk'>"     		
+			+"				<span class='col s3'>Product</span>"     		
+			+"				<span class='col s3'>Weight</span>"    		
+			+"				<span class='col s3 fm'>Php/kg</span>"    		
+			+"				<span class='col s3 fe'>Heads</span>"    	
+			+"			</div>"
+			+"			<div class='sold-items'>"
+
+			for(i2 in products){
+		    	var name = products[i2]['name']
+		    	var quantity = products[i2]['quantity']
+		    	var rate = products[i2]['rate']
+		    	var heads = products[i2]['heads']
+		    	heads = (heads==0)? "" : heads
+		    	dom+=""
+	    		+"			<div class='sold-item row'>	"      		
+				+"				<span class='col s3'>"+name+"</span>	  "    		
+				+"				<span class='col s3'>"+quantity+"</span>	  "    		
+				+"				<span class='col s3 fm'>"+rate+"</span>	 "     		
+				+"				<span class='col s3 fe'>"+heads+"</span>	    "  	   	  
+				+"			</div>	"
+			}
+		    	
+			dom+=""
+			+" 			</div>"
+			+" 		</div>"
+			+" 	</li>"
+
+
+			$("#expenses-content #expense-items").append(dom);
+		}
+		$("#tr-exps").text(parseFloat(expense_total).toFixed(2))
+		var profit = $("#tr-total").text() - expense_total
+		$("#tr-prof").text(parseFloat(profit).toFixed(2))
+	}
+
 	expenses_counter = 0
 	$(document).on('click', "#expenses-modal .modal-content .expenses .expense.unclicked", function(){
 		lg("hello")
@@ -806,11 +963,29 @@ function buildBalances(){
 	}
 }
 
+$(document).on('click', "#balance-items li", function(){
+	$("#balance-items li").removeClass("active")
+	$(this).addClass("active")
+})
 
 $(document).on('click', "#balance-items li div", function(){
 	var customerName = $(this).find("span")[0].textContent
 	buildHistory(customerName)
 })
+
+$(document).on('change', "#history-form .datepicker", function () { 
+	start = getDate("start-dp")
+	end = getDate("end-dp")
+	if($("#balance-items li.active div span").length){
+		name = $("#balance-items li.active div span")[0].textContent
+		buildHistory(name)
+	}else{
+		// name = $("#balance-items li div span")[0].textContent
+	}
+
+	// name = $("#balance-items li.active div span")[0].textContent
+	console.log("query from "+start+" to "+end)
+});
 
 function buildHistory(name){
 	$("#history-items").html("")
@@ -823,107 +998,119 @@ function buildHistory(name){
 	}else{
 		$("#history-form").addClass("empty")
 	}
-	
+
+
+	start = getDate("start-dp")
+	end = getDate("end-dp")
+
 	
 	var payments = 0
 	var purchases = 0
 	for(i1 in hdata){
 		var item = hdata[i1]
-		var d = item["transaction_date"].split("-")
+		var td = item["transaction_date"]
+		var d = td.split("-")
 		var date = b(d[1])+" "+d[2]+", "+d[0]
 		var type = item["type"]
 		var debt = item["total_price"]
 		var paid = item["paid"]
-		purchases+=parseFloat(debt)
-		payments+=parseFloat(paid)
-		var dom = ""
-		// var amount_paid = cdata[i1]['amount_paid']
-		// total_balance+=parseFloat(amount_paid)
-	
-		var products=[]
 
-		if(type=="debt"||type=="payment"){
-			debt = (debt>0)? (debt+"") : ""
-			paid = (paid>0)? (paid+"") : ""
-			
-			dom+=""
-			+"	<li>"
-			+"		<div class='regular-item row tr-item-title'>"
-			+"			<span class='col s6'>"+date+"</span>"
-			+"			<span class='col s3 fe'>"+debt+"</span>"
-			+"			<span class='col s3 fe'>"+paid+"</span>"
-			+"		</div>"
-			+"	</li>"
+		if(within(start,td,end)){
+			console.log(td+" is within "+start+" and "+end)
+			purchases+=parseFloat(debt)
+			payments+=parseFloat(paid)
+			var dom=""
+			var products=[]
 
+		
 
-
-		}else if(type=="purchase"){
-
-			var items = item["items"]
-
-			dom+=""
-			+"	<li class='active'>"
-			+"		<div class='collapsible-header row tr-item-title'>"
-			+"			<span class='col s6'>"+date+"</span>"
-			+"			<span class='col s3 fe'>"+debt+"</span>"
-			+"			<span class='col s3 fe'>"+paid+"</span>"
-			+"		</div>"
-			+"		<div class='collapsible-body'>"
-			+"			<div class='row blk'>"
-			+"				<span class='col s3'>Product Name</span>"
-			+"				<span class='col s2 fe'>Weight (kg)</span>"
-			+"				<span class='col s3 fm'>Php/kg</span>"
-			+"				<span class='col s2 fm'>Chk. Heads</span>"
-			+"				<span class='col s2 fe'>Price</span>"
-			+"			</div>"
-			+"			<div class='buyers'>"
+			if(type=="debt"||type=="payment"){
+				debt = (debt>0)? (debt+"") : ""
+				paid = (paid>0)? (paid+"") : ""
+				
+				dom+=""
+				+"	<li>"
+				+"		<div class='regular-item row tr-item-title'>"
+				+"			<span class='col s6'>"+date+"</span>"
+				+"			<span class='col s3 fe'>"+debt+"</span>"
+				+"			<span class='col s3 fe'>"+paid+"</span>"
+				+"		</div>"
+				+"	</li>"
 
 
 
-		    for(i2 in items){
-		    	var heads = items[i2]['chicken_head']
-		       	var cost = items[i2]['cost']
-				var name = items[i2]['name']
-				var quantity = items[i2]['quantity']
-				var rate = items[i2]['rate']
-				var chk = (heads=="0")? "": heads
+			}else if(type=="purchase"){
+
+				var items = item["items"]
 
 				dom+=""
-
-				+"			<div class='buyer row'>"
-				+"				<span class='col s3'>"+name+"</span>"
-				+"				<span class='col s2 fe'>"+quantity+"</span>"
-				+"				<span class='col s3 fm'>"+rate+"</span>"
-				+"				<span class='col s2 fm'>"+chk+"</span>"
-				+"				<span class='col s2 fe'>"+cost+"</span>"
+				+"	<li class='active'>"
+				+"		<div class='collapsible-header row tr-item-title'>"
+				+"			<span class='col s6'>"+date+"</span>"
+				+"			<span class='col s3 fe'>"+debt+"</span>"
+				+"			<span class='col s3 fe'>"+paid+"</span>"
+				+"		</div>"
+				+"		<div class='collapsible-body'>"
+				+"			<div class='row blk'>"
+				+"				<span class='col s3'>Product Name</span>"
+				+"				<span class='col s2 fe'>Weight (kg)</span>"
+				+"				<span class='col s3 fm'>Php/kg</span>"
+				+"				<span class='col s2 fm'>Chk. Heads</span>"
+				+"				<span class='col s2 fe'>Price</span>"
 				+"			</div>"
+				+"			<div class='buyers'>"
+
+
+
+			    for(i2 in items){
+			    	var heads = items[i2]['chicken_head']
+			       	var cost = items[i2]['cost']
+					var name = items[i2]['name']
+					var quantity = items[i2]['quantity']
+					var rate = items[i2]['rate']
+					var chk = (heads=="0")? "": heads
+
+					dom+=""
+
+					+"			<div class='buyer row'>"
+					+"				<span class='col s3'>"+name+"</span>"
+					+"				<span class='col s2 fe'>"+quantity+"</span>"
+					+"				<span class='col s3 fm'>"+rate+"</span>"
+					+"				<span class='col s2 fm'>"+chk+"</span>"
+					+"				<span class='col s2 fe'>"+cost+"</span>"
+					+"			</div>"
+				}
+
+				dom+=""
+				+"			</div>"
+				+"		</div>"
+				+"	</li>"
+
+				
+
+
 			}
-
-			dom+=""
-			+"			</div>"
-			+"		</div>"
-			+"	</li>"
-
 			
-
-
+			$("#history-items").append(dom);
 		}
-		$("#history-items").append(dom);
+		
 	}
 	var balance = purchases - payments
 	$("#history-balance").text(balance.toFixed(2))
 }
 
-$(document).on('change', "#finance-form .graph-view .select-wrapper select, #finance-form #graph-dp", function () {
-	console.log("change detected")
+
+
+function buildFinancialGraph(){
 	var view = $("#finance-form .graph-view .select-wrapper select option:selected").val();
 	if(view=="m"){
 		queryMonth()
 	}else if(view=="w"){
 		queryWeek()
 	}
-});
-
+}
+$(document).on('change', "#finance-form .graph-view .select-wrapper select, #finance-form #graph-dp", buildFinancialGraph);
+$(document).on('click', "#link-tab3", buildFinancialGraph)
 
 function queryWeek(){
 	console.log("querying week")
@@ -964,12 +1151,121 @@ function queryMonth(){
 	});
 }
 
-$(document).on('click', "#balance-items li", function(){
-	$("#balance-items li").removeClass("active")
-	$(this).addClass("active")
-})
-$(document).on('change', "#history-form .datepicker", function () { 
-	start = getDate("start-dp")
-	end = getDate("end-dp")
-	console.log("query from "+start+" to "+end)
+$(document).on('change', "#inv-sales-form .graph-view .select-wrapper select, #inv-sales-form #invr-dp", function () {
+	console.log("change detected")
+	// "week" or "month"
+	queryInventory()
 });
+
+function queryInventory(){
+	var view = $("#inv-sales-form .graph-view .select-wrapper select option:selected").val();
+	console.log("querying "+view)
+	var date = getDate("invr-dp")
+	$.ajax({
+		url: host_php_url+"Get_Product_Sales_Summary.php",
+		type: "post",
+		data: {date:date, period:view},
+		dataType: 'json',
+		success: function(data){
+			console.log("Received inventory data");
+			inventory_sales = data;
+			buildInventory()
+			buildDoughnut()
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+}
+function buildInventory(){
+	$("#inventory-list").html("")
+	console.log("inventory")
+	// TODO ADD EMPTY CLASS FOR WHEN THERE'S NOTHING TO FILL IN
+	if(inventory_sales.supply.length){
+		$("#inventory-form").removeClass("empty")
+	}else{
+		$("#inventory-form").addClass("empty")
+	}
+	for(supply in inventory_sales.supply){
+    	var s = inventory_sales["supply"][supply]
+    	var name = s["name"]
+    	var supply_cost = s["supply_cost"]
+    	var supply_heads = s["supply_heads"]
+    	var supply_quantity = s["supply_quantity"]
+    	var heads = (supply_heads>0)? supply_heads : ""
+    	
+		var dom = ""
+		dom+=""
+		+"	<li >"
+		+"		<div class='regular-item row tr-item-title'>" 	
+		+"			<span class='col s5'>"+name+"</span>"
+		+"			<span class='col s3'>"+heads+"</span>"  
+		+"			<span class='col s4 fe'>"+supply_quantity+"</span>"  	
+		+"		</div>"
+		+"	</li>"
+		$("#inventory-list").append(dom);
+	}
+}
+
+function PrintElem(elem)
+{
+    var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+    mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+    mywindow.document.write('</head><body >');
+    mywindow.document.write('<h1>' + document.title  + '</h1>');
+    mywindow.document.write(document.getElementById(elem).innerHTML);
+    mywindow.document.write('</body></html>');
+
+    mywindow.document.close(); // necessary for IE >= 10
+    mywindow.focus(); // necessary for IE >= 10*/
+
+    mywindow.print();
+    mywindow.close();
+
+    return true;
+}
+
+function printHistory(){
+	$(".navbar").addClass("hidden")
+	$("#balance-form").addClass("hidden")
+	$("#history-form").show()
+	$("#balance-space").addClass("auto")
+}
+
+
+$(document).on('click', "#user-modal .cancel, #payment-modal .cancel", function(){
+	$(this).parent().parent().find("input").val("")
+
+})
+
+$(document).on('click', "#save-cust-payment", function () {
+	var name = $("#payment-modal #paying-cust")
+	var debt = $("#payment-modal #cust-payment")
+	n = name.val()
+	d = debt.val()
+	console.log(n+"  "+d)
+	
+	$.ajax({
+		url: host_php_url+"Add_Payment.php",
+		type: "post",
+		data: {name:n, amount: d},
+		dataType: 'json',
+		success: function(data){
+			console.log("customer "+n+" successfully "+d);
+			name.val("")
+			debt.val("")
+			M.updateTextFields();
+			queryDebts()
+			setTimeout(function(){ buildHistory(n) }, 3000);
+
+		},
+		error: function(error){
+			console.log(error);
+		}
+	});
+})
+
+
+$(document).on('click', "#link-tab4", queryDebts)
+$(document).on('click', "#link-tab2", queryInventory)
