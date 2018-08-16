@@ -131,7 +131,7 @@ if (count($new_items)>0) {
 				foreach($new_items as $item) {
 					$new_item_id = $item['0'];
 				
-					if( $inDB__item_id == $new_item_id ){
+					if( $inDB__item_id == $new_item_id ){ 
 							$found = 1;
 							break;
 					}
