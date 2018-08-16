@@ -65,18 +65,19 @@ $queries = "";
 
 
 	if( $orig_customer_id != $new_c_id ){
-		$queries .= "UPDATE `transactions` SET `customer_id` = $new_c_id WHERE `transactions`.`id` = $transaction_id; ";
+		mysqli_query($conn, "UPDATE `transactions` SET `customer_id` = $new_c_id WHERE `transactions`.`id` = $transaction_id;");
 	}
 
 // Updating amount paid field
 	if( $orig_amount_paid != $new_amount_paid ){
-		$queries .= "UPDATE `transactions` SET `amount_paid` = $new_amount_paid WHERE `transactions`.`id` = $transaction_id; ";
+		mysqli_query($conn, "UPDATE `transactions` SET `amount_paid` = $new_amount_paid WHERE `transactions`.`id` = $transaction_id;");
 	}
 
 // Updating invoice paid field
 	if( $orig_invoice != $new_invoice_id ){
-		$queries .= "UPDATE `transactions` SET `invoice_id` = '$new_invoice_id' WHERE `transactions`.`id` = $transaction_id; ";
+		mysqli_query($conn, "UPDATE `transactions` SET `invoice_id` = '$new_invoice_id' WHERE `transactions`.`id` = $transaction_id;");
 	}
+
 
 
 
@@ -104,54 +105,54 @@ if (count($new_items)>0) {
 
 			// Update item's quantity
 			if( $original_quantity != $new_quantity ){
-				$queries .= "UPDATE `purchases` SET `quantity` = $new_quantity WHERE `purchases`.`transaction_id` = $transaction_id AND `purchases`.`item_id` = $new_item_id ; ";
+				mysqli_query($conn, "UPDATE `purchases` SET `quantity` = $new_quantity WHERE `purchases`.`transaction_id` = $transaction_id AND `purchases`.`item_id` = $new_item_id ;");
 			}
 
 			// Update item's rate
 			if( $original_rate != $new_rate ){
-				$queries .= "UPDATE `purchases` SET `rate` = $new_rate WHERE `purchases`.`transaction_id` = $transaction_id AND `purchases`.`item_id` = $new_item_id ; ";
+				mysqli_query($conn, "UPDATE `purchases` SET `rate` = $new_rate WHERE `purchases`.`transaction_id` = $transaction_id AND `purchases`.`item_id` = $new_item_id ;");
 			}
 
 			// Update item's chicken_head
 			if( $original_chicken_head != $new_chicken_head ){
-				$queries .= "UPDATE `purchases` SET `chicken_head` = $new_chicken_head WHERE `purchases`.`transaction_id` = $transaction_id AND `purchases`.`item_id` = $new_item_id ; ";
+				mysqli_query($conn, "UPDATE `purchases` SET `chicken_head` = $new_chicken_head WHERE `purchases`.`transaction_id` = $transaction_id AND `purchases`.`item_id` = $new_item_id ;");
 			}
 		}
 		// else, if it's a new item, add it in purchases table
 		else if ($item_exists['count'] == 0){
-			$queries .= "INSERT INTO purchases (transaction_id, item_id, quantity, rate, chicken_head) VALUES ( $transaction_id, $new_item_id, $new_quantity, $new_rate, $new_chicken_head ); ";
+			mysqli_query($conn, "INSERT INTO purchases (transaction_id, item_id, quantity, rate, chicken_head) VALUES ( $transaction_id, $new_item_id, $new_quantity, $new_rate, $new_chicken_head );");
 		}
 	}//END OF FORLOOP FOR UPDATING AND ADDING ITEMS
 
-	// run all queries for updating and adding
-	mysqli_multi_query($conn,$queries);
+
+
 
 	// For Deleting Items
-	$inDB_items_exists = mysqli_fetch_array(mysqli_query($conn, "SELECT count(*) as count FROM purchases p WHERE p.transaction_id = $transaction_id"));
-	
-	$delete_queries = '';
-		if($inDB_items_exists['count'] != 0){
-			$inDB_items = mysqli_query($conn, "SELECT * FROM purchases p WHERE p.transaction_id = $transaction_id");
-			while ($item_row = mysqli_fetch_assoc($inDB_items)) {
-				$inDB__item_id = $item_row['item_id'];
-				$found = 0;
-				foreach($new_items as $item) {
-					$new_item_id = $item['0'];
-				
-					if( $inDB__item_id == $new_item_id ){ 
-							$found = 1;
-							break;
+		$inDB_items_exists = mysqli_fetch_array(mysqli_query($conn, "SELECT count(*) as count FROM purchases p WHERE p.transaction_id = $transaction_id ;"));
+
+		$delete_queries = '';
+			if($inDB_items_exists['count'] != 0){
+				$inDB_items = mysqli_query($conn, "SELECT * FROM purchases p WHERE p.transaction_id = $transaction_id");
+				while ($item_row = mysqli_fetch_assoc($inDB_items)) {
+					$inDB__item_id = $item_row['item_id'];
+					$found = 0;
+					foreach($new_items as $item) {
+						$new_item_id = $item['0'];
+					
+						if( $inDB__item_id == $new_item_id ){ 
+								$found = 1;
+								break;
+						}
+					}
+
+					if($found == 0){
+						$delete_queries .= " DELETE FROM `purchases` WHERE `purchases`.`item_id`= $inDB__item_id AND `purchases`.`transaction_id` = $transaction_id; ";
 					}
 				}
-
-				if($found == 0){
-					$delete_queries .= " DELETE FROM `purchases` WHERE `purchases`.`item_id`= $inDB__item_id AND `purchases`.`transaction_id` = $transaction_id; ";
-				}
 			}
-		}
-	// END of block for Deleting Items
-	// run all queries for udeletinging
-	mysqli_multi_query($conn,$delete_queries);
+		// END of block for Deleting Items
+		// run all queries for deleting
+		mysqli_multi_query($conn,$delete_queries);
 
 }
 
