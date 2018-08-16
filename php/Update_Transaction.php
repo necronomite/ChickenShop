@@ -44,10 +44,6 @@ $orig_amount_paid = $original_transaction['amount_paid'];
 
 
 
-// Updating Invoice ID
-	if( $orig_invoice != $new_invoice_id ){
-		$queries .= "UPDATE `transactions` SET `invoice_id` = $new_invoice_id WHERE `transactions`.`id` = $transaction_id; ";
-	}
 
 
 // Updating Customer ID ...............
