@@ -73,6 +73,11 @@ $queries = "";
 		$queries .= "UPDATE `transactions` SET `amount_paid` = $new_amount_paid WHERE `transactions`.`id` = $transaction_id; ";
 	}
 
+// Updating invoice paid field
+	if( $orig_invoice != $new_invoice_id ){
+		$queries .= "UPDATE `transactions` SET `invoice_id` = '$new_invoice_id' WHERE `transactions`.`id` = $transaction_id; ";
+	}
+
 
 
 // Updating  each items in the Purchases Table if they are changed
@@ -122,9 +127,11 @@ if (count($new_items)>0) {
 	mysqli_multi_query($conn,$queries);
 
 	// For Deleting Items
-	$inDB_items = mysqli_query($conn, "SELECT * FROM purchases p WHERE p.transaction_id = $transaction_id");
+	$inDB_items_exists = mysqli_fetch_array(mysqli_query($conn, "SELECT count(*) as count FROM purchases p WHERE p.transaction_id = $transaction_id"));
+	
 	$delete_queries = '';
-		if(mysqli_num_rows($inDB_items) > 0 ){
+		if($inDB_items_exists['count'] != 0){
+			$inDB_items = mysqli_query($conn, "SELECT * FROM purchases p WHERE p.transaction_id = $transaction_id");
 			while ($item_row = mysqli_fetch_assoc($inDB_items)) {
 				$inDB__item_id = $item_row['item_id'];
 				$found = 0;
