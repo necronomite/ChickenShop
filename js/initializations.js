@@ -26,7 +26,8 @@ function queryHistory(){
 
  function setDatePicker(){
   $('.datepicker').datepicker();
-  var today = new Date();
+  // var today = new Date();
+  var today = new Date(2018,3,26)
   var past = new Date(2018,0,1)
   var daily_options = 
   {

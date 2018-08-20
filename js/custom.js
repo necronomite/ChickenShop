@@ -143,8 +143,6 @@
 		})
 
 		
-
-		
 		if(prods.length){
 			if(name==''){
 				toast("Please enter supplier name")
@@ -165,9 +163,7 @@
 			resetProductModal()
 		}
 		
-		
 	})
-
 
 	function saveNewSupplies(date,name,items){
 		console.log("saving new supplies "+date+" "+name)
@@ -288,7 +284,7 @@
 
 	$(document).on('click', ".card-reveal .edit-transaction .submit-btn", submitEditedTransaction)
 
-	$(document).on('click', ".collp-edit-btn span", function () {
+	$(document).on('click', ".card-reveal .collp-edit-btn span", function () {
 		$(".card-reveal .edit-transaction").removeClass("hidden")
 		$(".card-reveal .new-transaction").addClass("hidden")
 
@@ -357,6 +353,18 @@
 	  	// $(".products-bought-label .chk-label").show()
 
 	  	M.updateTextFields();
+	});
+
+	$(document).on('change', "#tab1 #inv-dp", function () {
+		var d = new Date(getDate("inv-dp"))
+		var options = 
+		{
+			"setDefaultDate": true,
+			"defaultDate" : d,
+			"maxDate":d
+		}
+		var elems = document.querySelectorAll('#newt-dp,#editt-dp,#prodsp-dp,#exp-dp');
+ 		M.Datepicker.init(elems, options);
 	});
 
 	function queryTransactions(){
@@ -761,8 +769,150 @@
 		});
 	}
 
+	$(document).on('click', "#expense-items .collp-edit-btn span", function () {
+		id = $(this).parent().parent().attr("value")
+		if(($(this)).parent().prev().hasClass("regular-expense")){
+			console.log(id+" this is a regular expense")
+		}else{
+			console.log(id+" this is a supply")
+			editSupply(id)
+		}
+	})
+
+	function editSupply(id){
+		openM("#product-modal")
+		$("#save-edit-supply").removeClass("hidden")
+		$("#save-new-supply").addClass("hidden")
+
+		var match
+		for(s in queried_supplies){
+			item = queried_supplies[s]
+			if(item["id"]==id){
+				match = item
+				break
+			}
+		}
+		console.log("match found")
+		console.log(match)
+
+		var name  = match["name"]
+		var id = match["id"]
+		var total = match["total"]
+		var sid = match["supplier_id"]
+		var products = match["products"]
+
+		edit_supp_id = sid
+		edit_supp_date = getDate("prodsp-dp")
+
+		$("#supp-name").val(name)
+		$("#edit-prodsp-id").val(id)
+
+	  	$("#product-modal .supplies i.item-close").click();
+	  	for (i = 0; i < products.length; i++) {
+	  		console.log("click")
+	  		$("#product-modal .supplies .supply.unclicked").click()
+	  	}
+	  	i = 0
+	  	console.log(products)
+	  	console.log("----------")
+	  	$("#product-modal .supplies .supply").not(".unclicked").each(function(){
+	  		console.log(products[i])
+	  		$(this).find(".spd-name input").val(products[i]["name"]).click()
+	  		$(this).find(".spd-qty input").val(products[i]["quantity"]).click()
+	  		$(this).find(".spd-rate input").val(products[i]["rate"]).click()
+	  		$(this).find(".spd-heads input").val(products[i]["heads"])
+	  		i++
+	  	})
+	  	M.updateTextFields()
+	}
+
+	$(document).on('click', "#product-modal #save-edit-supply", function(){
+		var has_blanks = false, has_repeats = false
+		console.log("submitting editted supplies")
+		console.log($(this))
+		var date = getDate("prodsp-dp")
+		var name = $("#product-modal #supp-name").val()
+
+		var items = []
+		var prods = []
+		$("#product-modal .supplies .supply").not(".unclicked").each(function(){
+			var container = []
+			var prod = $(this).find(".spd-name input").val()
+			var qty = $(this).find(".spd-qty input").val()
+			var rate = $(this).find(".spd-rate input").val()
+			var heads = $(this).find(".spd-heads input").val()
+
+			var ischicken = $(this).hasClass("chk-prod")
+			var head = (ischicken)? heads: "0"
+
+			container.push(prod)
+			container.push(qty)
+			container.push(rate)
+			container.push(head)
+			
+			if(prod==''||qty==''||rate==''){
+				console.log("failed : "+prod+'-'+qty+'-'+rate+"-"+head)
+				has_blanks = true
+			}else if(prods.indexOf(prod)!=-1){
+				has_repeats = true
+			}else{
+				console.log("pushed : "+prod+'   '+qty+'   '+rate+"   "+head)
+				prods.push(prod)
+				items.push(container)
+			}
+			
+		})
+
+		
+		if(prods.length){
+			if(name==''){
+				toast("Please enter supplier name")
+			}else if(has_repeats){
+				toast("Please remove duplicates")
+			}else if(has_blanks){
+				toast("Please fill in blank fields")
+			}else if(!has_blanks&&!has_repeats){
+				toast("Saved "+prods.length+" supplies")
+				$("#save-edit-supply").addClass("hidden")
+				$("#save-new-supply").removeClass("hidden")
+				closeM("#product-modal")
+				resetProductModal()
+				saveEditSupplies(date,name,items)
+			}
+
+		}else{
+			toast("No entries were saved.")
+			closeM("#product-modal")
+			resetProductModal()
+		}	
+	})
+
+	function saveEditSupplies(date,name,items){
+		console.log("saving editted supplies "+date+" "+name)
+		console.log(items)
+		$.ajax({
+			url: host_php_url+"Add_Supply_Expense.php",
+			type: "post",
+			data: {date:date, supplier:name, items:JSON.stringify(items), old_supplier_id:edit_supp_id, old_date:edit_supp_date},
+			dataType: 'json',
+			cache: false,
+			success: function(data){
+
+				console.log("data received --- "+data)
+				queryExpenses()
+
+			},
+			error: function(error){
+				console.log(error);
+			}
+		});
+	}
+
+	function editRegularExpense(id){
+
+	}
+
 	function buildExpenses(data){
-		data1 = data
 		var expense_total = 0
 		console.log("building expenses...")
 		if(data.expenses.length+data.supply.length){
@@ -772,37 +922,42 @@
 		}else{
 			$("#expenses-view").addClass("empty")
 		}
+		queried_expenses = data.expenses
 		edata = data.expenses
 		for(i1 in edata){
 			var dom = ""
+			var id = edata[i1]['id']
 			var source = edata[i1]['source']
 			var amount = edata[i1]['amount']
 			expense_total+=parseFloat(amount)
 			console.log(amount+" is added to expenses = "+expense_total)
 			dom+=""
-			+" 	<li>"
+			+" 	<li value='"+id+"'>"
 			+" 		<div class='regular-expense row tr-item-title'>"   	
 			+" 			<span class='col s10 tr-name'>"+source+"</span>"  
 			+" 			<span class='col s2 tr-paid fe'>"+amount+"</span>"	
 			+" 		</div>"
+			+" 		<div class='collp-edit-btn'><span>EDIT</span></div>"
 			+" 	</li>"
 			$("#expenses-content #expense-items").append(dom);
 		}
-
+		queried_supplies = data.supply
 		sdata = data.supply
 		for(i1 in sdata){
 			var dom = ""
+			var id = edata[i1]['id']
 			var name = sdata[i1]['name']
 			var total = sdata[i1]['total']
 			var products = sdata[i1]['products']
 			expense_total+=parseFloat(total)
 			console.log(total+" is added to expenses = "+expense_total)
 			dom+=""
-			+" 	<li>"
+			+" 	<li value='"+id+"' >"
 			+" 		<div class='collapsible-header row tr-item-title'>"   	
 			+" 			<span class='col s10 tr-name'>"+name+"</span>"  
 			+" 			<span class='col s2 tr-paid fe'>"+total+"</span>"	
 			+" 		</div>"
+			+" 		<div class='collp-edit-btn'><span>EDIT</span></div>"
 			+"		<div class='collapsible-body'>"    	
 			+"			<div class='row blk'>"     		
 			+"				<span class='col s3'>Product</span>"     		
@@ -963,6 +1118,8 @@ function buildBalances(){
 		active = ""
 	}
 }
+
+
 
 $(document).on('click', "#balance-items li", function(){
 	$("#balance-items li").removeClass("active")

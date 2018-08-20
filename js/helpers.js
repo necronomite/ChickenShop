@@ -2,11 +2,16 @@ var host_php_url = "php/";
 var data1
 var product_selects=""
 var queried_transactions=[]
+var queried_expenses=[]
+var queried_supplies=[]
 var customer_autofills=[]
 var product_autofills=[]
 var supplier_autofills=[]
 var customer_history=[]
 var inventory_sales=[]
+
+var edit_supp_date=""
+var edit_supp_id=""
 function a(s){
 	return ((s<10) ? "0"+s : ""+s);
 }
@@ -78,6 +83,10 @@ function getDP(elem){
 
 function closeM(string){
 	getM($(string)).close()
+}
+
+function openM(string){
+	getM($(string)).open()
 }
 
 function getDate(string){
