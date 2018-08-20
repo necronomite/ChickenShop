@@ -17,7 +17,7 @@ while ($row = mysqli_fetch_assoc($result_exps)) {
 
 // expenses from supplies
 //  supplier_name, total
-$sql_get_supplies = "SELECT s.name, supplier_id, round(sum(l.quantity*l.rate)) AS total
+$sql_get_supplies = "SELECT s.name, s.id, supplier_id, round(sum(l.quantity*l.rate)) AS total
 					 FROM supplies_logs l, suppliers s
 					 WHERE l.log_date = '$date' AND s.id = l.supplier_id
 					 GROUP BY l.supplier_id";
