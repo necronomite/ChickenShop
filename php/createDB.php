@@ -112,10 +112,10 @@ function populateTables($servername, $username, $password, $dbname){
 												('2018-07-19', 1, 1000.00);";
 
 	// Values for Expenses
-			$filler .= "INSERT INTO expenses (record_date, source, amount) VALUES 
-											 ('2018-04-26', 'Fuel', 300.00),
-											 ('2018-04-26', 'Salary', 2000.00),
-											 ('2018-04-26', 'Coffee', 100.00)
+			$filler .= "INSERT INTO expenses (id, record_date, source, amount) VALUES 
+											 ( '', '2018-04-26', 'Fuel', 300.00),
+											 ( '', '2018-04-26', 'Salary', 2000.00),
+											 ( '', '2018-04-26', 'Coffee', 100.00)
 											 ;";
 
 
@@ -180,6 +180,7 @@ function createTables($servername, $username, $password, $dbname){
 					amount DECIMAL(10, 2)
 				);
 				CREATE TABLE expenses (
+					id 		INT(100) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 					record_date DATE,
 					source VARCHAR(100),					
 					amount DECIMAL(10, 2)
