@@ -17,14 +17,14 @@ while ($row = mysqli_fetch_assoc($result_exps)) {
 
 // expenses from supplies
 //  supplier_name, total
-$sql_get_supplies = "SELECT s.name, s.id, supplier_id, round(sum(quantity*rate)) AS total
-					 FROM supplies_logs, suppliers s
-					 WHERE log_date = '$date' AND s.id = supplier_id
-					 GROUP BY supplier_id";
+$sql_get_supplies = "SELECT s.name, supplier_id, round(sum(l.quantity*l.rate)) AS total
+					 FROM supplies_logs l, suppliers s
+					 WHERE l.log_date = '$date' AND s.id = l.supplier_id
+					 GROUP BY l.supplier_id";
 $result_suppliers = mysqli_query($conn, $sql_get_supplies);
 $data_supps = array();
 while ($row = mysqli_fetch_assoc($result_suppliers)) {
-	$s_id = $row['id'];
+	$s_id = $row['supplier_id'];
 	//list of products per supplier
 		$sql_get_products = "SELECT i.name, s.quantity, s.rate, s.heads
 						 FROM supplies_logs s, items i

@@ -74,7 +74,7 @@ $orig_amount_paid = $original_transaction['amount_paid'];
 
 
 
-// Updating  each items in the Purchases Table if they are changed
+// Updating  each item in the Purchases Table if they are changed
 if (count($new_items)>0) {
 
 	// For UPDATING AND ADDING ITEMS
@@ -127,19 +127,19 @@ if (count($new_items)>0) {
 			if($inDB_items_exists['count'] != 0){
 				$inDB_items = mysqli_query($conn, "SELECT * FROM purchases p WHERE p.transaction_id = $transaction_id");
 				while ($item_row = mysqli_fetch_assoc($inDB_items)) {
-					$inDB__item_id = $item_row['item_id'];
+					$inDB_item_id = $item_row['item_id'];
 					$found = 0;
 					foreach($new_items as $item) {
 						$new_item_id = $item['0'];
 					
-						if( $inDB__item_id == $new_item_id ){ 
+						if( $inDB_item_id == $new_item_id ){ 
 								$found = 1;
 								break;
 						}
 					}
 
 					if($found == 0){
-						$delete_queries .= " DELETE FROM `purchases` WHERE `purchases`.`item_id`= $inDB__item_id AND `purchases`.`transaction_id` = $transaction_id; ";
+						$delete_queries .= " DELETE FROM `purchases` WHERE `purchases`.`item_id`= $inDB_item_id AND `purchases`.`transaction_id` = $transaction_id; ";
 					}
 				}
 			}
