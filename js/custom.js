@@ -44,13 +44,13 @@
 		}	
 		toggleChickenLabelPS()
 	})
+
 	$(document).on('click change keyup', "#product-modal input[type='number']", function () {
 		var g = $(this).parent().parent()
 		var qty = g.find(".spd-qty input").val()
 		var rate = g.find(".spd-rate input").val()
 		g.find(".spd-price").text((qty*rate).toFixed(2))
 	})
-
 
 	$(document).on('click', "#save-new-customer", function () {
 		var name = $("#user-modal #new-cust")
@@ -890,8 +890,10 @@
 	function saveEditSupplies(date,name,items){
 		console.log("saving editted supplies "+date+" "+name)
 		console.log(items)
+		console.log(edit_supp_id)
+		console.log(edit_supp_date)
 		$.ajax({
-			url: host_php_url+"Add_Supply_Expense.php",
+			url: host_php_url+"Update_Supply_Expense.php",
 			type: "post",
 			data: {date:date, supplier:name, items:JSON.stringify(items), old_supplier_id:edit_supp_id, old_date:edit_supp_date},
 			dataType: 'json',
@@ -945,7 +947,7 @@
 		sdata = data.supply
 		for(i1 in sdata){
 			var dom = ""
-			var id = edata[i1]['id']
+			var id = sdata[i1]['id']
 			var name = sdata[i1]['name']
 			var total = sdata[i1]['total']
 			var products = sdata[i1]['products']
