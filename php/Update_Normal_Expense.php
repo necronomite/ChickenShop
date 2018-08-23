@@ -8,6 +8,11 @@ $new_date = $_POST['date'];
 $new_source = $_POST['source'];
 $new_amount = $_POST['amount']; 
 
+// $expense_id = '5';
+// $new_date = '2018-04-26';
+// $new_source = 'Salad';
+// $new_amount = '1002';
+
 
 
 // Get original details
@@ -24,7 +29,7 @@ $orig_amount = $original_details['amount'];
 	
 // Updating amount field
 	if( $orig_amount != $new_amount){
-		mysqli_query($conn, " UPDATE expenses e SET e.amount_paid = $new_amount WHERE e.id = $expense_id; ");
+		mysqli_query($conn, " UPDATE expenses e SET e.amount = $new_amount WHERE e.id = $expense_id; ");
 	}
 
 // Updating source field

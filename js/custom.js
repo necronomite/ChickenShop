@@ -25,6 +25,9 @@
 	function resetProductModal(){
 		$("#product-modal .supplies .supply").not(".unclicked").find("i.item-close").click()
 		$("#product-modal .suppliers-name input").val("")
+		$("#save-edit-supply").addClass("hidden")
+		$("#delete-supply").addClass("hidden")
+		$("#save-new-supply").removeClass("hidden")
 	  	M.updateTextFields();
 	}
 	
@@ -773,6 +776,7 @@
 		id = $(this).parent().parent().attr("value")
 		if(($(this)).parent().prev().hasClass("regular-expense")){
 			console.log(id+" this is a regular expense")
+			editRegularExpense(id)
 		}else{
 			console.log(id+" this is a supply")
 			editSupply(id)
@@ -780,15 +784,15 @@
 	})
 
 	function editSupply(id){
-		openM("#product-modal")
-		$("#save-edit-supply").removeClass("hidden")
-		$("#save-new-supply").addClass("hidden")
-
+		
 		var match
 		for(s in queried_supplies){
 			item = queried_supplies[s]
 			if(item["id"]==id){
 				match = item
+				openM("#product-modal")
+				$("#save-edit-supply").removeClass("hidden")
+				$("#save-new-supply").addClass("hidden")
 				break
 			}
 		}
@@ -805,7 +809,6 @@
 		edit_supp_date = getDate("prodsp-dp")
 
 		$("#supp-name").val(name)
-		$("#edit-prodsp-id").val(id)
 
 	  	$("#product-modal .supplies i.item-close").click();
 	  	for (i = 0; i < products.length; i++) {
@@ -825,6 +828,77 @@
 	  	})
 	  	M.updateTextFields()
 	}
+
+	function editRegularExpense(id){
+		var match
+		for(e in queried_expenses){
+			item = queried_expenses[e]
+			if(item["id"]==id){
+				match = item
+				openM("#expenses-modal")
+				$("#delete-expense").removeClass("hidden")
+				$("#save-edit-expense").removeClass("hidden")
+				$("#save-expenses").addClass("hidden")
+				break
+			}
+		}
+		console.log("match found")
+		console.log(match)
+
+		$("#expenses-modal .expense").not(".unclicked").find("i.item-close").click()
+		$(".expenses .expense.unclicked").addClass("edit-expense")
+		$(".expenses .expense.unclicked").removeClass("unclicked")
+
+		var source  = match["source"]
+		var id = match["id"]
+		var amount = match["amount"]
+		var record_date = match["record_date"]
+
+		edit_exp_id = id
+
+		$(".expenses .expense input.exp-name").val(source)
+		$(".expenses .expense input.exp-pay").val(amount)
+
+	  	M.updateTextFields()
+	}
+
+	$(document).on('click', "#product-modal #delete-supply", function(){
+		$.ajax({
+			url: host_php_url+"Delete_Supply.php",
+			type: "post",
+			data: {old_supplier_id:edit_supp_id, old_date:edit_supp_date},
+			dataType: 'json',
+			cache: false,
+			success: function(data){
+
+				console.log("data received --- "+data)
+				queryExpenses()
+
+			},
+			error: function(error){
+				console.log(error);
+			}
+		});
+	})
+
+	$(document).on('click', "#expenses-modal #delete-expense", function(){
+		$.ajax({
+			url: host_php_url+"Delete_Normal_Expense.php",
+			type: "post",
+			data: {expense_id: edit_exp_id},
+			dataType: 'json',
+			cache: false,
+			success: function(data){
+
+				console.log("data received --- "+data)
+				queryExpenses()
+
+			},
+			error: function(error){
+				console.log(error);
+			}
+		});
+	})
 
 	$(document).on('click', "#product-modal #save-edit-supply", function(){
 		var has_blanks = false, has_repeats = false
@@ -873,8 +947,7 @@
 				toast("Please fill in blank fields")
 			}else if(!has_blanks&&!has_repeats){
 				toast("Saved "+prods.length+" supplies")
-				$("#save-edit-supply").addClass("hidden")
-				$("#save-new-supply").removeClass("hidden")
+				
 				closeM("#product-modal")
 				resetProductModal()
 				saveEditSupplies(date,name,items)
@@ -885,6 +958,28 @@
 			closeM("#product-modal")
 			resetProductModal()
 		}	
+	})
+
+	$(document).on('click', "#expenses-modal #save-edit-expense", function(){
+		var has_blanks = false
+
+		console.log("submitting editted expense")
+		var date = getDate("exp-dp")
+		var exp_id = edit_exp_id
+		var source = $(".expenses .expense input.exp-name").val()
+		var amount = $(".expenses .expense input.exp-pay").val()
+
+		if(source==''||amount==''){
+				has_blanks = true
+		}
+		if(has_blanks){
+				toast("Please fill in blank fields")
+		}else{
+			toast("Saved.")
+			saveEditExpense(exp_id,date,source,amount)
+			resetExpensesModal()
+		}
+	
 	})
 
 	function saveEditSupplies(date,name,items){
@@ -910,9 +1005,27 @@
 		});
 	}
 
-	function editRegularExpense(id){
+	function saveEditExpense(exp_id,date,source,amount){
+		console.log("saving editted expense "+date+" "+source+" "+amount+" with id "+exp_id)
+		$.ajax({
+			url: host_php_url+"Update_Normal_Expense.php",
+			type: "post",
+			data: {expense_id:exp_id, date:date, source:source, amount:amount},
+			dataType: 'json',
+			cache: false,
+			success: function(data){
 
+				console.log("data received --- "+data)
+				queryExpenses()
+
+			},
+			error: function(error){
+				console.log(error);
+			}
+		});
 	}
+
+	
 
 	function buildExpenses(data){
 		var expense_total = 0
@@ -1016,7 +1129,7 @@
 		
 	})
 
-	$(document).on('click', "#expenses-modal .done-btn", function(){
+	$(document).on('click', "#expenses-modal #save-expenses", function(){
 		var date = getDate("exp-dp")
 
 		var expenses = []
@@ -1057,10 +1170,21 @@
 	}
 
 	$(document).on('click', "#expenses-modal .cancel", resetExpensesModal)
+
 	function resetExpensesModal(){
+		$(".expenses .expense.edit-expense").addClass("unclicked")
+		$(".expenses .expense.edit-expense").removeClass("edit-expense")
+
 		$("#expenses-modal .expense").not(".unclicked").find("i.item-close").click()
+		$("#expenses-modal .expense input").val("")
+		M.updateTextFields()
+
+		$("#delete-expense").addClass("hidden")
+		$("#save-edit-expense").addClass("hidden")
+		$("#save-expenses").removeClass("hidden")
 		closeM("#expenses-modal")
 	}
+
 	$(document).on('click', "#expenses-modal .modal-content .item-close", function () {
 		$(this).parent().remove();
 		toggleChickenLabelPS();
