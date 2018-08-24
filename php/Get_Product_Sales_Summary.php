@@ -2,14 +2,14 @@
 include 'DB_connector.php';
 
 
-$date = $_POST['date'];
+$ddate = $_POST['date'];
 $period = $_POST['period'];
 // $ddate = '2018-07-20';
 // $period = 'week';
 // $period = 'month';
 
 
-$date = new DateTime($date);
+$date = new DateTime($ddate);
 $year = $date->format("Y");
 $month = $date->format("m");
 
@@ -86,7 +86,7 @@ else if ($period == 'month') {
 						FROM
 							(
 							SELECT s.item_id, round(sum(s.quantity*s.rate), 2) as supply_cost, sum(s.heads) as supply_heads, round(sum(s.quantity), 2) as supply_quantity
-	                        FROM supplies_logs s
+	                        FROM supplies_logs s WHERE s.log_date < NOW() 
 	                        GROUP BY s.item_id
 	                        ) as supply
 	                    RIGHT JOIN 
@@ -99,6 +99,7 @@ else if ($period == 'month') {
 	$supply_result = mysqli_query($conn, $get_total_supply);
 			
 			while ($row = mysqli_fetch_assoc($supply_result)) {
+				
 				// change null values to 0 or 0.00
 					if ($row['supply_cost'] == null) { $row['supply_cost'] = number_format(00.00, 2);	}
 					if ($row['supply_heads'] == null) { $row['supply_heads'] = 0; }
@@ -111,12 +112,12 @@ else if ($period == 'month') {
 		                            FROM
 		                                (SELECT p.item_id, p.quantity, p.rate, p.chicken_head, round(p.quantity*p.rate , 2) AS cost 
 		                                 FROM purchases p, transactions t
-		                                 WHERE t.id = p.transaction_id AND t.transaction_date AND p.item_id = '$item_id'
+		                                 WHERE t.id = p.transaction_id AND t.transaction_date  < NOW() AND p.item_id = '$item_id'
 		                                 ) AS s
 		                            GROUP BY s.item_id
 		                            ";
 		             $sold_item_result = mysqli_fetch_assoc(mysqli_query($conn, $sql_get_product_sales_summary));
-
+		        
 		         // Update the remaining value of item
 	             $row['supply_quantity'] = number_format(($row['supply_quantity'] - $sold_item_result['sold_quantity']), 2); //deduct total quantity of sold item to original supply quantity
 	             $row['supply_heads'] = number_format(($row['supply_heads'] - $sold_item_result['sold_heads']), 2); //deduct head count of sold item to original supply head count
