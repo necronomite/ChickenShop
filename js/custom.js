@@ -1299,6 +1299,8 @@ function buildHistory(name){
 		var debt = item["total_price"]
 		var paid = item["paid"]
 
+		console.log("start : "+start+"      middle date: "+td+"           end: "+end)
+
 		if(within(start,td,end)){
 			console.log(td+" is within "+start+" and "+end)
 			purchases+=parseFloat(debt)
