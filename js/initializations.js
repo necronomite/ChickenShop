@@ -17,7 +17,6 @@
 
 function autoQuery(){
   queryTransactions()
-  queryExpenses()
 }
 function queryHistory(){
 

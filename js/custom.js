@@ -536,6 +536,7 @@
 
 			$("#daily-transactions-products").append(dom);
 		}
+		queryExpenses()
 	}
 
 	function submitTransaction(){
@@ -646,6 +647,32 @@
 		console.log(items)
 		saveEditedTransaction(tid, date,name,paid,invoice,items)
 	}
+
+	$(document).on('click', ".card-reveal .edit-transaction #delete-transaction", function(){
+		var tid = $(".card-reveal .edit-transaction #edit-tid").val()
+		console.log("deleting transaction with id "+tid)
+		$.ajax({
+			url: host_php_url+"Delete_Transaction.php",
+			type: "post",
+			data: {transaction_id:tid},
+			dataType: 'json',
+			cache: false,
+			success: function(data){
+
+				console.log("data received --- "+data)
+				queryTransactions()
+				$(".edit-transaction .card-title").click()
+				clearNewTransactionsForm();
+				toast("Successfully Deleted")
+
+			},
+			error: function(error){
+				console.log(error);
+			}
+		});
+	})
+
+
 
 	function saveEditedTransaction(tid, date,name,paid,invoice,items){
 		console.log("saving the following info...")
@@ -1108,6 +1135,9 @@
 		$("#tr-exps").text(parseFloat(expense_total).toFixed(2))
 		var profit = $("#tr-total").text() - expense_total
 		$("#tr-prof").text(parseFloat(profit).toFixed(2))
+		console.log("total is "+$("#tr-total").text())
+		console.log("expenses total is "+expense_total)
+		console.log("therefore profit is "+ parseFloat(profit).toFixed(2))
 	}
 
 	expenses_counter = 0
