@@ -287,7 +287,7 @@
 
 	$(document).on('click', ".card-reveal .edit-transaction .submit-btn", submitEditedTransaction)
 
-	$(document).on('click', ".card-reveal .collp-edit-btn span", function () {
+	$(document).on('click', "#cust-tab .collp-edit-btn span", function () {
 		$(".card-reveal .edit-transaction").removeClass("hidden")
 		$(".card-reveal .new-transaction").addClass("hidden")
 
