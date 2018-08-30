@@ -9,7 +9,7 @@
   $('select').formSelect();
   M.updateTextFields();
   setDatePicker()
-  queryInit()
+  // queryInit()
   autoQuery()
   queryDebts()
   queryWeek()

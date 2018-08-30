@@ -86,42 +86,7 @@
                     <div class="col s2 fe">Total Price </div>
                     <div class="col s2 fe">Paid</div>
                 </div>
-                <ul class="collapsible transaction-items noshadow" id="daily-transactions-customers">
-					<li class="active">      
-						<div class="collapsible-header row tr-item-title">      	
-							<span class="col s8 tr-name">Sanny Servidad</span>      	
-							<span class="col s2 tr-cost fe">32.00</span>      	
-							<span class="col s2 tr-paid fe">12.00</span>
-							   	
-						</div>
-						<div class="collp-edit-btn"><span>EDIT</span></div>
-						<div class="collapsible-body" style="display: block;">      	
-							<div class="row blk">      		
-								<span class="col s3">Product Name</span>      		
-								<span class="col s2">Weight</span>      		
-								<span class="col s3 fm">Php/kg</span>      		
-								<span class="col s2">Chk. Heads</span>      		
-								<span class="col s2 fe">Price</span>      	
-							</div>      	
-							<div class="sold-items">	      	  
-								<div class="sold-item row">	      		
-									<span class="col s3">Chicken</span>	      		
-									<span class="col s2">4.00 kg</span>	      		
-									<span class="col s3 fm">3.00</span>	      		
-									<span class="col s2">2</span>	      		
-									<span class="col s2 fe">12.00</span>	      	  
-								</div>	      	  
-								<div class="sold-item row">	      		
-									<span class="col s3">Gizzard</span>	      		
-									<span class="col s2">5.00 kg</span>	      		
-									<span class="col s3 fm">4.00</span>	      		
-									<span class="col s2"></span>	      		
-									<span class="col s2 fe">20.00</span>	      	  
-								</div>	        
-							</div>      
-						</div>    
-					</li>
-                </ul>
+                <ul class="collapsible transaction-items noshadow" id="daily-transactions-customers"></ul>
             </div>
             <!-- END OF CUSTOMER TAB -->
             <!-- PRODUCT TAB -->
@@ -182,14 +147,15 @@
                             </div>
                         </div>
                         <div class="products-bought-label fac">
-                            <div class="w160">Product</div>
+                            <div class="w150">Product</div>
                             <div class="w80">Weight(kg)</div>
                             <div class="w80">Php/kg</div>
-                            <div class="w80 chk-label hidden">Heads</div>
+                            <div class="chk-label op0">Heads</div>
+                            <div class="w70 fe">Cost</div>
                         </div>
                         <div class="products-bought">
                             <div class="product-field fs">
-                                <div class="prod-name input-field col w160">
+                                <div class="prod-name input-field col w150">
                                     <select class="">
 						          	<option value="" disabled selected>Choose Product</option>
 										  </select>
@@ -203,10 +169,11 @@
                                 <div class="chk-heads fs op0">
                                     <input type="number" min="0" max="1000" value="0">
                                 </div>
+                                <div class="w70 fe prod-price"></div>
                                 <i class="material-icons right item-close c-hov grow fm">close</i>
                             </div>
                             <div class="product-field another-product fs">
-                                <div class="prod-name input-field col w160">
+                                <div class="prod-name input-field col w150">
                                     <select class="">
 						          		<option value="" disabled selected>Another Product</option>
 									</select>
@@ -217,7 +184,8 @@
 
                         </div>
                     </div>
-                    <div class="buttons fe fac">
+                    <div class="buttons fsb fac">
+                        <div class="input-field  size15 blk" >Total: <span class="transaction-total gry">₱0</span></div>
                         <div class="submit-btn disabled bottom waves-effect">
                             <a href="#" class="black-text">SAVE TRANSACTION</a>
                         </div>
@@ -260,14 +228,15 @@
                         </div>
 
                         <div class="products-bought-label fac">
-                            <div class="w160">Product</div>
+                            <div class="w150">Product</div>
                             <div class="w80">Weight(kg)</div>
                             <div class="w80">Php/kg</div>
-                            <div class="w80 chk-label hidden">Heads</div>
+                            <div class="chk-label">Heads</div>
+                            <div class="w70 fe">Cost</div>
                         </div>
                         <div class="products-bought">
                             <div class="product-field fs">
-                                <div class="prod-name input-field col w160">
+                                <div class="prod-name input-field col w150">
                                     <select class="">
 						          	<option value="" disabled selected>Choose Product</option>
 										  </select>
@@ -281,6 +250,7 @@
                                 <div class="chk-heads fs op0">
                                     <input type="number" min="0" max="1000" value="0">
                                 </div>
+                                <div class="w70 prod-price"></div>
                                 <i class="material-icons right item-close c-hov grow fm">close</i>
                             </div>
                             <div class="product-field another-product fs">
@@ -298,6 +268,9 @@
                     <div class="buttons fsb fac">
                         <div class="disabled bottom waves-effect" id="delete-transaction">
                             <a href="#" class="black-text">DELETE TRANSACTION</a>
+                        </div>
+                      
+                        <div class="input-field blk size15" >Total: <span class="transaction-total gry">₱0</span>
                         </div>
                         <div class="submit-btn disabled bottom waves-effect">
                             <a href="#" class="black-text">SAVE EDITED TRANSACTION</a>
@@ -342,7 +315,7 @@
 
     <div id="tab2" class="col s12"><div class="tabcontent">
 		<div id="inventory-space" class=" tabcontent fjc">
-			<div class="card fac">
+			<div class="fac">
 				<div id="inventory-form" class="card">
 					<div class="fac fs cc cc-title">
 						<i class="material-icons left ">credit_card</i>

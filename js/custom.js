@@ -33,7 +33,7 @@
 	
 	$(document).on('click', "#product-modal .cancel", resetProductModal)
 
-	$(document).on('change', "#product-modal .supplies .supply .spd-name input.autocomplete", function () {
+	$(document).on('change click', "#product-modal .supplies .supply .spd-name input.autocomplete", function () {
 		var product = $(this).val()
 		var granparent = $(this).parent().parent()
 		var heads_field = granparent.find(".spd-heads")
@@ -212,6 +212,29 @@
 		toggleChickenLabel()
 	});
 
+	$(document).on('click change keyup', "#tab1 .card-reveal .product-field input[type='number']", function () {
+		var g = $(this).parent().parent()
+		var qty = g.find(".prod-qty input").val()
+		var rate = g.find(".prod-rate input").val()
+		g.find(".prod-price").text((qty*rate).toFixed(2))
+		computeTransactionTotal()
+	})
+
+	function computeTransactionTotal(){
+		$("#tab1 #transactions-form .card-reveal .content").each(function(){
+			console.log("this is a content")
+			var total = 0
+			$(this).find(".products-bought .product-field .prod-price").each(function(){
+				var value = parseFloat($(this).text())
+				total+=value
+				// parseFloat(sales).toFixed(2)
+			})
+			console.log("total is "+total)
+			total = parseFloat(total.toFixed(2)).toLocaleString('en')
+			$(this).parent().find(".buttons .transaction-total").html("₱"+total)
+		})
+	}
+
 	function toggleExes(){
 		if($(".card-reveal .product-field").not(".another-product").length>1){
 			$(".card-reveal .products-bought").addClass("multiple-products");
@@ -222,9 +245,9 @@
 	function toggleChickenLabel(){
 		var label = $(".products-bought-label .chk-label")
 		if($(".products-bought .prod-name.chk-prod").length){
-			label.show()
+			label.removeClass("op0")
 		}else{
-			label.hide()
+			label.addClass("op0")
 		}
 	}
 
@@ -249,7 +272,7 @@
 	$(document).on('click', ".card-reveal .products-bought .product-field.another-product", function () {
 		var copy = ""
 		+		"<div class='product-field another-product fs'>"
-		+			"<div class='prod-name input-field col w160'>"
+		+			"<div class='prod-name input-field col w150'>"
 		+		    	"<select>"
 		+		      		"<option disabled selected>Another Product</option>"
 		+			  	"</select>"
@@ -274,10 +297,13 @@
 	    +"		<div class='chk-heads fs op0'>"
 	    +"			<input type='number' min='0' max='1000' value='1'>"
 	    +"		</div>"
+	    +"      <div class='w70 fe prod-price fac'></div>"
 	    +"		<i class='material-icons right item-close c-hov grow fm'>close</i>"
 
 
 	    $(this).append(a);
+	    console.log("autoclicking")
+	    $(this).find(".prod-rate input").click()
 		toggleExes()
 	});
 
@@ -292,7 +318,7 @@
 		$(".card-reveal .new-transaction").addClass("hidden")
 
 		$("#transactions-form .activator").click()
-		var tid = $(this).parent().parent().attr("value")
+		var tid = $(this).parent().parent().parent().attr("value")
 		console.log("finding id no. "+tid )
 		var ctrans = queried_transactions.customers
 		var match
@@ -345,8 +371,8 @@
 				}
 	  		})
 	  		
-	  		$(this).find(".prod-qty input").val(items[i]["quantity"])
-	  		$(this).find(".prod-rate input").val(items[i]["cost"])
+	  		$(this).find(".prod-qty input").val(items[i]["quantity"]).click()
+	  		$(this).find(".prod-rate input").val(items[i]["price"]).click()
 	  		$(this).find(".chk-heads input").val(items[i]["chicken_head"])
 	  		
 	  		i++
@@ -360,11 +386,12 @@
 
 	$(document).on('change', "#tab1 #inv-dp", function () {
 		var d = new Date(getDate("inv-dp"))
+		var today = new Date();
 		var options = 
 		{
 			"setDefaultDate": true,
 			"defaultDate" : d,
-			"maxDate":d
+			"maxDate":today
 		}
 		var elems = document.querySelectorAll('#newt-dp,#editt-dp,#prodsp-dp,#exp-dp');
  		M.Datepicker.init(elems, options);
@@ -429,7 +456,7 @@
 			+"      	<span class='col s2 tr-cost fe'>"+total+"</span>"
 			+"      	<span class='col s2 tr-paid fe'>"+amount_paid+"</span>"
 			+"    	</div>"
-			+" 		<div class='collp-edit-btn'><span>EDIT</span></div>"
+			+" 		<div class='collp-edit-btn'><div><span>EDIT</span></div></div>"
 			+"      <div class='collapsible-body'>"
 			+"      	<div class='row blk'>"
 			+"      		<span class='col s3'>Product Name</span>"
@@ -548,7 +575,10 @@
 
 		var items = []
 		var prods = []
+
+		var invalid = false
 		$(".card-reveal .new-transaction .product-field").not(".another-product").each(function(){
+			
 			var container = []
 			var prod = $(this).find(".select-wrapper select").val() //modified by sanz, dynamically added selects does not have an outer DIV element with a class "prod-name"
 			var qty = $(this).find(".prod-qty input").val()
@@ -562,13 +592,15 @@
 			container.push(qty) //weight in kg
 			container.push(rate)
 			container.push(chicken_head)
-			if(prod==null){
+			if(prod==null||prod==''||qty==''||rate==''||name==''||paid==''||invoice==''){
 				console.log("failed : "+prod+'   '+qty+'   '+rate+"   "+chicken_head)
 				toast("Please fill in all fields")
+				invalid = true
 				return false
 			}else if(prods.indexOf(prod)!=-1){
 				console.log("product"+prod+" previously detected")
 				toast("Please remove duplicate entries")
+				invalid = true
 				return false
 			}else{
 				console.log("pushed : "+prod+'   '+qty+'   '+rate+"   "+chicken_head)
@@ -578,7 +610,12 @@
 			
 		})
 		console.log(items)
-		saveNewTransaction(date,name,paid,invoice,items)
+		
+		if(invalid==false){
+			toast("Saved Transaction")
+			saveNewTransaction(date,name,paid,invoice,items)
+		}
+		
 	}
 
 	function saveNewTransaction(date,name,paid,invoice,items){
@@ -615,6 +652,7 @@
 
 		var items = []
 		var prods = []
+		var invalid = false
 		$(".card-reveal .edit-transaction .product-field").not(".another-product").each(function(){
 			var container = []
 			var prod = $(this).find(".select-wrapper select").val() //modified by sanz, dynamically added selects does not have an outer DIV element with a class "prod-name"
@@ -629,13 +667,15 @@
 			container.push(qty) //weight in kg
 			container.push(rate)
 			container.push(chicken_head)
-			if(prod==null){
+			if(prod==null||prod==''||qty==''||rate==''||name==''||paid==''||invoice==''){
 				console.log("failed : "+prod+'   '+qty+'   '+rate+"   "+chicken_head)
 				toast("Please fill in all fields")
+				invalid = true
 				return false
 			}else if(prods.indexOf(prod)!=-1){
 				console.log("product"+prod+" previously detected")
 				toast("Please remove duplicate entries")
+				invalid = true
 				return false
 			}else{
 				console.log("pushed : "+prod+'   '+qty+'   '+rate+"   "+chicken_head)
@@ -645,7 +685,11 @@
 			
 		})
 		console.log(items)
-		saveEditedTransaction(tid, date,name,paid,invoice,items)
+		if(invalid==false){
+			toast("Saved Edited Transaction")
+			saveEditedTransaction(tid, date,name,paid,invoice,items)
+		}
+		
 	}
 
 	$(document).on('click', ".card-reveal .edit-transaction #delete-transaction", function(){
@@ -790,6 +834,7 @@
 			dataType: 'json',
 			success: function(data){
 				buildExpenses(data)
+				queryInit()
 					
 			},
 			error: function(error){
@@ -800,8 +845,8 @@
 	}
 
 	$(document).on('click', "#expense-items .collp-edit-btn span", function () {
-		id = $(this).parent().parent().attr("value")
-		if(($(this)).parent().prev().hasClass("regular-expense")){
+		id = $(this).parent().parent().parent().attr("value")
+		if(($(this)).parent().parent().prev().hasClass("regular-expense")){
 			console.log(id+" this is a regular expense")
 			editRegularExpense(id)
 		}else{
@@ -1079,7 +1124,7 @@
 			+" 			<span class='col s10 tr-name'>"+source+"</span>"  
 			+" 			<span class='col s2 tr-paid fe'>"+amount+"</span>"	
 			+" 		</div>"
-			+" 		<div class='collp-edit-btn'><span>EDIT</span></div>"
+			+" 		<div class='collp-edit-btn'><div><span>EDIT</span></div></div>"
 			+" 	</li>"
 			$("#expenses-content #expense-items").append(dom);
 		}
@@ -1099,7 +1144,7 @@
 			+" 			<span class='col s10 tr-name'>"+name+"</span>"  
 			+" 			<span class='col s2 tr-paid fe'>"+total+"</span>"	
 			+" 		</div>"
-			+" 		<div class='collp-edit-btn'><span>EDIT</span></div>"
+			+" 		<div class='collp-edit-btn'><div><span>EDIT</span></div></div>"
 			+"		<div class='collapsible-body'>"    	
 			+"			<div class='row blk'>"     		
 			+"				<span class='col s3'>Product</span>"     		
@@ -1325,6 +1370,7 @@ function buildHistory(name){
 		var td = item["transaction_date"]
 		var d = td.split("-")
 		var date = b(d[1])+" "+d[2]+", "+d[0]
+		var tid = item["tid"]
 		var type = item["type"]
 		var debt = item["total_price"]
 		var paid = item["paid"]
@@ -1351,6 +1397,7 @@ function buildHistory(name){
 				+"			<span class='col s3 fe'>"+debt+"</span>"
 				+"			<span class='col s3 fe'>"+paid+"</span>"
 				+"		</div>"
+
 				+"	</li>"
 
 
@@ -1360,12 +1407,13 @@ function buildHistory(name){
 				var items = item["items"]
 
 				dom+=""
-				+"	<li class='active'>"
+				+"	<li class='active' value='"+tid+"'>"
 				+"		<div class='collapsible-header row tr-item-title'>"
 				+"			<span class='col s6'>"+date+"</span>"
 				+"			<span class='col s3 fe'>"+debt+"</span>"
 				+"			<span class='col s3 fe'>"+paid+"</span>"
 				+"		</div>"
+				+" 		<div class='collp-edit-btn'><div><span>EDIT</span></div></div>"
 				+"		<div class='collapsible-body'>"
 				+"			<div class='row blk'>"
 				+"				<span class='col s3'>Product Name</span>"
@@ -1516,7 +1564,7 @@ function buildInventory(){
 		+"		<div class='regular-item row tr-item-title'>" 	
 		+"			<span class='col s5'>"+name+"</span>"
 		+"			<span class='col s3'>"+heads+"</span>"  
-		+"			<span class='col s4 fe'>"+supply_quantity+"</span>"  	
+		+"			<span class='col s4 fe'>"+supply_quantity+"</span>"
 		+"		</div>"
 		+"	</li>"
 		$("#inventory-list").append(dom);
