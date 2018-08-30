@@ -68,8 +68,12 @@ h4, .h4, .card .card-title .w400>span{
   height: 48px;
 }
 .collapsible-header{
-  padding-left: calc(1rem - 2px)
+  padding-left: calc(1rem - 2px);
   border-left: 2px solid transparent;
+}
+.collapsible-header, .regular-expense{
+  min-height: 55px;
+  margin-bottom: 1px;
 }
 .card-tabs{
   height: 47px;
@@ -113,13 +117,13 @@ h4, .h4, .card .card-title .w400>span{
 }
 #tab1 .card-reveal div .content .products-bought{
   height: calc(100% - 187.25px);
-  width: 560px;
-  margin: 0 calc(50% - 280px);
+  width: 600px;
+  margin: 0 calc(50% - 300px);
   overflow: auto;
 }
 #tab1 .card-reveal div .content .products-bought-label{
-  width: 560px;
-  margin: 0 calc(50% - 280px);
+  width: 600px;
+  margin: 0 calc(50% - 300px);
 }
 #tab1 #product-modal .supp-label,
 #tab1 #product-modal .supplies{
@@ -246,7 +250,7 @@ h4, .h4, .card .card-title .w400>span{
 }
 
 .op0{
-  opacity: 0;
+  opacity: 0!important;
 }
 .op0 input{
   cursor: default;
@@ -270,11 +274,17 @@ h4, .h4, .card .card-title .w400>span{
 .w80{
   width: 80px;
 }
+.w70{
+  width: 70px;
+}
 .w100{
   width: 100px;
 }
 .w160{
   width: 160px;
+}
+.w150{
+  width: 150px;
 }
 .w120{
   width: 120px;
@@ -294,7 +304,8 @@ h4, .h4, .card .card-title .w400>span{
 
 
 .w160 .select-wrapper, 
-.w160 input[type="text"], 
+.w160 input[type="text"],
+.w150 .select-wrapper, 
 .w120 input[type="text"],
 .w100 input[type="number"],
 .w80 input[type="number"]
@@ -303,6 +314,9 @@ h4, .h4, .card .card-title .w400>span{
 }
 
 .chk-heads input[type="number"]{
+  width: 42px;
+}
+.chk-label{
   width: 42px;
 }
 
@@ -409,6 +423,9 @@ input[type="text"].gbtn:hover{
 }
 .size18{
   font-size: 18px;
+}
+.size15{
+  font-size: 15px;
 }
 .tcb{
   font-family: Roboto-Bold;
@@ -554,6 +571,7 @@ div[id^="tab"].active .tabcontent{
 #expenses-view{
   margin-right: 20px;
   min-width: 350px;
+  overflow: hidden;
 }
 
 #transactions-space,
@@ -662,7 +680,7 @@ input.datepicker.inv-dp{
 i.item-close{
   width: 42px;
   height: 42px;
-  margin-left: 40px;
+  margin-left: 35px;
   cursor: pointer;
 }
 .product-field.unclicked .prod-qty, .product-field.unclicked .prod-rate, .product-field.unclicked i{
@@ -671,15 +689,17 @@ i.item-close{
 .product-field.unclicked{
 
 }
-.bottom.submit-btn, #delete-transaction.bottom{
+.bottom.submit-btn, #delete-transaction.bottom, .buttons div.size15{
   font-size: 15px;
   transition: all 330ms;
   padding: 0px 16px;
   transition: color .3s ease;
   text-transform: uppercase;
   margin: 6px 0px;
-  color: white!important;
   text-decoration: none;
+}
+.buttons div.size15{
+  text-transform: capitalize;
 }
 
 
@@ -766,9 +786,14 @@ i.item-close{
 .modal .modal-content .datepicker-modal .modal-content{
   position: relative;
 }
-#balance-form, #inventory-form{
+#balance-form{
   height: 100%;
   width: 300px;
+}
+#inventory-form{
+  margin-right: 15px;
+  height: 100%;
+  width: 350px;
 }
 #history-form, #inv-sales-form{
   height: 100%;
@@ -898,6 +923,9 @@ i.item-close{
     font-size: 35px;
     font-family: Roboto-Bold;
 }
+#doughnut{
+  height: 100%;
+}
 
 
 body.print div.navbar, 
@@ -920,25 +948,48 @@ body.print #history-items{
 }
 .collp-edit-btn{
   opacity: 0;
-  position: absolute;
+  /*position: absolute;*/
+  margin-left: calc(100% - 210px);
   margin-top: -55px;
-  left: calc(100% - 230px);
+  /*left: calc(100% - 230px);*/
   font-family: Roboto-Bold;
-  cursor: pointer;
   text-align: center;
-  height: 54px;
+  height: 55px;
   width: 200px;
-  background-color: white;
   color: rgba(0,0,0,0.3);
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  /*display: none;*/
 }
+
+.collp-edit-btn div{
+  z-index: 100;
+  margin-top: -1px;
+  height: 52px;
+  width: 200px;
+  background-color: white;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  
+}
+
 .collp-edit-btn:hover{
   opacity: 1;
 }
 
+#history-items .collp-edit-btn{
+  width: 100px;
+  margin-left: calc(100% - 110px);
+}
+#history-items .collp-edit-btn div{
+  width: 100px;
+}
+
 .collp-edit-btn span{
+      margin-top: -2px;
+  cursor: pointer;
   line-height: 40px;
   height: 40px;
   width: 100px;
