@@ -221,8 +221,7 @@
 	})
 
 	function computeTransactionTotal(){
-		$("#tab1 #transactions-form .card-reveal .content").each(function(){
-			console.log("this is a content")
+		$("#tab1 #transactions-form .card-reveal div .content").each(function(){
 			var total = 0
 			$(this).find(".products-bought .product-field .prod-price").each(function(){
 				var value = parseFloat($(this).text())
@@ -1329,6 +1328,7 @@ $(document).on('click', "#balance-items li", function(){
 
 $(document).on('click', "#balance-items li div", function(){
 	var customerName = $(this).find("span")[0].textContent
+	history_active_name = customerName
 	buildHistory(customerName)
 })
 
@@ -1347,6 +1347,7 @@ $(document).on('change', "#history-form .datepicker", function () {
 });
 
 function buildHistory(name){
+	cname = name
 	$("#history-items").html("")
 	var total_balance = 0
 	console.log("history of "+name)
@@ -1391,7 +1392,7 @@ function buildHistory(name){
 				paid = (paid>0)? (paid+"") : ""
 				
 				dom+=""
-				+"	<li>"
+				+"	<li class='"+type+"'>"
 				+"		<div class='regular-item row tr-item-title'>"
 				+"			<span class='col s6'>"+date+"</span>"
 				+"			<span class='col s3 fe'>"+debt+"</span>"
@@ -1407,7 +1408,7 @@ function buildHistory(name){
 				var items = item["items"]
 
 				dom+=""
-				+"	<li class='active' value='"+tid+"'>"
+				+"	<li class='"+type+"' value='"+tid+"'>"
 				+"		<div class='collapsible-header row tr-item-title'>"
 				+"			<span class='col s6'>"+date+"</span>"
 				+"			<span class='col s3 fe'>"+debt+"</span>"
@@ -1461,7 +1462,93 @@ function buildHistory(name){
 	}
 	var balance = purchases - payments
 	$("#history-balance").text(balance.toFixed(2))
+	$("#history-cname").text(cname)
 }
+
+
+$(document).on('click', "#history-form #history-items .purchase .collp-edit-btn span", function () {
+		$(".card-reveal .edit-transaction").removeClass("hidden")
+		$(".card-reveal .new-transaction").addClass("hidden")
+
+		$("#transactions-form .activator").click()
+		var tid = $(this).parent().parent().parent().attr("value")
+		console.log("finding id no. "+tid )
+		var ctrans = customer_history
+		var match
+		var name = history_active_name
+		console.log("name is "+name+" and tid is "+tid)
+
+
+		for(t in ctrans){
+			console.log("------------------------")
+			if(t==name){
+				console.log(t+" is the same as "+name)
+				console.log("------------")
+				for(h in ctrans[t]){
+					var item = ctrans[t][h]
+					// console.log("item is "+item)
+					if(item["tid"]==tid){
+						match = item
+						break
+					}
+				}
+				break
+			}	
+		}
+		console.log("match found")
+		console.log(match)
+
+		
+		var invoice = match["invoice"]
+		var id = match["tid"]
+		var date = match["transaction_date"]
+		var total = match["total_price"]
+		var payment = match["paid"]
+		var items = match["items"]
+
+		$("#edit-name").val(name)
+		$("#edit-invoice").val(invoice)
+		$("#edit-payment").val(payment)
+		$("#edit-tid").val(tid)
+
+	  	var options = 
+		{
+			"setDefaultDate": true,
+			"defaultDate" : new Date(date)
+		}
+		console.log("----------")
+		var elems = document.querySelectorAll('#editt-dp');
+	  	M.Datepicker.init(elems, options);
+	  	$("#tab1 .card-reveal .products-bought i.item-close").click();
+	  	for (i = 0; i < items.length; i++) {
+	  		$(".edit-transaction .another-product").click()
+	  	}
+	  	i = 0
+	  	console.log(items)
+	  	console.log("----------")
+	  	$(".card-reveal .edit-transaction .product-field").not(".another-product").each(function(){
+	  		console.log(item[i])
+	  		// $(this).find(".prod-name input").val(items[i]["name"])
+	  		$(this).find(".prod-name ul.select-dropdown li").each(function(){
+	  			var zxc = $(this).find("span").text()
+	  			if(zxc == items[i]["name"]){
+					$(this).click()
+				}
+	  		})
+	  		
+	  		$(this).find(".prod-qty input").val(items[i]["quantity"]).click()
+	  		$(this).find(".prod-rate input").val(items[i]["rate"]).click()
+	  		$(this).find(".chk-heads input").val(items[i]["chicken_head"])
+	  		
+	  		i++
+	  	})
+
+	  	// .find(".chk-heads")
+	  	// $(".products-bought-label .chk-label").show()
+
+	  	M.updateTextFields();
+	  	openT("tab1")
+	});
 
 
 

@@ -10,6 +10,8 @@ var supplier_autofills=[]
 var customer_history=[]
 var inventory_sales=[]
 
+var history_active_name
+
 var edit_supp_date=""
 var edit_supp_id=""
 var edit_exp_id=""
@@ -81,6 +83,9 @@ function getM(elem){
 function getDP(elem){
 	return M.Datepicker.getInstance(elem);
 }
+function getT(elem){
+	return M.Tabs.getInstance(elem);
+}
 
 function closeM(string){
 	getM($(string)).close()
@@ -88,6 +93,9 @@ function closeM(string){
 
 function openM(string){
 	getM($(string)).open()
+}
+function openT(string){
+	getT($(".tabs")).select(string)
 }
 
 function getDate(string){
