@@ -917,7 +917,7 @@ i.item-close{
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: calc(-50% + 100px);
+    margin-top: calc(-50% + 130px);
 }
 #doughnut-chart-label div:first-child {
     font-size: 35px;

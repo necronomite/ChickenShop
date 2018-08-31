@@ -1305,6 +1305,11 @@ function buildBalances(){
     		payments+=parseFloat(item.paid)
     	}
     	var balance = purchases - payments
+
+    	if(c==history_active_name&&history_active_name!=""){
+    		active="active"
+    		buildHistory(c)
+    	}
     	
 		var dom = ""
 		dom+=""
@@ -1398,7 +1403,7 @@ function buildHistory(name){
 				+"			<span class='col s3 fe'>"+debt+"</span>"
 				+"			<span class='col s3 fe'>"+paid+"</span>"
 				+"		</div>"
-
+				+" 		<div class='collp-edit-btn'><div><span>EDIT</span></div></div>"
 				+"	</li>"
 
 

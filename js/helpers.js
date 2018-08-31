@@ -15,6 +15,9 @@ var history_active_name
 var edit_supp_date=""
 var edit_supp_id=""
 var edit_exp_id=""
+
+var edit_payment_date=""
+var edit_customer_date=""
 function a(s){
 	return ((s<10) ? "0"+s : ""+s);
 }
