@@ -1399,9 +1399,9 @@ function buildHistory(name){
 				dom+=""
 				+"	<li class='"+type+"'>"
 				+"		<div class='regular-item row tr-item-title'>"
-				+"			<span class='col s6'>"+date+"</span>"
-				+"			<span class='col s3 fe'>"+debt+"</span>"
-				+"			<span class='col s3 fe'>"+paid+"</span>"
+				+"			<span class='col s6 h-date'>"+date+"</span>"
+				+"			<span class='col s3 fe h-debt'>"+debt+"</span>"
+				+"			<span class='col s3 fe h-paid'>"+paid+"</span>"
 				+"		</div>"
 				+" 		<div class='collp-edit-btn'><div><span>EDIT</span></div></div>"
 				+"	</li>"
@@ -1555,6 +1555,34 @@ $(document).on('click', "#history-form #history-items .purchase .collp-edit-btn 
 	  	openT("tab1")
 	});
 
+$(document).on('click', "#history-form #history-items .payment .collp-edit-btn span", function () {
+		var field = $(this).parent().parent().parent().find(".regular-item.row")
+		var date = field.find(".h-date").text()
+		
+		var paid = field.find(".h-paid").text()
+
+		$("#paying-cust").val(history_active_name)
+		$("#cust-payment").val(paid)
+
+		M.updateTextFields()
+
+		$("#payment-modal").addClass("editmode")
+		openM("#payment-modal")
+	});
+$(document).on('click', "#history-form #history-items .debt .collp-edit-btn span", function () {
+		var field = $(this).parent().parent().parent().find(".regular-item.row")
+		var date = field.find(".h-date").text()
+		var debt = field.find(".h-debt").text()
+
+		$("#new-cust").val(history_active_name)
+		$("#new-cust-debt").val(debt)
+
+		M.updateTextFields()
+
+		$("#payment-modal").addClass("editmode")
+		openM("#payment-modal")
+	});
+
 
 
 function buildFinancialGraph(){
@@ -1691,8 +1719,10 @@ function printHistory(){
 
 
 $(document).on('click', "#user-modal .cancel, #payment-modal .cancel", function(){
-	$(this).parent().parent().find("input").val("")
-
+	var a = $(this).parent().parent()
+	a.find("input").val("")
+	a.removeClass("editmode")
+	M.updateTextFields()
 })
 
 $(document).on('click', "#save-cust-payment", function () {

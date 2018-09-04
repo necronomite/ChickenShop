@@ -1000,6 +1000,13 @@ body.print #history-items{
   background-color: rgba(0,0,0,0.08);
 }
 
+.edm, .modal.editmode .dfm{
+  display: none;
+}
+.modal.editmode .edm{
+  display: inline-block;
+}
+
 /*#balance-space{
   height: auto;
 }*/

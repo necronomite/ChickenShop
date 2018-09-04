@@ -92,6 +92,7 @@ function createTables($servername, $username, $password, $dbname){
 					amount DECIMAL(10, 2)
 				);
 				CREATE TABLE expenses (
+					id 		INT(100) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 					record_date DATE,
 					source VARCHAR(100),					
 					amount DECIMAL(10, 2)
