@@ -158,7 +158,7 @@ h4, .h4, .card .card-title .w400>span{
   /*color: rgba(255,144,0,1);*/
   background: linear-gradient(to left, #fe9923 0%, rgba(255,0,0,.7) 99%);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  /*-webkit-text-fill-color: transparent;*/
 }
 .tabs .tab a{
   color: rgba(0,0,0,.54);
@@ -673,6 +673,10 @@ input.datepicker.inv-dp{
   padding: 0 1rem;
   text-transform: uppercase;
 }
+input.datepicker.inv-dp.nomarg{
+  margin: 0px;
+  margin-bottom: 65px;
+}
 
 .add-new-product{
   width: 200px;
@@ -682,6 +686,10 @@ i.item-close{
   height: 42px;
   margin-left: 35px;
   cursor: pointer;
+}
+
+#product-modal i.item-close{
+  margin-left: 180px;
 }
 .product-field.unclicked .prod-qty, .product-field.unclicked .prod-rate, .product-field.unclicked i{
   display: none;
@@ -1006,6 +1014,9 @@ body.print #history-items{
 .modal.editmode .edm{
   display: inline-block;
 }
+/*.modal.editmode.w400 .modal-footer{
+  height: 500px;
+}*/
 
 /*#balance-space{
   height: auto;

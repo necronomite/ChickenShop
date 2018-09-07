@@ -10,7 +10,9 @@ var supplier_autofills=[]
 var customer_history=[]
 var inventory_sales=[]
 
+var customer_list
 var history_active_name
+var edit_active_id
 
 var edit_supp_date=""
 var edit_supp_id=""
@@ -18,6 +20,13 @@ var edit_exp_id=""
 
 var edit_payment_date=""
 var edit_customer_date=""
+
+var edit_start_debt_date=""
+var edit_start_debt_amount=""
+
+var edit_payment_date=""
+var edit_payment_amount=""
+
 function a(s){
 	return ((s<10) ? "0"+s : ""+s);
 }
@@ -103,6 +112,28 @@ function openT(string){
 
 function getDate(string){
 	return dateFormat(new Date(getDP(g(string)).date))
+}
+
+function setDate(selector, datestring){
+	var options = 
+	{
+		"setDefaultDate": true,
+		"defaultDate" : new Date(datestring)
+	}
+	console.log("----------")
+	var elems = document.querySelectorAll(selector);
+  	M.Datepicker.init(elems, options);
+}
+
+function findCID(name){
+	for(c in customer_list){
+		item = customer_list[c]
+		if(item.name == name){
+			return item.id
+			break
+		}
+	}
+	return 0
 }
 
 

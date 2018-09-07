@@ -48,12 +48,12 @@
 		toggleChickenLabelPS()
 	})
 
-	$(document).on('click change keyup', "#product-modal input[type='number']", function () {
-		var g = $(this).parent().parent()
-		var qty = g.find(".spd-qty input").val()
-		var rate = g.find(".spd-rate input").val()
-		g.find(".spd-price").text((qty*rate).toFixed(2))
-	})
+	// $(document).on('click change keyup', "#product-modal input[type='number']", function () {
+	// 	var g = $(this).parent().parent()
+	// 	var qty = g.find(".spd-qty input").val()
+	// 	var rate = g.find(".spd-rate input").val()
+	// 	g.find(".spd-price").text((qty*rate).toFixed(2))
+	// })
 
 	$(document).on('click', "#save-new-customer", function () {
 		var name = $("#user-modal #new-cust")
@@ -121,7 +121,8 @@
 			var container = []
 			var prod = $(this).find(".spd-name input").val()
 			var qty = $(this).find(".spd-qty input").val()
-			var rate = $(this).find(".spd-rate input").val()
+			// var rate = $(this).find(".spd-rate input").val()
+			var rate = 1
 			var heads = $(this).find(".spd-heads input").val()
 
 			var ischicken = $(this).hasClass("chk-prod")
@@ -135,7 +136,11 @@
 			if(prod==''||qty==''||rate==''){
 				console.log("failed : "+prod+'-'+qty+'-'+rate+"-"+head)
 				has_blanks = true
-			}else if(prods.indexOf(prod)!=-1){
+			}else if(ischicken&&head==''){
+				console.log("failed : "+prod+'-'+qty+'-'+rate+"-"+head)
+				has_blanks = true
+			}
+			else if(prods.indexOf(prod)!=-1){
 				has_repeats = true
 			}else{
 				console.log("pushed : "+prod+'   '+qty+'   '+rate+"   "+head)
@@ -784,7 +789,7 @@
 						customer_names[key]=value
 					}
 					customer_autofills = customer_names
-
+					customer_list = data['customers']
 
 					$('.customer-info #customer-name.autocomplete, .customer-info #edit-name.autocomplete, #payment-modal #paying-cust.autocomplete').autocomplete({
 				      data: customer_names,
@@ -893,7 +898,7 @@
 	  		console.log(products[i])
 	  		$(this).find(".spd-name input").val(products[i]["name"]).click()
 	  		$(this).find(".spd-qty input").val(products[i]["quantity"]).click()
-	  		$(this).find(".spd-rate input").val(products[i]["rate"]).click()
+	  		// $(this).find(".spd-rate input").val(products[i]["rate"]).click()
 	  		$(this).find(".spd-heads input").val(products[i]["heads"])
 	  		i++
 	  	})
@@ -984,7 +989,8 @@
 			var container = []
 			var prod = $(this).find(".spd-name input").val()
 			var qty = $(this).find(".spd-qty input").val()
-			var rate = $(this).find(".spd-rate input").val()
+			// var rate = $(this).find(".spd-rate input").val()
+			var rate = 1
 			var heads = $(this).find(".spd-heads input").val()
 
 			var ischicken = $(this).hasClass("chk-prod")
@@ -994,11 +1000,15 @@
 			container.push(qty)
 			container.push(rate)
 			container.push(head)
-			
+
 			if(prod==''||qty==''||rate==''){
 				console.log("failed : "+prod+'-'+qty+'-'+rate+"-"+head)
 				has_blanks = true
-			}else if(prods.indexOf(prod)!=-1){
+			}else if(ischicken&&head==''){
+				console.log("failed : "+prod+'-'+qty+'-'+rate+"-"+head)
+				has_blanks = true
+			}
+			else if(prods.indexOf(prod)!=-1){
 				has_repeats = true
 			}else{
 				console.log("pushed : "+prod+'   '+qty+'   '+rate+"   "+head)
@@ -1127,6 +1137,7 @@
 			+" 	</li>"
 			$("#expenses-content #expense-items").append(dom);
 		}
+
 		queried_supplies = data.supply
 		sdata = data.supply
 		for(i1 in sdata){
@@ -1135,21 +1146,22 @@
 			var name = sdata[i1]['name']
 			var total = sdata[i1]['total']
 			var products = sdata[i1]['products']
-			expense_total+=parseFloat(total)
+			// expense_total+=parseFloat(total)
 			console.log(total+" is added to expenses = "+expense_total)
 			dom+=""
 			+" 	<li value='"+id+"' >"
 			+" 		<div class='collapsible-header row tr-item-title'>"   	
 			+" 			<span class='col s10 tr-name'>"+name+"</span>"  
-			+" 			<span class='col s2 tr-paid fe'>"+total+"</span>"	
+			+" 			<span class='col s2 tr-paid fe'>"+"Inventory"+"</span>"	
+			// +" 			<span class='col s2 tr-paid fe'>"+total+"</span>"	
 			+" 		</div>"
 			+" 		<div class='collp-edit-btn'><div><span>EDIT</span></div></div>"
 			+"		<div class='collapsible-body'>"    	
 			+"			<div class='row blk'>"     		
 			+"				<span class='col s3'>Product</span>"     		
-			+"				<span class='col s3'>Weight</span>"    		
-			+"				<span class='col s3 fm'>Php/kg</span>"    		
-			+"				<span class='col s3 fe'>Heads</span>"    	
+			+"				<span class='col s5 fe'>Weight</span>"    		
+			// +"				<span class='col s3 fm'>Php/kg</span>"    		
+			+"				<span class='col s4 fe'>Heads</span>"    	
 			+"			</div>"
 			+"			<div class='sold-items'>"
 
@@ -1162,9 +1174,9 @@
 		    	dom+=""
 	    		+"			<div class='sold-item row'>	"      		
 				+"				<span class='col s3'>"+name+"</span>	  "    		
-				+"				<span class='col s3'>"+quantity+"</span>	  "    		
-				+"				<span class='col s3 fm'>"+rate+"</span>	 "     		
-				+"				<span class='col s3 fe'>"+heads+"</span>	    "  	   	  
+				+"				<span class='col s5 fe'>"+quantity+"</span>	  "    		
+				// +"				<span class='col s3 fm'>"+rate+"</span>	 "     		
+				+"				<span class='col s4 fe'>"+heads+"</span>	    "  	   	  
 				+"			</div>	"
 			}
 		    	
@@ -1266,323 +1278,390 @@
 //EXPENSES MODAL
 
 
+//BALANCES AND HISTORY PAGE
 
-function queryDebts(){
-	$.ajax({
-		url: host_php_url+"Get_Customer_Debts.php",
-		type: "post",
-		data: {},
-		dataType: 'json',
-		success: function(data){
-			console.log("Received debts data");
-			customer_history = data
-			buildBalances()
-		},
-		error: function(error){
-			console.log(error);
-		}
-		
-	});
-}
-
-function buildBalances(){
-	$("#balance-items").html("")
-	console.log("balances")
-	// TODO ADD EMPTY CLASS FOR WHEN THERE'S NOTHING TO FILL IN
-	if(Object.keys(customer_history).length){
-		$("#balance-form").removeClass("empty")
-	}else{
-		$("#balance-form").addClass("empty")
-	}
-	var active = ""
-	for(c in customer_history){
-		var payments = 0
-		var purchases = 0
-		
-    	for(h in customer_history[c]){
-    		var item = customer_history[c][h]
-    		purchases+=parseFloat(item.total_price)
-    		payments+=parseFloat(item.paid)
-    	}
-    	var balance = purchases - payments
-
-    	if(c==history_active_name&&history_active_name!=""){
-    		active="active"
-    		buildHistory(c)
-    	}
-    	
-		var dom = ""
-		dom+=""
-		+"	<li class='"+active+"'>"
-		+"		<div class='regular-item row tr-item-title'>" 	
-		+"			<span class='col s10'>"+c+"</span>"   
-		+"			<span class='col s2 fe'>"+balance.toFixed(2)+"</span>"  	
-		+"		</div>"
-		+"	</li>"
-		$("#balance-items").append(dom);
-		active = ""
-	}
-}
-
-
-
-$(document).on('click', "#balance-items li", function(){
-	$("#balance-items li").removeClass("active")
-	$(this).addClass("active")
-})
-
-$(document).on('click', "#balance-items li div", function(){
-	var customerName = $(this).find("span")[0].textContent
-	history_active_name = customerName
-	buildHistory(customerName)
-})
-
-$(document).on('change', "#history-form .datepicker", function () { 
-	start = getDate("start-dp")
-	end = getDate("end-dp")
-	if($("#balance-items li.active div span").length){
-		name = $("#balance-items li.active div span")[0].textContent
-		buildHistory(name)
-	}else{
-		// name = $("#balance-items li div span")[0].textContent
-	}
-
-	// name = $("#balance-items li.active div span")[0].textContent
-	console.log("query from "+start+" to "+end)
-});
-
-function buildHistory(name){
-	cname = name
-	$("#history-items").html("")
-	var total_balance = 0
-	console.log("history of "+name)
-
-	hdata = customer_history[name]
-	if(hdata.length){
-		$("#history-form").removeClass("empty")
-	}else{
-		$("#history-form").addClass("empty")
-	}
-
-
-	start = getDate("start-dp")
-	end = getDate("end-dp")
-
-	
-	var payments = 0
-	var purchases = 0
-	for(i1 in hdata){
-		var item = hdata[i1]
-		var td = item["transaction_date"]
-		var d = td.split("-")
-		var date = b(d[1])+" "+d[2]+", "+d[0]
-		var tid = item["tid"]
-		var type = item["type"]
-		var debt = item["total_price"]
-		var paid = item["paid"]
-
-		console.log("start : "+start+"      middle date: "+td+"           end: "+end)
-
-		if(within(start,td,end)){
-			console.log(td+" is within "+start+" and "+end)
-			purchases+=parseFloat(debt)
-			payments+=parseFloat(paid)
-			var dom=""
-			var products=[]
-
-		
-
-			if(type=="debt"||type=="payment"){
-				debt = (debt>0)? (debt+"") : ""
-				paid = (paid>0)? (paid+"") : ""
-				
-				dom+=""
-				+"	<li class='"+type+"'>"
-				+"		<div class='regular-item row tr-item-title'>"
-				+"			<span class='col s6 h-date'>"+date+"</span>"
-				+"			<span class='col s3 fe h-debt'>"+debt+"</span>"
-				+"			<span class='col s3 fe h-paid'>"+paid+"</span>"
-				+"		</div>"
-				+" 		<div class='collp-edit-btn'><div><span>EDIT</span></div></div>"
-				+"	</li>"
-
-
-
-			}else if(type=="purchase"){
-
-				var items = item["items"]
-
-				dom+=""
-				+"	<li class='"+type+"' value='"+tid+"'>"
-				+"		<div class='collapsible-header row tr-item-title'>"
-				+"			<span class='col s6'>"+date+"</span>"
-				+"			<span class='col s3 fe'>"+debt+"</span>"
-				+"			<span class='col s3 fe'>"+paid+"</span>"
-				+"		</div>"
-				+" 		<div class='collp-edit-btn'><div><span>EDIT</span></div></div>"
-				+"		<div class='collapsible-body'>"
-				+"			<div class='row blk'>"
-				+"				<span class='col s3'>Product Name</span>"
-				+"				<span class='col s2 fe'>Weight (kg)</span>"
-				+"				<span class='col s3 fm'>Php/kg</span>"
-				+"				<span class='col s2 fm'>Chk. Heads</span>"
-				+"				<span class='col s2 fe'>Price</span>"
-				+"			</div>"
-				+"			<div class='buyers'>"
-
-
-
-			    for(i2 in items){
-			    	var heads = items[i2]['chicken_head']
-			       	var cost = items[i2]['cost']
-					var name = items[i2]['name']
-					var quantity = items[i2]['quantity']
-					var rate = items[i2]['rate']
-					var chk = (heads=="0")? "": heads
-
-					dom+=""
-
-					+"			<div class='buyer row'>"
-					+"				<span class='col s3'>"+name+"</span>"
-					+"				<span class='col s2 fe'>"+quantity+"</span>"
-					+"				<span class='col s3 fm'>"+rate+"</span>"
-					+"				<span class='col s2 fm'>"+chk+"</span>"
-					+"				<span class='col s2 fe'>"+cost+"</span>"
-					+"			</div>"
-				}
-
-				dom+=""
-				+"			</div>"
-				+"		</div>"
-				+"	</li>"
-
-				
-
-
+	function queryDebts(){
+		$.ajax({
+			url: host_php_url+"Get_Customer_Debts.php",
+			type: "post",
+			data: {},
+			dataType: 'json',
+			success: function(data){
+				console.log("Received debts data");
+				customer_history = data
+				buildBalances()
+			},
+			error: function(error){
+				console.log(error);
 			}
 			
-			$("#history-items").append(dom);
-		}
-		
+		});
 	}
-	var balance = purchases - payments
-	$("#history-balance").text(balance.toFixed(2))
-	$("#history-cname").text(cname)
-}
+
+	function buildBalances(){
+		$("#balance-items").html("")
+		console.log("balances")
+		// TODO ADD EMPTY CLASS FOR WHEN THERE'S NOTHING TO FILL IN
+		if(Object.keys(customer_history).length){
+			$("#balance-form").removeClass("empty")
+		}else{
+			$("#balance-form").addClass("empty")
+		}
+		var active = ""
+		for(c in customer_history){
+			var payments = 0
+			var purchases = 0
+			
+	    	for(h in customer_history[c]){
+	    		var item = customer_history[c][h]
+	    		purchases+=parseFloat(item.total_price)
+	    		payments+=parseFloat(item.paid)
+	    	}
+	    	var balance = purchases - payments
+
+	    	if(c==history_active_name&&history_active_name!=""){
+	    		active="active"
+	    		buildHistory(c)
+	    	}
+	    	
+			var dom = ""
+			dom+=""
+			+"	<li class='"+active+"'>"
+			+"		<div class='regular-item row tr-item-title'>" 	
+			+"			<span class='col s10'>"+c+"</span>"   
+			+"			<span class='col s2 fe'>"+balance.toFixed(2)+"</span>"  	
+			+"		</div>"
+			+"	</li>"
+			$("#balance-items").append(dom);
+			active = ""
+		}
+	}
 
 
-$(document).on('click', "#history-form #history-items .purchase .collp-edit-btn span", function () {
-		$(".card-reveal .edit-transaction").removeClass("hidden")
-		$(".card-reveal .new-transaction").addClass("hidden")
+	$(document).on('click', "#balance-items li", function(){
+		$("#balance-items li").removeClass("active")
+		$(this).addClass("active")
+	})
 
-		$("#transactions-form .activator").click()
-		var tid = $(this).parent().parent().parent().attr("value")
-		console.log("finding id no. "+tid )
-		var ctrans = customer_history
-		var match
-		var name = history_active_name
-		console.log("name is "+name+" and tid is "+tid)
+	$(document).on('click', "#balance-items li div", function(){
+		var customerName = $(this).find("span")[0].textContent
+		history_active_name = customerName
+		edit_active_id = findCID(customerName)
+		buildHistory(customerName)
+	})
+
+	$(document).on('change', "#history-form .datepicker", function () { 
+		start = getDate("start-dp")
+		end = getDate("end-dp")
+		if($("#balance-items li.active div span").length){
+			name = $("#balance-items li.active div span")[0].textContent
+			buildHistory(name)
+		}else{
+			// name = $("#balance-items li div span")[0].textContent
+		}
+
+		// name = $("#balance-items li.active div span")[0].textContent
+		console.log("query from "+start+" to "+end)
+	});
+
+	function buildHistory(name){
+		cname = name
+		$("#history-items").html("")
+		var total_balance = 0
+		console.log("history of "+name)
+
+		hdata = customer_history[name]
+		if(hdata.length){
+			$("#history-form").removeClass("empty")
+		}else{
+			$("#history-form").addClass("empty")
+		}
 
 
-		for(t in ctrans){
-			console.log("------------------------")
-			if(t==name){
-				console.log(t+" is the same as "+name)
-				console.log("------------")
-				for(h in ctrans[t]){
-					var item = ctrans[t][h]
-					// console.log("item is "+item)
-					if(item["tid"]==tid){
-						match = item
-						break
+		start = getDate("start-dp")
+		end = getDate("end-dp")
+
+		
+		var payments = 0
+		var purchases = 0
+		for(i1 in hdata){
+			var item = hdata[i1]
+			var td = item["transaction_date"]
+			var d = td.split("-")
+			var date = b(d[1])+" "+d[2]+", "+d[0]
+			var tid = item["tid"]
+			var type = item["type"]
+			var debt = item["total_price"]
+			var paid = item["paid"]
+
+			console.log("start : "+start+"      middle date: "+td+"           end: "+end)
+
+			if(within(start,td,end)){
+				console.log(td+" is within "+start+" and "+end)
+				purchases+=parseFloat(debt)
+				payments+=parseFloat(paid)
+				var dom=""
+				var products=[]
+
+			
+
+				if(type=="debt"||type=="payment"){
+					debt = (debt>0)? (debt+"") : ""
+					paid = (paid>0)? (paid+"") : ""
+					
+					dom+=""
+					+"	<li class='"+type+"'>"
+					+"		<div class='regular-item row tr-item-title'>"
+					+"			<span class='col s6 h-date'>"+date+"</span>"
+					+"			<span class='col s3 fe h-debt'>"+debt+"</span>"
+					+"			<span class='col s3 fe h-paid'>"+paid+"</span>"
+					+"		</div>"
+					+" 		<div class='collp-edit-btn'><div><span>EDIT</span></div></div>"
+					+"	</li>"
+
+
+
+				}else if(type=="purchase"){
+
+					var items = item["items"]
+
+					dom+=""
+					+"	<li class='"+type+"' value='"+tid+"'>"
+					+"		<div class='collapsible-header row tr-item-title'>"
+					+"			<span class='col s6'>"+date+"</span>"
+					+"			<span class='col s3 fe'>"+debt+"</span>"
+					+"			<span class='col s3 fe'>"+paid+"</span>"
+					+"		</div>"
+					+" 		<div class='collp-edit-btn'><div><span>EDIT</span></div></div>"
+					+"		<div class='collapsible-body'>"
+					+"			<div class='row blk'>"
+					+"				<span class='col s3'>Product Name</span>"
+					+"				<span class='col s2 fe'>Weight (kg)</span>"
+					+"				<span class='col s3 fm'>Php/kg</span>"
+					+"				<span class='col s2 fm'>Chk. Heads</span>"
+					+"				<span class='col s2 fe'>Price</span>"
+					+"			</div>"
+					+"			<div class='buyers'>"
+
+
+
+				    for(i2 in items){
+				    	var heads = items[i2]['chicken_head']
+				       	var cost = items[i2]['cost']
+						var name = items[i2]['name']
+						var quantity = items[i2]['quantity']
+						var rate = items[i2]['rate']
+						var chk = (heads=="0")? "": heads
+
+						dom+=""
+
+						+"			<div class='buyer row'>"
+						+"				<span class='col s3'>"+name+"</span>"
+						+"				<span class='col s2 fe'>"+quantity+"</span>"
+						+"				<span class='col s3 fm'>"+rate+"</span>"
+						+"				<span class='col s2 fm'>"+chk+"</span>"
+						+"				<span class='col s2 fe'>"+cost+"</span>"
+						+"			</div>"
 					}
+
+					dom+=""
+					+"			</div>"
+					+"		</div>"
+					+"	</li>"
+
+					
+
+
 				}
-				break
-			}	
+				
+				$("#history-items").append(dom);
+			}
+			
 		}
-		console.log("match found")
-		console.log(match)
+		var balance = purchases - payments
+		$("#history-balance").text(balance.toFixed(2))
+		$("#history-cname").text(cname)
+	}
 
-		
-		var invoice = match["invoice"]
-		var id = match["tid"]
-		var date = match["transaction_date"]
-		var total = match["total_price"]
-		var payment = match["paid"]
-		var items = match["items"]
+//BALANCES AND HISTORY PAGE
 
-		$("#edit-name").val(name)
-		$("#edit-invoice").val(invoice)
-		$("#edit-payment").val(payment)
-		$("#edit-tid").val(tid)
+//EDITING FROM HISTORY
 
-	  	var options = 
-		{
-			"setDefaultDate": true,
-			"defaultDate" : new Date(date)
-		}
-		console.log("----------")
-		var elems = document.querySelectorAll('#editt-dp');
-	  	M.Datepicker.init(elems, options);
-	  	$("#tab1 .card-reveal .products-bought i.item-close").click();
-	  	for (i = 0; i < items.length; i++) {
-	  		$(".edit-transaction .another-product").click()
-	  	}
-	  	i = 0
-	  	console.log(items)
-	  	console.log("----------")
-	  	$(".card-reveal .edit-transaction .product-field").not(".another-product").each(function(){
-	  		console.log(item[i])
-	  		// $(this).find(".prod-name input").val(items[i]["name"])
-	  		$(this).find(".prod-name ul.select-dropdown li").each(function(){
-	  			var zxc = $(this).find("span").text()
-	  			if(zxc == items[i]["name"]){
-					$(this).click()
+	$(document).on('click', "#history-form #history-items .purchase .collp-edit-btn span", function () {
+			$(".card-reveal .edit-transaction").removeClass("hidden")
+			$(".card-reveal .new-transaction").addClass("hidden")
+
+			$("#transactions-form .activator").click()
+			var tid = $(this).parent().parent().parent().attr("value")
+			console.log("finding id no. "+tid )
+			var ctrans = customer_history
+			var match
+			var name = history_active_name
+			console.log("name is "+name+" and tid is "+tid)
+
+
+			for(t in ctrans){
+				console.log("------------------------")
+				if(t==name){
+					console.log(t+" is the same as "+name)
+					console.log("------------")
+					for(h in ctrans[t]){
+						var item = ctrans[t][h]
+						// console.log("item is "+item)
+						if(item["tid"]==tid){
+							match = item
+							break
+						}
+					}
+					break
+				}	
+			}
+			console.log("match found")
+			console.log(match)
+
+			
+			var invoice = match["invoice"]
+			var id = match["tid"]
+			var date = match["transaction_date"]
+			var total = match["total_price"]
+			var payment = match["paid"]
+			var items = match["items"]
+
+			$("#edit-name").val(name)
+			$("#edit-invoice").val(invoice)
+			$("#edit-payment").val(payment)
+			$("#edit-tid").val(tid)
+
+		  	var options = 
+			{
+				"setDefaultDate": true,
+				"defaultDate" : new Date(date)
+			}
+			console.log("----------")
+			var elems = document.querySelectorAll('#editt-dp');
+		  	M.Datepicker.init(elems, options);
+		  	$("#tab1 .card-reveal .products-bought i.item-close").click();
+		  	for (i = 0; i < items.length; i++) {
+		  		$(".edit-transaction .another-product").click()
+		  	}
+		  	i = 0
+		  	console.log(items)
+		  	console.log("----------")
+		  	$(".card-reveal .edit-transaction .product-field").not(".another-product").each(function(){
+		  		console.log(item[i])
+		  		// $(this).find(".prod-name input").val(items[i]["name"])
+		  		$(this).find(".prod-name ul.select-dropdown li").each(function(){
+		  			var zxc = $(this).find("span").text()
+		  			if(zxc == items[i]["name"]){
+						$(this).click()
+					}
+		  		})
+		  		
+		  		$(this).find(".prod-qty input").val(items[i]["quantity"]).click()
+		  		$(this).find(".prod-rate input").val(items[i]["rate"]).click()
+		  		$(this).find(".chk-heads input").val(items[i]["chicken_head"])
+		  		
+		  		i++
+		  	})
+
+		  	// .find(".chk-heads")
+		  	// $(".products-bought-label .chk-label").show()
+
+		  	M.updateTextFields();
+		  	openT("tab1")
+		});
+
+	$(document).on('click', "#history-form #history-items .payment .collp-edit-btn span", function () {
+			var field = $(this).parent().parent().parent().find(".regular-item.row")
+			var date = field.find(".h-date").text()
+			var paid = field.find(".h-paid").text()
+
+			setDate("#paym-dp",date)
+
+			$("#paying-cust").val(history_active_name)
+			$("#cust-payment").val(paid)
+
+			edit_payment_date = getDate("paym-dp")
+			edit_payment_amount = paid
+
+			M.updateTextFields()
+
+			$("#payment-modal").addClass("editmode")
+			openM("#payment-modal")
+		});
+	$(document).on('click', "#history-form #history-items .debt .collp-edit-btn span", function () {
+			var field = $(this).parent().parent().parent().find(".regular-item.row")
+			var date = field.find(".h-date").text()
+			var debt = field.find(".h-debt").text()
+
+			setDate("#newu-dp",date)
+
+			$("#new-cust").val(history_active_name)
+			$("#new-cust-debt").val(debt)
+
+			edit_start_debt_date = getDate("newu-dp")
+			edit_start_debt_amount = debt
+
+			M.updateTextFields()
+
+			$("#user-modal").addClass("editmode")
+			openM("#user-modal")
+		});
+
+	$(document).on('click', "#user-modal #save-edit-customer", function () {
+			var id = edit_active_id
+			var name = $("#new-cust").val()
+			var odate = edit_start_debt_date
+			var odebt = edit_start_debt_amount
+			var debt = $("#new-cust-debt").val()
+			var date = getDate("newu-dp")
+			$.ajax({
+				url: host_php_url+"Update_Start_Debt.php",
+				type: "post",
+				data: {old_amount:odebt,old_date:odate,customer_id:id,new_amount:debt,new_date:date},
+				dataType: 'json',
+				success: function(data){
+					toast("Successfully Updated")
+					queryDebts()
+					closeM("#user-modal")
+					$("#user-modal .modal-footer .cancel").click()
+				},
+				error: function(error){
+					console.log(error);
 				}
-	  		})
-	  		
-	  		$(this).find(".prod-qty input").val(items[i]["quantity"]).click()
-	  		$(this).find(".prod-rate input").val(items[i]["rate"]).click()
-	  		$(this).find(".chk-heads input").val(items[i]["chicken_head"])
-	  		
-	  		i++
-	  	})
+			});
+		});
 
-	  	// .find(".chk-heads")
-	  	// $(".products-bought-label .chk-label").show()
+	$(document).on('click', "#payment-modal #save-edit-payment", function () {
+			var id = edit_active_id
+			var name = $("#paying-cust").val()
+			var pay = $("#cust-payment").val()
+			var date = getDate("paym-dp")
 
-	  	M.updateTextFields();
-	  	openT("tab1")
-	});
 
-$(document).on('click', "#history-form #history-items .payment .collp-edit-btn span", function () {
-		var field = $(this).parent().parent().parent().find(".regular-item.row")
-		var date = field.find(".h-date").text()
-		
-		var paid = field.find(".h-paid").text()
+			var odate = edit_payment_date
+			var opay = edit_payment_amount
 
-		$("#paying-cust").val(history_active_name)
-		$("#cust-payment").val(paid)
 
-		M.updateTextFields()
+			$.ajax({
+				url: host_php_url+"Update_Payment.php",
+				type: "post",
+				data: {old_amount:opay,old_date:odate,customer_id:id,new_amount:pay,new_date:date},
+				dataType: 'json',
+				success: function(data){
+					toast("Successfully Updated")
+					queryDebts()
+					closeM("#payment-modal")
+					$("#payment-modal .modal-footer .cancel").click()
+				},
+				error: function(error){
+					console.log(error);
+				}
+			});
+		});
 
-		$("#payment-modal").addClass("editmode")
-		openM("#payment-modal")
-	});
-$(document).on('click', "#history-form #history-items .debt .collp-edit-btn span", function () {
-		var field = $(this).parent().parent().parent().find(".regular-item.row")
-		var date = field.find(".h-date").text()
-		var debt = field.find(".h-debt").text()
 
-		$("#new-cust").val(history_active_name)
-		$("#new-cust-debt").val(debt)
-
-		M.updateTextFields()
-
-		$("#payment-modal").addClass("editmode")
-		openM("#payment-modal")
-	});
-
+//EDITING FROM HISTORY
 
 
 function buildFinancialGraph(){

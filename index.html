@@ -554,9 +554,9 @@
 	  <div class="supp-label fac">
       	<div class="w160">Product</div>
       	<div class="w80">Weight</div>
-      	<div class="w80">Php/kg</div>
+      	<!-- <div class="w80">Php/kg</div> -->
       	<div class="w50 chk-label op0">Heads</div>
-      	<div class="w80 fe">Cost</div>
+      	<!-- <div class="w80 fe">Cost</div> -->
       </div>
 	    <div class="supplies ova">
 	    	<div class="supply fac unclicked">
@@ -566,13 +566,13 @@
 			    	<div class="spd-qty w80 fs">
 		          <input type="number" min="0" max="1000" value="0">
 		        </div>
-		        <div class="spd-rate w80 fs">
+		        <!-- <div class="spd-rate w80 fs ">
 		          <input type="number" min="0" max="1000" value="1">
-		        </div>
+		        </div> -->
 		        <div class="spd-heads w50 fs op0">
 		          <input type="number" min="0" max="1000" value="1">
 		        </div>
-	        	<div class="spd-price w80 fe">0</div>
+	        	<!-- <div class="spd-price w80 fe hidden">0</div> -->
 	        	<i class="material-icons right item-close c-hov grow fm">close</i>
 	    	</div>
 
@@ -599,6 +599,7 @@
       <input type="text" id="new-cust-debt">
       <label for="new-cust-debt">Starting Debt</label>
     </div>
+    <input type="text" id="newu-dp" class="datepicker gbtn inv-dp edm nomarg">
   </div>
   <div class="modal-footer">
   	<a href="#!" class="modal-close waves-effect btn-flat cancel">CANCEL</a>
@@ -608,10 +609,12 @@
 </div>
 
 <div id="payment-modal" class="modal w400 editmode">
+    
   <div class="modal-content">
     <h4>Customer Payment</h4>
     <p class="dfm">Customer makes a payment</p>
     <p class="edm">Edit customer payment</p>
+    
     <div class="input-field">
       <input type="text" id="paying-cust" class="autocomplete">
       <label for="paying-cust">Name</label>
@@ -620,6 +623,7 @@
       <input type="text" id="cust-payment">
       <label for="cust-payment">Customer Payment</label>
     </div>
+    <input type="text" id="paym-dp" class="datepicker gbtn inv-dp edm nomarg">
   </div>
   <div class="modal-footer">
   	<a href="#!" class="modal-close waves-effect btn-flat cancel">CANCEL</a>
