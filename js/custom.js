@@ -1579,6 +1579,7 @@
 			setDate("#paym-dp",date)
 
 			$("#paying-cust").val(history_active_name)
+			$("#paying-cust").attr("disabled","disabled")
 			$("#cust-payment").val(paid)
 
 			edit_payment_date = getDate("paym-dp")
@@ -1597,6 +1598,7 @@
 			setDate("#newu-dp",date)
 
 			$("#new-cust").val(history_active_name)
+			$("#new-cust").attr("disabled","disabled")
 			$("#new-cust-debt").val(debt)
 
 			edit_start_debt_date = getDate("newu-dp")
@@ -1800,6 +1802,7 @@ function printHistory(){
 $(document).on('click', "#user-modal .cancel, #payment-modal .cancel", function(){
 	var a = $(this).parent().parent()
 	a.find("input").val("")
+	a.find("input").removeattr("disabled")
 	a.removeClass("editmode")
 	M.updateTextFields()
 })
