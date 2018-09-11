@@ -14,7 +14,7 @@
 
 	function activateSideItem(for_value){
 		$(".sidenav").find("a[for^='#tab']").removeClass("active");
-		$(".sidenav").find("a[for="+for_value+"]").addClass("active");
+		$(".sidenav").find("a[for="+for_value+"]").addClass("active"); 
 	}
 // SIDE ITEMS AND TABS COORDINATION
 
@@ -1483,6 +1483,8 @@
 		$("#history-cname").text(cname)
 	}
 
+
+
 //BALANCES AND HISTORY PAGE
 
 //EDITING FROM HISTORY
@@ -1772,23 +1774,135 @@ function buildInventory(){
 	}
 }
 
-function PrintElem(elem)
-{
-    var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+function PrintTable(table){
+   var mywindow = window.open('', 'PRINT', 'height=700,width=1000,fullscreen=yes');
+   var dom = ''
 
-    mywindow.document.write('<html><head><title>' + document.title  + '</title>');
-    mywindow.document.write('</head><body >');
-    mywindow.document.write('<h1>' + document.title  + '</h1>');
-    mywindow.document.write(document.getElementById(elem).innerHTML);
-    mywindow.document.write('</body></html>');
+   dom+=""
+   +"<html>"
+   +"<head>"
+   +"	<link rel='stylesheet' href='css/style.css'/>"
+   +"	<link rel='stylesheet' href='css/fonts.css'/>"
+   +"</head> "
+   +"<body id='cust-hist'>"
+   +table
+   +"</body> "
+   +"</html> "
+   
+    mywindow.document.write(dom);
 
-    mywindow.document.close(); // necessary for IE >= 10
+    // mywindow.document.close(); // necessary for IE >= 10
     mywindow.focus(); // necessary for IE >= 10*/
 
-    mywindow.print();
-    mywindow.close();
+    setTimeout(function(){
+		mywindow.print();
+    },1000)
+    
+    // mywindow.close();
 
     return true;
+}
+
+$(document).on('click', "#print-history", buildTable)
+
+
+function buildTable(){
+	name = history_active_name
+	// $("#history-items").html("")
+	var total_balance = 0
+	console.log("history of "+name)
+	var table = ''
+
+	hdata = customer_history[name]
+	if(name==undefined){
+		toast("No History Opened")
+		return
+	}else if(hdata.length){
+		toast("Opening Window")
+	}else{
+		toast("No History Found")
+		toast("Consider changing dates")
+		return
+	}
+
+
+	start = getDate("start-dp")
+	end = getDate("end-dp")
+
+	function niceDate(td){
+		var d = td.split("-")
+		var date = b(d[1])+" "+d[2]+", "+d[0]
+		return date
+	}
+	start = niceDate(start)
+	end = niceDate(end)
+
+	
+
+	
+	var payments = 0
+	var purchases = 0
+
+	table+=""
+	+"	<div>Name: <span>"+cname+"</span></div>"
+	+"	<div>Start Date: <span>"+start+"</span></div>"
+	+"	<div>End Date: <span>"+end+"</span></div>"
+	+"	<table >"
+	+"  	<tbody>"
+	+"			<tr class='"+type+"'>"
+	+"				<th class='ht-date' align='right'>Date</th>"
+	+"				<th class='ht-debt' align='right'>Purchase/Debt</th>"
+	+"				<th class='ht-paid' align='right'>Payment</th>"
+	+"			</tr>"
+
+
+	for(i1 in hdata){
+		var item = hdata[i1]
+		var td = item["transaction_date"]
+		var d = td.split("-")
+		var date = b(d[1])+" "+d[2]+", "+d[0]
+		var tid = item["tid"]
+		var type = item["type"]
+		var debt = item["total_price"]
+		var paid = item["paid"]
+
+		console.log("start : "+start+"      middle date: "+td+"           end: "+end)
+
+		if(within(start,td,end)){
+			console.log(td+" is within "+start+" and "+end)
+			purchases+=parseFloat(debt)
+			payments+=parseFloat(paid)
+			var dom=""
+			var products=[]
+		
+			debt = (debt>0)? (debt+"") : ""
+			paid = (paid>0)? (paid+"") : ""
+			
+			dom+=""
+			+"	<tr class='"+type+"'>"
+			+"			<td class='h-date' align='right'>"+date+"</td>"
+			+"			<td class='h-debt' align='right'>"+debt+"</td>"
+			+"			<td class='h-paid' align='right'>"+paid+"</td>"
+			+"	</tr>"
+
+
+
+		
+			
+			table+=dom
+		}
+		
+	}
+
+	var balance = (purchases - payments).toFixed(2)
+
+	table+=""
+	+"  	<tbody>"
+	+"	</table>"
+	+"	<div>Balance:  <span>"+balance+"</span></div>"
+
+
+	PrintTable(table)
 }
 
 function printHistory(){
