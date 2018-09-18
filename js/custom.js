@@ -1393,6 +1393,7 @@
 			var type = item["type"]
 			var debt = item["total_price"]
 			var paid = item["paid"]
+			var invoice = item["invoice"]
 
 			console.log("start : "+start+"      middle date: "+td+"           end: "+end)
 
@@ -1428,7 +1429,8 @@
 					dom+=""
 					+"	<li class='"+type+"' value='"+tid+"'>"
 					+"		<div class='collapsible-header row tr-item-title'>"
-					+"			<span class='col s6'>"+date+"</span>"
+					+"			<span class='col s3'>"+date+"</span>"
+					+"			<span class='col s3 fm'>"+invoice+"</span>"
 					+"			<span class='col s3 fe'>"+debt+"</span>"
 					+"			<span class='col s3 fe'>"+paid+"</span>"
 					+"		</div>"
@@ -1853,6 +1855,7 @@ function buildTable(){
 	+"  	<tbody>"
 	+"			<tr class='"+type+"'>"
 	+"				<th class='ht-date' align='right'>Date</th>"
+	+"				<th class='ht-invoice' align='right'>Invoice</th>"
 	+"				<th class='ht-debt' align='right'>Purchase/Debt</th>"
 	+"				<th class='ht-paid' align='right'>Payment</th>"
 	+"			</tr>"
@@ -1867,6 +1870,7 @@ function buildTable(){
 		var type = item["type"]
 		var debt = item["total_price"]
 		var paid = item["paid"]
+		var invoice = item["invoice"]
 
 		console.log("start : "+start+"      middle date: "+td+"           end: "+end)
 
@@ -1883,6 +1887,7 @@ function buildTable(){
 			dom+=""
 			+"	<tr class='"+type+"'>"
 			+"			<td class='h-date' align='right'>"+date+"</td>"
+			+"			<td class='h-invoice' align='right'>"+invoice+"</td>"
 			+"			<td class='h-debt' align='right'>"+debt+"</td>"
 			+"			<td class='h-paid' align='right'>"+paid+"</td>"
 			+"	</tr>"
