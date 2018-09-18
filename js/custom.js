@@ -1625,10 +1625,12 @@
 				data: {old_amount:odebt,old_date:odate,customer_id:id,new_amount:debt,new_date:date},
 				dataType: 'json',
 				success: function(data){
+
 					toast("Successfully Updated")
 					queryDebts()
-					closeM("#user-modal")
 					$("#user-modal .modal-footer .cancel").click()
+					closeM("#user-modal")
+					
 				},
 				error: function(error){
 					console.log(error);
@@ -1653,10 +1655,10 @@
 				data: {old_amount:opay,old_date:odate,customer_id:id,new_amount:pay,new_date:date},
 				dataType: 'json',
 				success: function(data){
-					toast("Successfully Updated")
+					toast("Successfully Updated Payment")
 					queryDebts()
-					closeM("#payment-modal")
 					$("#payment-modal .modal-footer .cancel").click()
+					closeM("#payment-modal")
 				},
 				error: function(error){
 					console.log(error);
@@ -1913,12 +1915,15 @@ function printHistory(){
 }
 
 
-$(document).on('click', "#user-modal .cancel, #payment-modal .cancel", function(){
+$(document).on('click', "#payment-modal .cancel, #user-modal .cancel", function(){
+	console.log("cancel is working")
 	var a = $(this).parent().parent()
 	a.find("input").val("")
-	a.find("input").removeattr("disabled")
+	inp = a.find("input")
+	inp.removeAttr("disabled")
 	a.removeClass("editmode")
 	M.updateTextFields()
+	
 })
 
 $(document).on('click', "#save-cust-payment", function () {
